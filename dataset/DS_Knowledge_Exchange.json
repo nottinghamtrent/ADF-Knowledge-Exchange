@@ -8,6 +8,9 @@
 		"parameters": {
 			"FileName": {
 				"type": "string"
+			},
+			"SchemaName": {
+				"type": "string"
 			}
 		},
 		"annotations": [],
