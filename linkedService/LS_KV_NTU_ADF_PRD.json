@@ -1,0 +1,10 @@
+{
+	"name": "LS_KV_NTU_ADF_PRD",
+	"properties": {
+		"annotations": [],
+		"type": "AzureKeyVault",
+		"typeProperties": {
+			"baseUrl": "https://BSD-NonDW-ADF-KeyVault.vault.azure.net/"
+		}
+	}
+}
