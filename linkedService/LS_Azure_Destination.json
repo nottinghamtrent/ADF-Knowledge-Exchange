@@ -4,6 +4,9 @@
 		"parameters": {
 			"TableName": {
 				"type": "string"
+			},
+			"Schema": {
+				"type": "string"
 			}
 		},
 		"annotations": [],
