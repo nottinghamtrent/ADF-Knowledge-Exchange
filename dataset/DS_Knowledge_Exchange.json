@@ -8,9 +8,6 @@
 		"parameters": {
 			"FileName": {
 				"type": "string"
-			},
-			"SchemaName": {
-				"type": "string"
 			}
 		},
 		"annotations": [],
@@ -26,6 +23,7 @@
 			"columnDelimiter": ",",
 			"escapeChar": "\\",
 			"firstRowAsHeader": true,
+			"nullValue": "X",
 			"quoteChar": "\""
 		},
 		"schema": []
