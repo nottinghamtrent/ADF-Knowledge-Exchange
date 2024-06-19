@@ -1,0 +1,17 @@
+{
+	"name": "DS_Azure_Destination",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "LS_Azure_Destination",
+			"type": "LinkedServiceReference"
+		},
+		"parameters": {
+			"TableName": {
+				"type": "string"
+			}
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": []
+	}
+}
