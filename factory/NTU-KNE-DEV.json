@@ -1,0 +1,9 @@
+{
+	"name": "NTU-KNE-DEV",
+	"location": "uksouth",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "83c4f425-ac3d-4746-ab7d-a5c644a5b9ef",
+		"tenantId": "8acbc2c5-c8ed-42c7-8169-ba438a0dbe2f"
+	}
+}

@@ -1,0 +1,12 @@
+{
+	"name": "IR-Esther-PRD",
+	"properties": {
+		"type": "SelfHosted",
+		"typeProperties": {
+			"linkedInfo": {
+				"resourceId": "/subscriptions/a310f81c-e035-4642-b38d-81c71a14db84/resourcegroups/prod_confirmationandclearing/providers/Microsoft.DataFactory/factories/NTU-ADF-PRD/integrationruntimes/IR-Esther-Prd",
+				"authorizationType": "Rbac"
+			}
+		}
+	}
+}
