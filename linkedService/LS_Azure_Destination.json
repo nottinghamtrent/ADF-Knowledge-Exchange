@@ -1,0 +1,21 @@
+{
+	"name": "LS_Azure_Destination",
+	"properties": {
+		"annotations": [],
+		"type": "AzureSqlDatabase",
+		"typeProperties": {
+			"connectionString": {
+				"type": "AzureKeyVaultSecret",
+				"store": {
+					"referenceName": "LS_KV_NTU_ADF_PRD",
+					"type": "LinkedServiceReference"
+				},
+				"secretName": "KV-AzureDB-DEV-ConnectionString"
+			}
+		},
+		"connectVia": {
+			"referenceName": "IR-Esther-PRD",
+			"type": "IntegrationRuntimeReference"
+		}
+	}
+}
