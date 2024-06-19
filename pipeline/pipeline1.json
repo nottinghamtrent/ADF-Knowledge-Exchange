@@ -36,6 +36,176 @@
 					"enableStaging": false,
 					"translator": {
 						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"name": "Project Code",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "Project Code",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Business Number",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "Business Number",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Business Name",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "Business Name",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Postcode",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "Postcode",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Enrolment Date",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "Enrolment Date",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "5 Digit SIC Code",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "5 Digit SIC Code",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": " Turnover ",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": " Turnover ",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "No. of Employees",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "No. of Employees",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Business Registration Date",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "Business Registration Date",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Equality Policy",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "Equality Policy",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": " Environmental Policy ",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": " Environmental Policy ",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Size",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "Size",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Business No. Type2",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "Business No. Type2",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Partner",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "Partner",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							}
+						],
 						"typeConversion": true,
 						"typeConversionSettings": {
 							"allowDataTruncation": true,
@@ -57,7 +227,8 @@
 						"referenceName": "DS_Azure_Destination",
 						"type": "DatasetReference",
 						"parameters": {
-							"TableName": "KNE_STG.BUSINESS_DATA"
+							"TableName": "BusinessData",
+							"SchemaName": "KNE_STG"
 						}
 					}
 				]
