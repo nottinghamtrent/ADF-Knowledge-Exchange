@@ -1,6 +1,11 @@
 {
 	"name": "LS_Azure_Destination",
 	"properties": {
+		"parameters": {
+			"TableName": {
+				"type": "string"
+			}
+		},
 		"annotations": [],
 		"type": "AzureSqlDatabase",
 		"typeProperties": {
