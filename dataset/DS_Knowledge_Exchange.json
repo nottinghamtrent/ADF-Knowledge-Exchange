@@ -14,8 +14,7 @@
 		"type": "DelimitedText",
 		"typeProperties": {
 			"location": {
-				"type": "FileServerLocation",
-				"fileName": "SiE_BusinessData_tbl.csv"
+				"type": "FileServerLocation"
 			},
 			"columnDelimiter": ",",
 			"escapeChar": "\\",
