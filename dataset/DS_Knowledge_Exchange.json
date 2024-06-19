@@ -1,0 +1,22 @@
+{
+	"name": "DS_Knowledge_Exchange",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "LS_Knowledge_Exchange",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "FileServerLocation",
+				"fileName": "SiE_BusinessData_tbl.csv"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": []
+	}
+}
