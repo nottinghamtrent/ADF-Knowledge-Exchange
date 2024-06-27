@@ -24,7 +24,7 @@
 			"escapeChar": "\\",
 			"firstRowAsHeader": true,
 			"nullValue": "X",
-			"quoteChar": "\""
+			"quoteChar": "'"
 		},
 		"schema": []
 	}
