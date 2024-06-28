@@ -31,7 +31,6 @@
 						"preCopyScript": "truncate table KNE_STG.BusinessData_Carbon",
 						"writeBehavior": "insert",
 						"sqlWriterUseTableLock": false,
-						"tableOption": "autoCreate",
 						"disableMetricsCollection": false
 					},
 					"enableStaging": false,
