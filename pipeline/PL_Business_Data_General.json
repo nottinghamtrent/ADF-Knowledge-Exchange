@@ -1,9 +1,9 @@
 {
-	"name": "pipeline1",
+	"name": "PL_Business_Data_General",
 	"properties": {
 		"activities": [
 			{
-				"name": "Copy data1",
+				"name": "CD_Busines_Data_General",
 				"type": "Copy",
 				"dependsOn": [],
 				"policy": {
@@ -44,9 +44,9 @@
 									"physicalType": "String"
 								},
 								"sink": {
-									"name": "Project Code",
+									"name": "Project_Code",
 									"type": "String",
-									"physicalType": "nvarchar"
+									"physicalType": "varchar"
 								}
 							},
 							{
@@ -56,9 +56,9 @@
 									"physicalType": "String"
 								},
 								"sink": {
-									"name": "Business Number",
+									"name": "Business_Number",
 									"type": "String",
-									"physicalType": "nvarchar"
+									"physicalType": "varchar"
 								}
 							},
 							{
@@ -68,9 +68,9 @@
 									"physicalType": "String"
 								},
 								"sink": {
-									"name": "Business Name",
+									"name": "Business_Name",
 									"type": "String",
-									"physicalType": "nvarchar"
+									"physicalType": "varchar"
 								}
 							},
 							{
@@ -82,7 +82,7 @@
 								"sink": {
 									"name": "Postcode",
 									"type": "String",
-									"physicalType": "nvarchar"
+									"physicalType": "varchar"
 								}
 							},
 							{
@@ -92,9 +92,9 @@
 									"physicalType": "String"
 								},
 								"sink": {
-									"name": "Enrolment Date",
-									"type": "String",
-									"physicalType": "nvarchar"
+									"name": "Enrolment_Date",
+									"type": "DateTime",
+									"physicalType": "datetime"
 								}
 							},
 							{
@@ -104,9 +104,9 @@
 									"physicalType": "String"
 								},
 								"sink": {
-									"name": "5 Digit SIC Code",
+									"name": "5_Digit_SIC_Code",
 									"type": "String",
-									"physicalType": "nvarchar"
+									"physicalType": "varchar"
 								}
 							},
 							{
@@ -116,9 +116,11 @@
 									"physicalType": "String"
 								},
 								"sink": {
-									"name": " Turnover ",
-									"type": "String",
-									"physicalType": "nvarchar"
+									"name": "Turnover",
+									"type": "Decimal",
+									"physicalType": "decimal",
+									"scale": 2,
+									"precision": 12
 								}
 							},
 							{
@@ -128,9 +130,11 @@
 									"physicalType": "String"
 								},
 								"sink": {
-									"name": "No. of Employees",
-									"type": "String",
-									"physicalType": "nvarchar"
+									"name": "No_of_Employees",
+									"type": "Decimal",
+									"physicalType": "decimal",
+									"scale": 0,
+									"precision": 8
 								}
 							},
 							{
@@ -140,9 +144,9 @@
 									"physicalType": "String"
 								},
 								"sink": {
-									"name": "Business Registration Date",
-									"type": "String",
-									"physicalType": "nvarchar"
+									"name": "Business_Registration_Date",
+									"type": "DateTime",
+									"physicalType": "datetime"
 								}
 							},
 							{
@@ -152,9 +156,9 @@
 									"physicalType": "String"
 								},
 								"sink": {
-									"name": "Equality Policy",
+									"name": "Equality_Policy",
 									"type": "String",
-									"physicalType": "nvarchar"
+									"physicalType": "varchar"
 								}
 							},
 							{
@@ -164,9 +168,9 @@
 									"physicalType": "String"
 								},
 								"sink": {
-									"name": " Environmental Policy ",
+									"name": "Environmental_Policy",
 									"type": "String",
-									"physicalType": "nvarchar"
+									"physicalType": "varchar"
 								}
 							},
 							{
@@ -178,7 +182,7 @@
 								"sink": {
 									"name": "Size",
 									"type": "String",
-									"physicalType": "nvarchar"
+									"physicalType": "varchar"
 								}
 							},
 							{
@@ -188,9 +192,9 @@
 									"physicalType": "String"
 								},
 								"sink": {
-									"name": "Business No. Type2",
+									"name": "Business_No_Type2",
 									"type": "String",
-									"physicalType": "nvarchar"
+									"physicalType": "varchar"
 								}
 							},
 							{
@@ -202,7 +206,7 @@
 								"sink": {
 									"name": "Partner",
 									"type": "String",
-									"physicalType": "nvarchar"
+									"physicalType": "varchar"
 								}
 							}
 						],
@@ -227,7 +231,7 @@
 						"referenceName": "DS_Azure_Destination",
 						"type": "DatasetReference",
 						"parameters": {
-							"TableName": "BusinessData",
+							"TableName": "BusinessData_General",
 							"SchemaName": "KNE_STG"
 						}
 					}
