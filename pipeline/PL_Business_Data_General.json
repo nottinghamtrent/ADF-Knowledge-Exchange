@@ -94,8 +94,8 @@
 								},
 								"sink": {
 									"name": "Enrolment_Date",
-									"type": "DateTime",
-									"physicalType": "datetime"
+									"type": "String",
+									"physicalType": "varchar"
 								}
 							},
 							{
@@ -146,8 +146,8 @@
 								},
 								"sink": {
 									"name": "Business_Registration_Date",
-									"type": "DateTime",
-									"physicalType": "datetime"
+									"type": "String",
+									"physicalType": "varchar"
 								}
 							},
 							{
