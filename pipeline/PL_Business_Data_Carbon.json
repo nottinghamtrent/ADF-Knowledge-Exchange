@@ -3,7 +3,7 @@
 	"properties": {
 		"activities": [
 			{
-				"name": "CD_Business_Data_Carbon",
+				"name": "CD_STG_Business_Data_Carbon",
 				"type": "Copy",
 				"dependsOn": [],
 				"policy": {
