@@ -275,17 +275,6 @@
 							},
 							{
 								"source": {
-									"name": "CURRENT_DATE",
-									"type": "String"
-								},
-								"sink": {
-									"name": "COMPANY_START_DATE",
-									"type": "DateTime",
-									"physicalType": "date"
-								}
-							},
-							{
-								"source": {
 									"name": "ACTIVE_IND",
 									"type": "String"
 								},
