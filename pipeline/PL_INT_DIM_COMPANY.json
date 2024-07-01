@@ -1,0 +1,324 @@
+{
+	"name": "PL_INT_DIM_COMPANY",
+	"properties": {
+		"activities": [
+			{
+				"name": "CD_INT_DIM_COMPANY",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "AzureSqlSource",
+						"sqlReaderQuery": "WITH\nQ_OUPUTS\nAS\n(\nSELECT project_Code, partner,Business_Name,\nCASE\nWHEN [C1] IS NOT NULL THEN 'Y'\nELSE 'N'\nEND C1,\nCASE\nWHEN [C2] IS NOT NULL THEN 'Y'\nELSE 'N'\nEND C2,\nCASE\nWHEN [C4] IS NOT NULL THEN 'Y'\nELSE 'N'\nEND C4,\nCASE\nWHEN [C6] IS NOT NULL THEN 'Y'\nELSE 'N'\nEND C6,\nCASE\nWHEN [C34] IS NOT NULL THEN 'Y'\nELSE 'N'\nEND C34\nFROM (\n    SELECT Project_Code, partner,Business_Name,Output FROM [KNE_STG].[Outputs]\n) AS SourceTable\nPIVOT (\n    MAX(output)\n    FOR output IN ([C1], [C2], [C4], [C6], [C34])\n\n) AS PivotTable)\n\n\n\n\n\n\n  SELECT \n      MAIN.Project_Code,\n      MAIN.Business_Number,\n      MAIN.Business_Name,\n      MAIN.Postcode,\n      \n\t  CONVERT(date, MAIN.Enrolment_Date, 103) AS Enrolment_Date,\n\t  \n\t\n      MAIN.FIVE_Digit_SIC_Code,\n      MAIN.Turnover,\n      MAIN.No_of_Employees,\n\n\t  CONVERT(date, MAIN.Business_Registration_Date, 103) AS Business_Registration_Date,\n      MAIN.Equality_Policy,\n      MAIN.Environmental_Policy,\n      MAIN.Size,\n      MAIN.Business_No_Type2,\n      MAIN.Partner,\n\t  COALESCE(OUTPUTS.C1,'N') OUTPUT_C1,\n\t  COALESCE(OUTPUTS.C2,'N') OUTPUT_C2,\n\t  COALESCE(OUTPUTS.C4,'N') OUTPUT_C4,\n\t  COALESCE(OUTPUTS.C6,'N') OUTPUT_C6,\n\t  COALESCE(OUTPUTS.C34,'N') OUTPUT_C34\n  FROM KNE_STG.BusinessData_General MAIN\n  LEFT OUTER JOIN Q_OUPUTS OUTPUTS\n  ON MAIN.Project_Code=OUTPUTS.Project_Code\n  AND MAIN.Business_Number=OUTPUTS.Business_Name\n  AND MAIN.PARTNER=OUTPUTS.Partner",
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
+					},
+					"sink": {
+						"type": "AzureSqlSink",
+						"preCopyScript": "TRUNCATE TABLE KNE_INT.DIM_COMPANY",
+						"writeBehavior": "insert",
+						"sqlWriterUseTableLock": false,
+						"disableMetricsCollection": false
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"name": "Project_Code",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "COMPANY_SK",
+									"type": "Int32",
+									"physicalType": "int"
+								}
+							},
+							{
+								"source": {
+									"name": "Business_Number",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "COMPANY_BK",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Business_Name",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "COMPANY_NAME",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Project_Code",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "COMPANY_PROJECT_CODE",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Postcode",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "COMPANY_POSTCODE",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Enrolment_Date",
+									"type": "DateTime",
+									"physicalType": "date"
+								},
+								"sink": {
+									"name": "COMPANY_ENROLMENT_DATE",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "FIVE_Digit_SIC_Code",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "COMPANY_FIVE_DIGIT_SIC_CODE",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Turnover",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "COMPANY_TURNOVER",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "No_of_Employees",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "COMPANY_NO_OF_EMPLOYEES",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Business_Registration_Date",
+									"type": "DateTime",
+									"physicalType": "date"
+								},
+								"sink": {
+									"name": "COMPANY_REGISTRATION_DATE",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Equality_Policy",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "COMPANY_EQUALITY_POLICY",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Environmental_Policy",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "COMPANY_ENVIRONMENTAL_POLICY",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Size",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "COMPANY_SIZE",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Business_No_Type2",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "COMPANY__NO_TYPE2",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Partner",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "COMPANY_PARTNER",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "OUTPUT_C1",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "COMANY_OUTPUT_C1",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "OUTPUT_C2",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "COMANY_OUTPUT_C2",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "OUTPUT_C4",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "COMANY_OUTPUT_C4",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "OUTPUT_C6",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "COMANY_OUTPUT_C6",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "OUTPUT_C34",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "COMANY_OUTPUT_C34",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"sink": {
+									"name": "COMPANY_START_DATE",
+									"type": "DateTime",
+									"physicalType": "date"
+								}
+							},
+							{
+								"sink": {
+									"name": "COMPANY_ACTIVE_IND",
+									"type": "String",
+									"physicalType": "char"
+								}
+							}
+						],
+						"typeConversion": true,
+						"typeConversionSettings": {
+							"allowDataTruncation": true,
+							"treatBooleanAsNumber": false
+						}
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "DS_Azure_Destination",
+						"type": "DatasetReference",
+						"parameters": {
+							"TableName": "STG.BusinessData_Genera",
+							"SchemaName": "KNE_STG"
+						}
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "DS_Azure_Destination",
+						"type": "DatasetReference",
+						"parameters": {
+							"TableName": "DIM_COMPANY",
+							"SchemaName": "KNE_INT"
+						}
+					}
+				]
+			}
+		],
+		"folder": {
+			"name": "INTEGRATION"
+		},
+		"annotations": []
+	}
+}
