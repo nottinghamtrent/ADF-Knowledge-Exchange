@@ -118,10 +118,8 @@
 								},
 								"sink": {
 									"name": "Turnover",
-									"type": "Decimal",
-									"physicalType": "decimal",
-									"scale": 2,
-									"precision": 12
+									"type": "String",
+									"physicalType": "varchar"
 								}
 							},
 							{
@@ -132,10 +130,8 @@
 								},
 								"sink": {
 									"name": "No_of_Employees",
-									"type": "Decimal",
-									"physicalType": "decimal",
-									"scale": 0,
-									"precision": 8
+									"type": "String",
+									"physicalType": "varchar"
 								}
 							},
 							{
@@ -223,7 +219,7 @@
 						"referenceName": "DS_Knowledge_Exchange",
 						"type": "DatasetReference",
 						"parameters": {
-							"FileName": "SiE_BusinessData_tbl.txt"
+							"FileName": "SiE_BusinessData.txt"
 						}
 					}
 				],
