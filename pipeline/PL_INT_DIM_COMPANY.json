@@ -287,6 +287,17 @@
 									"type": "DateTime",
 									"physicalType": "datetime"
 								}
+							},
+							{
+								"source": {
+									"name": "ACTIVE_IND",
+									"type": "String"
+								},
+								"sink": {
+									"name": "COMPANY_ACTIVE_IND",
+									"type": "String",
+									"physicalType": "char"
+								}
 							}
 						],
 						"typeConversion": true,
