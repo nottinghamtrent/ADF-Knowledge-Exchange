@@ -264,6 +264,40 @@
 									"type": "String",
 									"physicalType": "varchar"
 								}
+							},
+							{
+								"source": {
+									"name": "OUTPUT_C34",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "COMANY_OUTPUT_C34",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "CURRENT_DATE",
+									"type": "String"
+								},
+								"sink": {
+									"name": "COMPANY_START_DATE",
+									"type": "DateTime",
+									"physicalType": "datetime"
+								}
+							},
+							{
+								"source": {
+									"name": "ACTIVE_IND",
+									"type": "String"
+								},
+								"sink": {
+									"name": "COMPANY_ACTIVE_IND",
+									"type": "String",
+									"physicalType": "char"
+								}
 							}
 						],
 						"typeConversion": true,
