@@ -219,6 +219,11 @@
 								}
 							},
 							{
+								"source": {
+									"name": "NTU supply chain",
+									"type": "String",
+									"physicalType": "String"
+								},
 								"sink": {
 									"name": "NTU_supply_chain",
 									"type": "String",
@@ -226,6 +231,11 @@
 								}
 							},
 							{
+								"source": {
+									"name": "Prod De Min Hrs Claimed",
+									"type": "String",
+									"physicalType": "String"
+								},
 								"sink": {
 									"name": "Prod_De_Min_Hrs_Claimed",
 									"type": "String",
@@ -233,6 +243,11 @@
 								}
 							},
 							{
+								"source": {
+									"name": "Prod LoA Hrs Claimed",
+									"type": "String",
+									"physicalType": "String"
+								},
 								"sink": {
 									"name": "Prod_LoA_Hrs_Claimed",
 									"type": "String",
@@ -240,6 +255,11 @@
 								}
 							},
 							{
+								"source": {
+									"name": "Prod Qtr Intervention complete",
+									"type": "String",
+									"physicalType": "String"
+								},
 								"sink": {
 									"name": "Prod_Qtr_Intervention_complete",
 									"type": "String",
@@ -247,6 +267,11 @@
 								}
 							},
 							{
+								"source": {
+									"name": "LCA 1 Date",
+									"type": "String",
+									"physicalType": "String"
+								},
 								"sink": {
 									"name": "LCA_1_Date",
 									"type": "String",
@@ -254,6 +279,11 @@
 								}
 							},
 							{
+								"source": {
+									"name": "Prod  tCO2e ",
+									"type": "String",
+									"physicalType": "String"
+								},
 								"sink": {
 									"name": "Prod_tCO2e ",
 									"type": "String",
@@ -273,6 +303,11 @@
 								}
 							},
 							{
+								"source": {
+									"name": "SCL LoA Hrs Claimed",
+									"type": "String",
+									"physicalType": "String"
+								},
 								"sink": {
 									"name": "SCL_LoA_Hrs_Claimed",
 									"type": "String",
@@ -280,6 +315,11 @@
 								}
 							},
 							{
+								"source": {
+									"name": "SCL Qtr intervention complete",
+									"type": "String",
+									"physicalType": "String"
+								},
 								"sink": {
 									"name": "SCL_Qtr_intervention_complete",
 									"type": "String",
