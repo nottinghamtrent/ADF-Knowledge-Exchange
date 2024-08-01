@@ -236,6 +236,11 @@
 								}
 							},
 							{
+								"source": {
+									"name": "Prod Qtr Intervention complete",
+									"type": "String",
+									"physicalType": "String"
+								},
 								"sink": {
 									"name": "Prod_Qtr_Intervention_complete",
 									"type": "String",
@@ -243,6 +248,11 @@
 								}
 							},
 							{
+								"source": {
+									"name": "Prod  tCO2e ",
+									"type": "String",
+									"physicalType": "String"
+								},
 								"sink": {
 									"name": "Prod_tCO2e ",
 									"type": "Decimal",
@@ -252,6 +262,11 @@
 								}
 							},
 							{
+								"source": {
+									"name": "SCL State Aid Hrs",
+									"type": "String",
+									"physicalType": "String"
+								},
 								"sink": {
 									"name": "SCL_State_Aid_Hrs",
 									"type": "Decimal",
@@ -261,6 +276,11 @@
 								}
 							},
 							{
+								"source": {
+									"name": "SCL Qtr intervention complete",
+									"type": "String",
+									"physicalType": "String"
+								},
 								"sink": {
 									"name": "SCL_Qtr_intervention_complete",
 									"type": "String",
@@ -268,6 +288,11 @@
 								}
 							},
 							{
+								"source": {
+									"name": "C1 Staus",
+									"type": "String",
+									"physicalType": "String"
+								},
 								"sink": {
 									"name": "C1_Staus",
 									"type": "String",
@@ -275,6 +300,11 @@
 								}
 							},
 							{
+								"source": {
+									"name": "C2 status",
+									"type": "String",
+									"physicalType": "String"
+								},
 								"sink": {
 									"name": "C2_status",
 									"type": "String",
@@ -282,6 +312,11 @@
 								}
 							},
 							{
+								"source": {
+									"name": "C4 status",
+									"type": "String",
+									"physicalType": "String"
+								},
 								"sink": {
 									"name": "C4_status",
 									"type": "String",
@@ -289,6 +324,11 @@
 								}
 							},
 							{
+								"source": {
+									"name": "C34 status",
+									"type": "String",
+									"physicalType": "String"
+								},
 								"sink": {
 									"name": "C34_status",
 									"type": "String",
