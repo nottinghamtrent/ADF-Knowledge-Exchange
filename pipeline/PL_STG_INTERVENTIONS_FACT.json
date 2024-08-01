@@ -105,7 +105,7 @@
 									"physicalType": "String"
 								},
 								"sink": {
-									"name": "ADBE_Qtr_intervention complete",
+									"name": "ADBE_Qtr_intervention_complete",
 									"type": "String",
 									"physicalType": "varchar"
 								}
