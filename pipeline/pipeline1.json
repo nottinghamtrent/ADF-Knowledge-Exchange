@@ -28,7 +28,7 @@
 					},
 					"sink": {
 						"type": "AzureSqlSink",
-						"preCopyScript": "TRUNCATE TABLE KNE_STG.Outpus_for_fact_build",
+						"preCopyScript": "TRUNCATE TABLE KNE_STG.Outputs_for_fact_build",
 						"writeBehavior": "insert",
 						"sqlWriterUseTableLock": false,
 						"disableMetricsCollection": false
