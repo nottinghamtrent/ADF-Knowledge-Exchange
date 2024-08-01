@@ -1,9 +1,9 @@
 {
-	"name": "pipeline1",
+	"name": "PL_STG_INTERVENTIONS_FACT",
 	"properties": {
 		"activities": [
 			{
-				"name": "Copy data1",
+				"name": "CD_STG_INTERVENTIONS_FOR_FACT_TABLE_BUILD",
 				"type": "Copy",
 				"dependsOn": [],
 				"policy": {
@@ -26,7 +26,273 @@
 							"type": "DelimitedTextReadSettings"
 						}
 					},
-					"enableStaging": false
+					"sink": {
+						"type": "AzureSqlSink",
+						"preCopyScript": "truncate table KNE_STG.Interventions_for_fact_build",
+						"writeBehavior": "insert",
+						"sqlWriterUseTableLock": false,
+						"tableOption": "autoCreate",
+						"disableMetricsCollection": false
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"name": "CRN",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "CRN",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Enterprise name",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "Enterprise_name",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Baseline data form",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "Baseline_data_form",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Post support form",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "Post_support_form",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "ADBE LoA Hrs Claimed",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "ADBE_LoA_Hrs_Claimed",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "ADBE Qtr intervention complete",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "ADBE_Qtr_intervention complete",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "ADBE tCO2e Claimed",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "ADBE_tCO2e_Claimed",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "NBS student LoA Hrs Claimed",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "NBS_student_LoA_Hrs_Claimed",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "NBS Student Qtr intervention complete",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "NBS_Student_Qtr_intervention_complete",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "NBS Student  tCO2e Claimed",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "NBS_Student_tCO2e_Claimed",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "CMP LoA Hrs Claimed",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "CMP_LoA_Hrs_Claimed",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "CMP Quarter intervention complete",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "CMP_Quarter_intervention_complete",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Sustainability LoA Hrs Claimed",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "Sustainability_LoA_Hrs_Claimed",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Sust Qtr intervention complete",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "Sust_Qtr_intervention_complete",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Sust  tCO2e Claimed",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "Sust_tCO2e_Claimed",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"sink": {
+									"name": "NTU_supply_chain",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"sink": {
+									"name": "Prod_De_Min_Hrs_Claimed",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"sink": {
+									"name": "Prod_LoA_Hrs_Claimed",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"sink": {
+									"name": "Prod_Qtr_Intervention_complete",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"sink": {
+									"name": "LCA_1_Date",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"sink": {
+									"name": "Prod_tCO2e ",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "SCL",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "SCL",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"sink": {
+									"name": "SCL_LoA_Hrs_Claimed",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"sink": {
+									"name": "SCL_Qtr_intervention_complete",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							}
+						],
+						"typeConversion": true,
+						"typeConversionSettings": {
+							"allowDataTruncation": true,
+							"treatBooleanAsNumber": false
+						}
+					}
 				},
 				"inputs": [
 					{
@@ -36,12 +302,19 @@
 							"FileName": "SiE_Intervention_FACT.txt"
 						}
 					}
+				],
+				"outputs": [
+					{
+						"referenceName": "DS_Azure_Destination",
+						"type": "DatasetReference",
+						"parameters": {
+							"TableName": "Interventions_for_fact_build",
+							"SchemaName": "KNE_STG"
+						}
+					}
 				]
 			}
 		],
-		"folder": {
-			"name": "INTEGRATION"
-		},
 		"annotations": []
 	}
 }
