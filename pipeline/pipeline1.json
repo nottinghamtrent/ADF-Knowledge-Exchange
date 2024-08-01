@@ -357,7 +357,7 @@
 						"referenceName": "DS_Azure_Destination",
 						"type": "DatasetReference",
 						"parameters": {
-							"TableName": "Outpus_for_fact_build",
+							"TableName": "Outputs_for_fact_build",
 							"SchemaName": "KNE_STG"
 						}
 					}
