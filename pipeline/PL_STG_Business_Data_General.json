@@ -235,8 +235,8 @@
 				]
 			},
 			{
-				"name": "CD_LPAD_BUSINESS_NO_WITH_ZEROS",
-				"type": "Copy",
+				"name": "Script1",
+				"type": "Script",
 				"dependsOn": [
 					{
 						"activity": "CD_STG_Busines_Data_General",
@@ -253,69 +253,19 @@
 					"secureInput": false
 				},
 				"userProperties": [],
-				"typeProperties": {
-					"source": {
-						"type": "AzureSqlSource",
-						"sqlReaderQuery": "Select Business_Number, business_name,RIGHT(REPLICATE('0', 8) + Business_Number, 8)  NEW_BUSINESS_NUMBER\nfrom KNE_STG.BusinessData_General",
-						"queryTimeout": "02:00:00",
-						"partitionOption": "None"
-					},
-					"sink": {
-						"type": "AzureSqlSink",
-						"writeBehavior": "upsert",
-						"upsertSettings": {
-							"useTempDB": true,
-							"keys": [
-								"Business_Name"
-							]
-						},
-						"sqlWriterUseTableLock": false,
-						"disableMetricsCollection": false
-					},
-					"enableStaging": false,
-					"translator": {
-						"type": "TabularTranslator",
-						"mappings": [
-							{
-								"source": {
-									"name": "NEW_BUSINESS_NUMBER",
-									"type": "String",
-									"physicalType": "varchar"
-								},
-								"sink": {
-									"name": "Business_Number",
-									"type": "String",
-									"physicalType": "varchar"
-								}
-							}
-						],
-						"typeConversion": true,
-						"typeConversionSettings": {
-							"allowDataTruncation": true,
-							"treatBooleanAsNumber": false
-						}
-					}
+				"linkedServiceName": {
+					"referenceName": "LS_Azure_Destination",
+					"type": "LinkedServiceReference"
 				},
-				"inputs": [
-					{
-						"referenceName": "DS_Azure_Destination",
-						"type": "DatasetReference",
-						"parameters": {
-							"TableName": "BusinessData_General",
-							"SchemaName": "KNE_STG"
+				"typeProperties": {
+					"scripts": [
+						{
+							"type": "Query",
+							"text": "UPDATE  KNE_STG.BusinessData_General\nSET  Business_Number= RIGHT(REPLICATE('0', 8) + Business_Number, 8)  "
 						}
-					}
-				],
-				"outputs": [
-					{
-						"referenceName": "DS_Azure_Destination",
-						"type": "DatasetReference",
-						"parameters": {
-							"TableName": "BusinessData_General",
-							"SchemaName": "KNE_STG"
-						}
-					}
-				]
+					],
+					"scriptBlockExecutionTimeout": "02:00:00"
+				}
 			}
 		],
 		"annotations": []
