@@ -1,0 +1,64 @@
+{
+	"name": "PL_INT_DIM_REPORTING_STRUCUTRE",
+	"properties": {
+		"activities": [
+			{
+				"name": "CD_DIM_ACADEMIC_YEAR",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "AzureSqlSource",
+						"sqlReaderQuery": "/****** Script for SelectTopNRows command from SSMS  ******/\nSELECT  [BI_REP_STRUCT_SK]\n      ,[BI_REP_STRUCT_LEVEL1]\n      ,[BI_REP_STRUCT_LEVEL2]\n      ,[BI_REP_STRUCT_LEVEL3]\n      ,[BI_REP_STRUCT_LEVEL4]\n      ,[BI_REP_STRUCT_LEVEL5]\n      ,[BI_REP_STRUCT_LEVEL6]\n      ,[BI_REP_STRUCT_LEVEL7]\n      ,[BI_REP_STRUCT_LEVEL8]\n      ,[BI_REP_STRUCT_LEAF_NODE]\n      ,[BI_REP_STRUCT_LEAF_TYPE]\n      ,[BI_REP_STRUCT_MAJOR_BUS_ARA]\n      ,[BI_REP_STRUCT_COLLEGE_A]\n      ,[BI_REP_STRUCT_COLLEGE_B]\n      ,[BI_REP_STRUCT_SCHOOL_A]\n      ,[BI_REP_STRUCT_SCHOOL_B]\n      ,[BI_REP_STRUCT_SCHOOL_C]\n      ,[BI_REP_STRUCT_DEPT]\n      ,[BI_REP_STRUCT_3YR_PLAN_ARA]\n      ,[BI_REP_STRUCT_MAJ_BUS_ARA_NME]\n      ,[BI_REP_STRUCT_COLLEGE_A_NME]\n      ,[BI_REP_STRUCT_COLLEGE_B_NME]\n      ,[BI_REP_STRUCT_SCHOOL_A_NME]\n      ,[BI_REP_STRUCT_SCHOOL_B_NME]\n      ,[BI_REP_STRUCT_SCHOOL_C_NME]\n      ,[BI_REP_STRUCT_DEPT_NME]\n      ,[BI_REP_STRUCT_3YR_PLN_ARA_NME]\n      ,[BI_REP_STUCT_HR_ORG_UNIT]\n      ,[BI_REP_STRUCT_START_DATE]\n      ,[BI_REP_STRUCT_END_DATE]\n      ,[BI_REP_STRUCT_ACTIVE_IND]\n      ,[BI_REP_STRUCT_SCHOOL_SUBSET]\n  FROM [GLOBAL].[PRS_DIM_REPORTING_STRUCTURE]",
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
+					},
+					"sink": {
+						"type": "AzureSqlSink",
+						"preCopyScript": "TRUNCATE TABLE  KNE_INT.DIM_REPORTING_STRUCTURE",
+						"writeBehavior": "insert",
+						"sqlWriterUseTableLock": false,
+						"disableMetricsCollection": false
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"typeConversion": true,
+						"typeConversionSettings": {
+							"allowDataTruncation": true,
+							"treatBooleanAsNumber": false
+						}
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "DS_AzureDB",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "DS_Azure_Destination",
+						"type": "DatasetReference",
+						"parameters": {
+							"TableName": "DIM_REPORTING_STRUCUTRE",
+							"SchemaName": "KNE_INT"
+						}
+					}
+				]
+			}
+		],
+		"folder": {
+			"name": "INTEGRATION"
+		},
+		"annotations": []
+	}
+}
