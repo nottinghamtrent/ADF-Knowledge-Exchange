@@ -23,7 +23,7 @@
 					},
 					"sink": {
 						"type": "AzureSqlSink",
-						"preCopyScript": "TRUNCATE TABLE  KNE_INT.DIM_REPORTING_DATES;\n\n\nINSERT INTO KNE_INT.DIM_REPORTING_DATES\n(REP_DATES_BK)\nVALUES ('Not Entered');\n",
+						"preCopyScript": "TRUNCATE TABLE  KNE_INT.DIM_REPORTING_DATES;\n\n\nINSERT INTO KNE_INT.DIM_REPORTING_DATES\n(REP_DATES_BK,REP_DATES_ACTIVE_IND)\nVALUES ('N/A','Y');\n",
 						"writeBehavior": "insert",
 						"sqlWriterUseTableLock": false,
 						"disableMetricsCollection": false
