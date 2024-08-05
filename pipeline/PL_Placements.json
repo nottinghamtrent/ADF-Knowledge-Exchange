@@ -145,8 +145,10 @@
 								},
 								"sink": {
 									"name": "Salary",
-									"type": "String",
-									"physicalType": "varchar"
+									"type": "Decimal",
+									"physicalType": "decimal",
+									"scale": 2,
+									"precision": 10
 								}
 							},
 							{
@@ -157,8 +159,10 @@
 								},
 								"sink": {
 									"name": "Match",
-									"type": "String",
-									"physicalType": "varchar"
+									"type": "Decimal",
+									"physicalType": "decimal",
+									"scale": 2,
+									"precision": 10
 								}
 							},
 							{
