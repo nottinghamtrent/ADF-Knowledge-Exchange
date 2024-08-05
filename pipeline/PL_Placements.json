@@ -131,10 +131,8 @@
 								},
 								"sink": {
 									"name": "Length_Weeks",
-									"type": "Decimal",
-									"physicalType": "decimal",
-									"scale": 0,
-									"precision": 5
+									"type": "String",
+									"physicalType": "varchar"
 								}
 							},
 							{
@@ -145,10 +143,8 @@
 								},
 								"sink": {
 									"name": "Salary",
-									"type": "Decimal",
-									"physicalType": "decimal",
-									"scale": 2,
-									"precision": 10
+									"type": "String",
+									"physicalType": "varchar"
 								}
 							},
 							{
@@ -159,10 +155,8 @@
 								},
 								"sink": {
 									"name": "Match",
-									"type": "Decimal",
-									"physicalType": "decimal",
-									"scale": 2,
-									"precision": 10
+									"type": "String",
+									"physicalType": "varchar"
 								}
 							},
 							{
