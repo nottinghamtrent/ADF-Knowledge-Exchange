@@ -1,0 +1,243 @@
+{
+	"name": "PL_Placements",
+	"properties": {
+		"activities": [
+			{
+				"name": "Copy data1",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "DelimitedTextSource",
+						"storeSettings": {
+							"type": "FileServerReadSettings",
+							"recursive": true,
+							"enablePartitionDiscovery": false
+						},
+						"formatSettings": {
+							"type": "DelimitedTextReadSettings"
+						}
+					},
+					"sink": {
+						"type": "AzureSqlSink",
+						"preCopyScript": "truncate table KNE_STG.Placements",
+						"writeBehavior": "insert",
+						"sqlWriterUseTableLock": false,
+						"disableMetricsCollection": false
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"name": "Project Code",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "Project_Code",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Business Number",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "Business_Number",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Qtr",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "Qtr",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "No of Placements",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "No_of_Placements",
+									"type": "Decimal",
+									"physicalType": "decimal",
+									"scale": 0,
+									"precision": 6
+								}
+							},
+							{
+								"source": {
+									"name": "Grant",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "Grant",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Intervention",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "Intervention",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Role",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "Role",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Length_Weeks",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "Length_Weeks",
+									"type": "Decimal",
+									"physicalType": "decimal",
+									"scale": 0,
+									"precision": 5
+								}
+							},
+							{
+								"source": {
+									"name": "Salary",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "Salary",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Match",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "Match",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Degree",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "Degree",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "University",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "University",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Year_Graduated",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "Year_Graduated",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Partner",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "Partner",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							}
+						],
+						"typeConversion": true,
+						"typeConversionSettings": {
+							"allowDataTruncation": true,
+							"treatBooleanAsNumber": false
+						}
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "DS_Knowledge_Exchange",
+						"type": "DatasetReference",
+						"parameters": {
+							"FileName": "Placements.txt"
+						}
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "DS_Azure_Destination",
+						"type": "DatasetReference",
+						"parameters": {
+							"TableName": "Placements",
+							"SchemaName": "KNE_STG"
+						}
+					}
+				]
+			}
+		],
+		"annotations": []
+	}
+}
