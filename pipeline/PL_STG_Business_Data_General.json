@@ -235,7 +235,7 @@
 				]
 			},
 			{
-				"name": "Script1",
+				"name": "SC_LPAD_BUSINESS_NUMBER",
 				"type": "Script",
 				"dependsOn": [
 					{
