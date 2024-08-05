@@ -261,7 +261,7 @@
 					"scripts": [
 						{
 							"type": "Query",
-							"text": "UPDATE  KNE_STG.BusinessData_General\nSET  Business_Number= RIGHT(REPLICATE('0', 8) + Business_Number, 8)  "
+							"text": "UPDATE  KNE_STG.BusinessData_General\nSET  Business_Number= RIGHT(REPLICATE('0', 8) + Business_Number, 8)  \nWHERE  len(Business_Number) < 8"
 						}
 					],
 					"scriptBlockExecutionTimeout": "02:00:00"
