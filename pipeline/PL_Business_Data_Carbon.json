@@ -44,7 +44,7 @@
 									"physicalType": "String"
 								},
 								"sink": {
-									"name": "Business Number",
+									"name": "Business_Number",
 									"type": "String",
 									"physicalType": "varchar"
 								}
