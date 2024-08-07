@@ -22,7 +22,7 @@
 			},
 			"columnDelimiter": ",",
 			"escapeChar": "\\",
-			"firstRowAsHeader": false,
+			"firstRowAsHeader": true,
 			"nullValue": "X",
 			"quoteChar": "'"
 		},
