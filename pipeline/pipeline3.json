@@ -4436,7 +4436,7 @@
 									"physicalType": "String"
 								},
 								"sink": {
-									"name": "CompanyName",
+									"name": "Company_Name",
 									"type": "String",
 									"physicalType": "nvarchar"
 								}
@@ -4448,7 +4448,7 @@
 									"physicalType": "String"
 								},
 								"sink": {
-									"name": " CompanyNumber",
+									"name": "Company_Number",
 									"type": "String",
 									"physicalType": "nvarchar"
 								}
@@ -4460,7 +4460,7 @@
 									"physicalType": "String"
 								},
 								"sink": {
-									"name": "RegAddress.CareOf",
+									"name": "Reg_Address_Care_Of",
 									"type": "String",
 									"physicalType": "nvarchar"
 								}
@@ -4472,7 +4472,7 @@
 									"physicalType": "String"
 								},
 								"sink": {
-									"name": "RegAddress.POBox",
+									"name": "Reg_Address_PO_Box",
 									"type": "String",
 									"physicalType": "nvarchar"
 								}
@@ -4484,7 +4484,7 @@
 									"physicalType": "String"
 								},
 								"sink": {
-									"name": "RegAddress.AddressLine1",
+									"name": "Address_Line_1",
 									"type": "String",
 									"physicalType": "nvarchar"
 								}
@@ -4496,7 +4496,7 @@
 									"physicalType": "String"
 								},
 								"sink": {
-									"name": " RegAddress.AddressLine2",
+									"name": "Address_Line_2",
 									"type": "String",
 									"physicalType": "nvarchar"
 								}
@@ -4508,7 +4508,7 @@
 									"physicalType": "String"
 								},
 								"sink": {
-									"name": "RegAddress.PostTown",
+									"name": "Town",
 									"type": "String",
 									"physicalType": "nvarchar"
 								}
@@ -4520,7 +4520,7 @@
 									"physicalType": "String"
 								},
 								"sink": {
-									"name": "RegAddress.County",
+									"name": "County",
 									"type": "String",
 									"physicalType": "nvarchar"
 								}
@@ -4532,7 +4532,7 @@
 									"physicalType": "String"
 								},
 								"sink": {
-									"name": "RegAddress.Country",
+									"name": "Country",
 									"type": "String",
 									"physicalType": "nvarchar"
 								}
@@ -4544,7 +4544,7 @@
 									"physicalType": "String"
 								},
 								"sink": {
-									"name": "RegAddress.PostCode",
+									"name": "Postcode",
 									"type": "String",
 									"physicalType": "nvarchar"
 								}
@@ -4556,7 +4556,7 @@
 									"physicalType": "String"
 								},
 								"sink": {
-									"name": "CompanyCategory",
+									"name": "Company_Category",
 									"type": "String",
 									"physicalType": "nvarchar"
 								}
@@ -4568,7 +4568,7 @@
 									"physicalType": "String"
 								},
 								"sink": {
-									"name": "CompanyStatus",
+									"name": "Company_Status",
 									"type": "String",
 									"physicalType": "nvarchar"
 								}
@@ -4580,7 +4580,7 @@
 									"physicalType": "String"
 								},
 								"sink": {
-									"name": "CountryOfOrigin",
+									"name": "Country_of_Origin",
 									"type": "String",
 									"physicalType": "nvarchar"
 								}
@@ -4592,7 +4592,7 @@
 									"physicalType": "String"
 								},
 								"sink": {
-									"name": "DissolutionDate",
+									"name": "Dissolution_Date",
 									"type": "String",
 									"physicalType": "nvarchar"
 								}
@@ -4604,7 +4604,7 @@
 									"physicalType": "String"
 								},
 								"sink": {
-									"name": "IncorporationDate",
+									"name": "Incorporation_Date",
 									"type": "String",
 									"physicalType": "nvarchar"
 								}
@@ -4616,7 +4616,7 @@
 									"physicalType": "String"
 								},
 								"sink": {
-									"name": "Accounts.AccountRefDay",
+									"name": "Account_Refday",
 									"type": "String",
 									"physicalType": "nvarchar"
 								}
@@ -4628,7 +4628,7 @@
 									"physicalType": "String"
 								},
 								"sink": {
-									"name": "Accounts.AccountRefMonth",
+									"name": "Account_Refmonth",
 									"type": "String",
 									"physicalType": "nvarchar"
 								}
@@ -4640,7 +4640,7 @@
 									"physicalType": "String"
 								},
 								"sink": {
-									"name": "Accounts.NextDueDate",
+									"name": "Accounts_NextDueDate",
 									"type": "String",
 									"physicalType": "nvarchar"
 								}
@@ -4652,7 +4652,7 @@
 									"physicalType": "String"
 								},
 								"sink": {
-									"name": "Accounts.LastMadeUpDate",
+									"name": "Accounts_LastMadeupDate",
 									"type": "String",
 									"physicalType": "nvarchar"
 								}
@@ -4664,7 +4664,7 @@
 									"physicalType": "String"
 								},
 								"sink": {
-									"name": "Accounts.AccountCategory",
+									"name": "Acoounts_Category",
 									"type": "String",
 									"physicalType": "nvarchar"
 								}
@@ -4676,7 +4676,7 @@
 									"physicalType": "String"
 								},
 								"sink": {
-									"name": "Returns.NextDueDate",
+									"name": "Returns_NextDueDate",
 									"type": "String",
 									"physicalType": "nvarchar"
 								}
@@ -4688,7 +4688,7 @@
 									"physicalType": "String"
 								},
 								"sink": {
-									"name": "Returns.LastMadeUpDate",
+									"name": "Returns_LastMadeUpDate",
 									"type": "String",
 									"physicalType": "nvarchar"
 								}
@@ -4700,7 +4700,7 @@
 									"physicalType": "String"
 								},
 								"sink": {
-									"name": "Mortgages.NumMortCharges",
+									"name": "Mortgage_Charges",
 									"type": "String",
 									"physicalType": "nvarchar"
 								}
@@ -4712,7 +4712,7 @@
 									"physicalType": "String"
 								},
 								"sink": {
-									"name": "Mortgages.NumMortOutstanding",
+									"name": "Mortgage_Outstanding",
 									"type": "String",
 									"physicalType": "nvarchar"
 								}
@@ -4724,19 +4724,7 @@
 									"physicalType": "String"
 								},
 								"sink": {
-									"name": "Mortgages.NumMortPartSatisfied",
-									"type": "String",
-									"physicalType": "nvarchar"
-								}
-							},
-							{
-								"source": {
-									"name": "Mortgages.NumMortSatisfied",
-									"type": "String",
-									"physicalType": "String"
-								},
-								"sink": {
-									"name": "Mortgages.NumMortSatisfied",
+									"name": "Mortgage_Part_Satisifed",
 									"type": "String",
 									"physicalType": "nvarchar"
 								}
@@ -4748,7 +4736,7 @@
 									"physicalType": "String"
 								},
 								"sink": {
-									"name": "SICCode.SicText_1",
+									"name": "SICCode_SicText_1",
 									"type": "String",
 									"physicalType": "nvarchar"
 								}
@@ -4760,7 +4748,7 @@
 									"physicalType": "String"
 								},
 								"sink": {
-									"name": "SICCode.SicText_2",
+									"name": "SICCode_SicText_2",
 									"type": "String",
 									"physicalType": "nvarchar"
 								}
@@ -4772,7 +4760,7 @@
 									"physicalType": "String"
 								},
 								"sink": {
-									"name": "SICCode.SicText_3",
+									"name": "SICCode_SicText_3",
 									"type": "String",
 									"physicalType": "nvarchar"
 								}
@@ -4784,7 +4772,7 @@
 									"physicalType": "String"
 								},
 								"sink": {
-									"name": "SICCode.SicText_4",
+									"name": "SICCode_SicText_4",
 									"type": "String",
 									"physicalType": "nvarchar"
 								}
@@ -4796,7 +4784,7 @@
 									"physicalType": "String"
 								},
 								"sink": {
-									"name": "LimitedPartnerships.NumGenPartners",
+									"name": "LimitedPartnerships_NumGenPartners",
 									"type": "String",
 									"physicalType": "nvarchar"
 								}
@@ -4808,7 +4796,7 @@
 									"physicalType": "String"
 								},
 								"sink": {
-									"name": "LimitedPartnerships.NumLimPartners",
+									"name": "LimitedPartnerships_NumLimPartners",
 									"type": "String",
 									"physicalType": "nvarchar"
 								}
@@ -4832,7 +4820,7 @@
 									"physicalType": "String"
 								},
 								"sink": {
-									"name": "PreviousName_1.CONDATE",
+									"name": "PreviousName_1_CONDATE",
 									"type": "String",
 									"physicalType": "nvarchar"
 								}
@@ -4844,7 +4832,7 @@
 									"physicalType": "String"
 								},
 								"sink": {
-									"name": " PreviousName_1.CompanyName",
+									"name": "PreviousName_1_CompanyName",
 									"type": "String",
 									"physicalType": "nvarchar"
 								}
@@ -4856,7 +4844,7 @@
 									"physicalType": "String"
 								},
 								"sink": {
-									"name": " PreviousName_2.CONDATE",
+									"name": "PreviousName_2_CONDATE",
 									"type": "String",
 									"physicalType": "nvarchar"
 								}
@@ -4868,7 +4856,7 @@
 									"physicalType": "String"
 								},
 								"sink": {
-									"name": " PreviousName_2.CompanyName",
+									"name": "PreviousName_2_CompanyName",
 									"type": "String",
 									"physicalType": "nvarchar"
 								}
@@ -4880,7 +4868,7 @@
 									"physicalType": "String"
 								},
 								"sink": {
-									"name": "PreviousName_3.CONDATE",
+									"name": "PreviousName_3_CONDATE",
 									"type": "String",
 									"physicalType": "nvarchar"
 								}
@@ -4892,7 +4880,7 @@
 									"physicalType": "String"
 								},
 								"sink": {
-									"name": " PreviousName_3.CompanyName",
+									"name": "PreviousName_3_CompanyName",
 									"type": "String",
 									"physicalType": "nvarchar"
 								}
@@ -4904,7 +4892,7 @@
 									"physicalType": "String"
 								},
 								"sink": {
-									"name": "PreviousName_4.CONDATE",
+									"name": "PreviousName_4_CONDATE",
 									"type": "String",
 									"physicalType": "nvarchar"
 								}
@@ -4916,7 +4904,7 @@
 									"physicalType": "String"
 								},
 								"sink": {
-									"name": " PreviousName_4.CompanyName",
+									"name": "PreviousName_4_CompanyName",
 									"type": "String",
 									"physicalType": "nvarchar"
 								}
@@ -4928,7 +4916,7 @@
 									"physicalType": "String"
 								},
 								"sink": {
-									"name": "PreviousName_5.CONDATE",
+									"name": "PreviousName_5_CONDATE",
 									"type": "String",
 									"physicalType": "nvarchar"
 								}
@@ -4940,7 +4928,7 @@
 									"physicalType": "String"
 								},
 								"sink": {
-									"name": " PreviousName_5.CompanyName",
+									"name": "PreviousName_5_CompanyName",
 									"type": "String",
 									"physicalType": "nvarchar"
 								}
@@ -4952,7 +4940,7 @@
 									"physicalType": "String"
 								},
 								"sink": {
-									"name": "PreviousName_6.CONDATE",
+									"name": "PreviousName_6_CONDATE",
 									"type": "String",
 									"physicalType": "nvarchar"
 								}
@@ -4964,7 +4952,7 @@
 									"physicalType": "String"
 								},
 								"sink": {
-									"name": " PreviousName_6.CompanyName",
+									"name": "PreviousName_6_CompanyName",
 									"type": "String",
 									"physicalType": "nvarchar"
 								}
@@ -4976,7 +4964,7 @@
 									"physicalType": "String"
 								},
 								"sink": {
-									"name": "PreviousName_7.CONDATE",
+									"name": "PreviousName_7_CONDATE",
 									"type": "String",
 									"physicalType": "nvarchar"
 								}
@@ -4988,7 +4976,7 @@
 									"physicalType": "String"
 								},
 								"sink": {
-									"name": " PreviousName_7.CompanyName",
+									"name": "PreviousName_7_CompanyName",
 									"type": "String",
 									"physicalType": "nvarchar"
 								}
@@ -5000,7 +4988,7 @@
 									"physicalType": "String"
 								},
 								"sink": {
-									"name": "PreviousName_8.CONDATE",
+									"name": "PreviousName_8_CONDATE",
 									"type": "String",
 									"physicalType": "nvarchar"
 								}
@@ -5012,7 +5000,7 @@
 									"physicalType": "String"
 								},
 								"sink": {
-									"name": " PreviousName_8.CompanyName",
+									"name": "PreviousName_8_CompanyName",
 									"type": "String",
 									"physicalType": "nvarchar"
 								}
@@ -5024,7 +5012,7 @@
 									"physicalType": "String"
 								},
 								"sink": {
-									"name": "PreviousName_9.CONDATE",
+									"name": "PreviousName_9_CONDATE",
 									"type": "String",
 									"physicalType": "nvarchar"
 								}
@@ -5036,7 +5024,7 @@
 									"physicalType": "String"
 								},
 								"sink": {
-									"name": " PreviousName_9.CompanyName",
+									"name": "PreviousName_9_CompanyName",
 									"type": "String",
 									"physicalType": "nvarchar"
 								}
@@ -5048,7 +5036,7 @@
 									"physicalType": "String"
 								},
 								"sink": {
-									"name": "PreviousName_10.CONDATE",
+									"name": "PreviousName_10_CONDATE",
 									"type": "String",
 									"physicalType": "nvarchar"
 								}
@@ -5060,7 +5048,7 @@
 									"physicalType": "String"
 								},
 								"sink": {
-									"name": " PreviousName_10.CompanyName",
+									"name": "PreviousName_10_CompanyName",
 									"type": "String",
 									"physicalType": "nvarchar"
 								}
@@ -5084,7 +5072,7 @@
 									"physicalType": "String"
 								},
 								"sink": {
-									"name": " ConfStmtLastMadeUpDate",
+									"name": "ConfStmtLastMadeUpDate",
 									"type": "String",
 									"physicalType": "nvarchar"
 								}
