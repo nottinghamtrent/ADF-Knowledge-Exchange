@@ -5111,7 +5111,7 @@
 						"referenceName": "DS_Azure_Destination",
 						"type": "DatasetReference",
 						"parameters": {
-							"TableName": "TEMP",
+							"TableName": "Company_House",
 							"SchemaName": "KNE_STG"
 						}
 					}
