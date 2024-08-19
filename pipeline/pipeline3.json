@@ -2877,7 +2877,14 @@
 			{
 				"name": "CD_CompanyHouse3",
 				"type": "Copy",
-				"dependsOn": [],
+				"dependsOn": [
+					{
+						"activity": "CD_CompanyHouse2",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
 				"policy": {
 					"timeout": "0.12:00:00",
 					"retry": 0,
@@ -3571,6 +3578,1435 @@
 						"type": "DatasetReference",
 						"parameters": {
 							"FileName": "CompanyData3of7.txt"
+						}
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "DS_Azure_Destination",
+						"type": "DatasetReference",
+						"parameters": {
+							"TableName": "Company_House",
+							"SchemaName": "KNE_STG"
+						}
+					}
+				]
+			},
+			{
+				"name": "CD_CompanyHouse2",
+				"type": "Copy",
+				"dependsOn": [
+					{
+						"activity": "CD_CompanyHouse1",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "DelimitedTextSource",
+						"storeSettings": {
+							"type": "FileServerReadSettings",
+							"recursive": true,
+							"enablePartitionDiscovery": false
+						},
+						"formatSettings": {
+							"type": "DelimitedTextReadSettings"
+						}
+					},
+					"sink": {
+						"type": "AzureSqlSink",
+						"writeBehavior": "insert",
+						"sqlWriterUseTableLock": false,
+						"tableOption": "autoCreate",
+						"disableMetricsCollection": false
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"name": "CompanyName",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "Company_Name",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": " CompanyNumber",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "Company_Number",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "RegAddress.CareOf",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "Reg_Address_Care_Of",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "RegAddress.POBox",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "Reg_Address_PO_Box",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "RegAddress.AddressLine1",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "Address_Line_1",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": " RegAddress.AddressLine2",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "Address_Line_2",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "RegAddress.PostTown",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "Town",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "RegAddress.County",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "County",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "RegAddress.Country",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "Country",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "RegAddress.PostCode",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "Postcode",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "CompanyCategory",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "Company_Category",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "CompanyStatus",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "Company_Status",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "CountryOfOrigin",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "Country_of_Origin",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "DissolutionDate",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "Dissolution_Date",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "IncorporationDate",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "Incorporation_Date",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Accounts.AccountRefDay",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "Account_Refday",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Accounts.AccountRefMonth",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "Account_Refmonth",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Accounts.NextDueDate",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "Accounts_NextDueDate",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Accounts.LastMadeUpDate",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "Accounts_LastMadeupDate",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Accounts.AccountCategory",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "Acoounts_Category",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Returns.NextDueDate",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "Returns_NextDueDate",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Returns.LastMadeUpDate",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "Returns_LastMadeUpDate",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Mortgages.NumMortCharges",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "Mortgage_Charges",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Mortgages.NumMortOutstanding",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "Mortgage_Outstanding",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Mortgages.NumMortPartSatisfied",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "Mortgage_Part_Satisifed",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "SICCode.SicText_1",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "SICCode_SicText_1",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "SICCode.SicText_2",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "SICCode_SicText_2",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "SICCode.SicText_3",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "SICCode_SicText_3",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "SICCode.SicText_4",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "SICCode_SicText_4",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "LimitedPartnerships.NumGenPartners",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "LimitedPartnerships_NumGenPartners",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "LimitedPartnerships.NumLimPartners",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "LimitedPartnerships_NumLimPartners",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "URI",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "URI",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "PreviousName_1.CONDATE",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "PreviousName_1_CONDATE",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": " PreviousName_1.CompanyName",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "PreviousName_1_CompanyName",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": " PreviousName_2.CONDATE",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "PreviousName_2_CONDATE",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": " PreviousName_2.CompanyName",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "PreviousName_2_CompanyName",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "PreviousName_3.CONDATE",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "PreviousName_3_CONDATE",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": " PreviousName_3.CompanyName",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "PreviousName_3_CompanyName",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "PreviousName_4.CONDATE",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "PreviousName_4_CONDATE",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": " PreviousName_4.CompanyName",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "PreviousName_4_CompanyName",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "PreviousName_5.CONDATE",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "PreviousName_5_CONDATE",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": " PreviousName_5.CompanyName",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "PreviousName_5_CompanyName",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "PreviousName_6.CONDATE",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "PreviousName_6_CONDATE",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": " PreviousName_6.CompanyName",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "PreviousName_6_CompanyName",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "PreviousName_7.CONDATE",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "PreviousName_7_CONDATE",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": " PreviousName_7.CompanyName",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "PreviousName_7_CompanyName",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "PreviousName_8.CONDATE",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "PreviousName_8_CONDATE",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": " PreviousName_8.CompanyName",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "PreviousName_8_CompanyName",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "PreviousName_9.CONDATE",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "PreviousName_9_CONDATE",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": " PreviousName_9.CompanyName",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "PreviousName_9_CompanyName",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "PreviousName_10.CONDATE",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "PreviousName_10_CONDATE",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": " PreviousName_10.CompanyName",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "PreviousName_10_CompanyName",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "ConfStmtNextDueDate",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "ConfStmtNextDueDate",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": " ConfStmtLastMadeUpDate",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "ConfStmtLastMadeUpDate",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							}
+						],
+						"typeConversion": true,
+						"typeConversionSettings": {
+							"allowDataTruncation": true,
+							"treatBooleanAsNumber": false
+						}
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "DS_Knowledge_Exchange",
+						"type": "DatasetReference",
+						"parameters": {
+							"FileName": "CompanyData2of7.txt"
+						}
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "DS_Azure_Destination",
+						"type": "DatasetReference",
+						"parameters": {
+							"TableName": "Company_House",
+							"SchemaName": "KNE_STG"
+						}
+					}
+				]
+			},
+			{
+				"name": "CD_CompanyHouse1",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "DelimitedTextSource",
+						"storeSettings": {
+							"type": "FileServerReadSettings",
+							"recursive": true,
+							"enablePartitionDiscovery": false
+						},
+						"formatSettings": {
+							"type": "DelimitedTextReadSettings"
+						}
+					},
+					"sink": {
+						"type": "AzureSqlSink",
+						"writeBehavior": "insert",
+						"sqlWriterUseTableLock": false,
+						"tableOption": "autoCreate",
+						"disableMetricsCollection": false
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"name": "CompanyName",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "Company_Name",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": " CompanyNumber",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "Company_Number",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "RegAddress.CareOf",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "Reg_Address_Care_Of",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "RegAddress.POBox",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "Reg_Address_PO_Box",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "RegAddress.AddressLine1",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "Address_Line_1",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": " RegAddress.AddressLine2",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "Address_Line_2",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "RegAddress.PostTown",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "Town",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "RegAddress.County",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "County",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "RegAddress.Country",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "Country",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "RegAddress.PostCode",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "Postcode",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "CompanyCategory",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "Company_Category",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "CompanyStatus",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "Company_Status",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "CountryOfOrigin",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "Country_of_Origin",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "DissolutionDate",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "Dissolution_Date",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "IncorporationDate",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "Incorporation_Date",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Accounts.AccountRefDay",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "Account_Refday",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Accounts.AccountRefMonth",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "Account_Refmonth",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Accounts.NextDueDate",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "Accounts_NextDueDate",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Accounts.LastMadeUpDate",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "Accounts_LastMadeupDate",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Accounts.AccountCategory",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "Acoounts_Category",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Returns.NextDueDate",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "Returns_NextDueDate",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Returns.LastMadeUpDate",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "Returns_LastMadeUpDate",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Mortgages.NumMortCharges",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "Mortgage_Charges",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Mortgages.NumMortOutstanding",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "Mortgage_Outstanding",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Mortgages.NumMortPartSatisfied",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "Mortgage_Part_Satisifed",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "SICCode.SicText_1",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "SICCode_SicText_1",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "SICCode.SicText_2",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "SICCode_SicText_2",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "SICCode.SicText_3",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "SICCode_SicText_3",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "SICCode.SicText_4",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "SICCode_SicText_4",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "LimitedPartnerships.NumGenPartners",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "LimitedPartnerships_NumGenPartners",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "LimitedPartnerships.NumLimPartners",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "LimitedPartnerships_NumLimPartners",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "URI",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "URI",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "PreviousName_1.CONDATE",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "PreviousName_1_CONDATE",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": " PreviousName_1.CompanyName",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "PreviousName_1_CompanyName",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": " PreviousName_2.CONDATE",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "PreviousName_2_CONDATE",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": " PreviousName_2.CompanyName",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "PreviousName_2_CompanyName",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "PreviousName_3.CONDATE",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "PreviousName_3_CONDATE",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": " PreviousName_3.CompanyName",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "PreviousName_3_CompanyName",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "PreviousName_4.CONDATE",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "PreviousName_4_CONDATE",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": " PreviousName_4.CompanyName",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "PreviousName_4_CompanyName",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "PreviousName_5.CONDATE",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "PreviousName_5_CONDATE",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": " PreviousName_5.CompanyName",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "PreviousName_5_CompanyName",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "PreviousName_6.CONDATE",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "PreviousName_6_CONDATE",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": " PreviousName_6.CompanyName",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "PreviousName_6_CompanyName",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "PreviousName_7.CONDATE",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "PreviousName_7_CONDATE",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": " PreviousName_7.CompanyName",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "PreviousName_7_CompanyName",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "PreviousName_8.CONDATE",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "PreviousName_8_CONDATE",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": " PreviousName_8.CompanyName",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "PreviousName_8_CompanyName",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "PreviousName_9.CONDATE",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "PreviousName_9_CONDATE",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": " PreviousName_9.CompanyName",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "PreviousName_9_CompanyName",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "PreviousName_10.CONDATE",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "PreviousName_10_CONDATE",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": " PreviousName_10.CompanyName",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "PreviousName_10_CompanyName",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "ConfStmtNextDueDate",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "ConfStmtNextDueDate",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": " ConfStmtLastMadeUpDate",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "ConfStmtLastMadeUpDate",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							}
+						],
+						"typeConversion": true,
+						"typeConversionSettings": {
+							"allowDataTruncation": true,
+							"treatBooleanAsNumber": false
+						}
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "DS_Knowledge_Exchange",
+						"type": "DatasetReference",
+						"parameters": {
+							"FileName": "CompanyData1of7.txt"
 						}
 					}
 				],
