@@ -47,18 +47,6 @@
 						"mappings": [
 							{
 								"source": {
-									"name": "Project_Code",
-									"type": "String",
-									"physicalType": "varchar"
-								},
-								"sink": {
-									"name": "COMPANY_SK",
-									"type": "Int32",
-									"physicalType": "int"
-								}
-							},
-							{
-								"source": {
 									"name": "Business_Number",
 									"type": "String",
 									"physicalType": "varchar"
