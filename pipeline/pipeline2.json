@@ -21,7 +21,148 @@
 						"queryTimeout": "02:00:00",
 						"partitionOption": "None"
 					},
-					"enableStaging": false
+					"sink": {
+						"type": "AzureSqlSink",
+						"preCopyScript": "TRUNCATE TABLE KNE_INT.FACT_INTERVENTIONS",
+						"writeBehavior": "insert",
+						"sqlWriterUseTableLock": false,
+						"disableMetricsCollection": false
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"name": "FACT_KE_INT_COMP_SK",
+									"type": "Int32",
+									"physicalType": "int"
+								},
+								"sink": {
+									"name": "FACT_KE_INT_COMP_SK",
+									"type": "Decimal",
+									"physicalType": "decimal",
+									"scale": 0,
+									"precision": 19
+								}
+							},
+							{
+								"source": {
+									"name": "FACT_KE_INT_DATE_SK",
+									"type": "Decimal",
+									"physicalType": "decimal",
+									"scale": 0,
+									"precision": 18
+								},
+								"sink": {
+									"name": "FACT_KE_INT_DATE_SK",
+									"type": "Decimal",
+									"physicalType": "decimal",
+									"scale": 0,
+									"precision": 19
+								}
+							},
+							{
+								"source": {
+									"name": "FACT_KE_INT_REP_STRUCT_SK",
+									"type": "Int32",
+									"physicalType": "int"
+								},
+								"sink": {
+									"name": "FACT_KE_INT_PRE_STRUCT_SK",
+									"type": "Decimal",
+									"physicalType": "decimal",
+									"scale": 0,
+									"precision": 19
+								}
+							},
+							{
+								"source": {
+									"name": "FACT_KE_INT_PROJECT",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "FACT_KE_INT_PROJECT",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "FACT_KE_INT_PARTNER",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "FACT_KE_INT_PARTNER",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "FACT_KE_INT_INTERVENTION",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "FACT_KE_INT_INTERVENTION",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "FACT_KE_INT_INTERVENTION_TYP",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "FACT_KE_INT_INTERVENTION_TYPE",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "FACT_KE_INT_INTERVENTION_HOURS",
+									"type": "Decimal",
+									"physicalType": "decimal",
+									"scale": 2,
+									"precision": 7
+								},
+								"sink": {
+									"name": "FACT_KE_INT_INTERVENTION_HOURS",
+									"type": "Decimal",
+									"physicalType": "decimal",
+									"scale": 2,
+									"precision": 10
+								}
+							},
+							{
+								"source": {
+									"name": "FACT_KE_INT_INTERVENTION_CO2",
+									"type": "Decimal",
+									"physicalType": "decimal",
+									"scale": 4,
+									"precision": 10
+								},
+								"sink": {
+									"name": "FACT_KE_INT_INTERVENTION_CO2",
+									"type": "Decimal",
+									"physicalType": "decimal",
+									"scale": 2,
+									"precision": 10
+								}
+							}
+						],
+						"typeConversion": true,
+						"typeConversionSettings": {
+							"allowDataTruncation": true,
+							"treatBooleanAsNumber": false
+						}
+					}
 				},
 				"inputs": [
 					{
@@ -30,6 +171,16 @@
 						"parameters": {
 							"TableName": "Interventions",
 							"SchemaName": "KNE_STG"
+						}
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "DS_Azure_Destination",
+						"type": "DatasetReference",
+						"parameters": {
+							"TableName": "FACT_INTERVENTIONS",
+							"SchemaName": "KNE_INT"
 						}
 					}
 				]
