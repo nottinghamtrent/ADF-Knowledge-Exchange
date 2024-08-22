@@ -1,5 +1,5 @@
 {
-	"name": "PL_COMPANY_HOUSE_DATA",
+	"name": "PL_STG_COMPANY_HOUSE_DATA",
 	"properties": {
 		"activities": [
 			{
@@ -5023,6 +5023,9 @@
 				]
 			}
 		],
+		"folder": {
+			"name": "1_0_STAGING"
+		},
 		"annotations": []
 	}
 }

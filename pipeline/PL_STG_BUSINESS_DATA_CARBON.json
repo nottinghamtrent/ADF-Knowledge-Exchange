@@ -1,5 +1,5 @@
 {
-	"name": "PL_Business_Data_Carbon",
+	"name": "PL_STG_BUSINESS_DATA_CARBON",
 	"properties": {
 		"activities": [
 			{
@@ -150,6 +150,9 @@
 				]
 			}
 		],
+		"folder": {
+			"name": "1_0_STAGING"
+		},
 		"annotations": []
 	}
 }
