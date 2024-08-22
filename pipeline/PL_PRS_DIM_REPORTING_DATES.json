@@ -1,0 +1,825 @@
+{
+	"name": "PL_PRS_DIM_REPORTING_DATES",
+	"properties": {
+		"activities": [
+			{
+				"name": "CD_PRS_DIM_REPORTING_DATES",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "AzureSqlSource",
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
+					},
+					"sink": {
+						"type": "AzureSqlSink",
+						"preCopyScript": "TRUNCATE TABLE KNE_PRS.DIM_REPORTING_DATES",
+						"writeBehavior": "insert",
+						"sqlWriterUseTableLock": false,
+						"disableMetricsCollection": false
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"name": "REP_DATES_SK",
+									"type": "Decimal",
+									"physicalType": "decimal",
+									"scale": 0,
+									"precision": 18
+								},
+								"sink": {
+									"name": "REP_DATES_SK",
+									"type": "Decimal",
+									"physicalType": "decimal",
+									"scale": 0,
+									"precision": 18
+								}
+							},
+							{
+								"source": {
+									"name": "REP_DATES_BK",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "REP_DATES_BK",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "REP_DATES_FULL_DATE",
+									"type": "DateTime",
+									"physicalType": "date"
+								},
+								"sink": {
+									"name": "REP_DATES_FULL_DATE",
+									"type": "DateTime",
+									"physicalType": "date"
+								}
+							},
+							{
+								"source": {
+									"name": "REP_DATES_DAY_OF_YEAR",
+									"type": "Decimal",
+									"physicalType": "decimal",
+									"scale": 0,
+									"precision": 18
+								},
+								"sink": {
+									"name": "REP_DATES_DAY_OF_YEAR",
+									"type": "Decimal",
+									"physicalType": "decimal",
+									"scale": 0,
+									"precision": 18
+								}
+							},
+							{
+								"source": {
+									"name": "REP_DATES_DAY_OF_MONTH",
+									"type": "Decimal",
+									"physicalType": "decimal",
+									"scale": 0,
+									"precision": 18
+								},
+								"sink": {
+									"name": "REP_DATES_DAY_OF_MONTH",
+									"type": "Decimal",
+									"physicalType": "decimal",
+									"scale": 0,
+									"precision": 18
+								}
+							},
+							{
+								"source": {
+									"name": "REP_DATES_DAY_OF_WEEK",
+									"type": "Decimal",
+									"physicalType": "decimal",
+									"scale": 0,
+									"precision": 18
+								},
+								"sink": {
+									"name": "REP_DATES_DAY_OF_WEEK",
+									"type": "Decimal",
+									"physicalType": "decimal",
+									"scale": 0,
+									"precision": 18
+								}
+							},
+							{
+								"source": {
+									"name": "REP_DATES_DAY_NAME",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "REP_DATES_DAY_NAME",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "REP_DATES_WEEKDAY",
+									"type": "String",
+									"physicalType": "char"
+								},
+								"sink": {
+									"name": "REP_DATES_WEEKDAY",
+									"type": "String",
+									"physicalType": "char"
+								}
+							},
+							{
+								"source": {
+									"name": "REP_DATES_WEEK_NUMBER",
+									"type": "Decimal",
+									"physicalType": "decimal",
+									"scale": 0,
+									"precision": 18
+								},
+								"sink": {
+									"name": "REP_DATES_WEEK_NUMBER",
+									"type": "Decimal",
+									"physicalType": "decimal",
+									"scale": 0,
+									"precision": 18
+								}
+							},
+							{
+								"source": {
+									"name": "REP_DATES_ACADEMIC_WEEK_NUMBER",
+									"type": "Decimal",
+									"physicalType": "decimal",
+									"scale": 0,
+									"precision": 18
+								},
+								"sink": {
+									"name": "REP_DATES_ACADEMIC_WEEK_NUMBER",
+									"type": "Decimal",
+									"physicalType": "decimal",
+									"scale": 0,
+									"precision": 18
+								}
+							},
+							{
+								"source": {
+									"name": "REP_DATES_EQUIV_HIST_WEEK_FLAG",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "REP_DATES_EQUIV_HIST_WEEK_FLAG",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "REP_DATES_RELATIVE_ACAD_WEEKNO",
+									"type": "Decimal",
+									"physicalType": "decimal",
+									"scale": 0,
+									"precision": 18
+								},
+								"sink": {
+									"name": "REP_DATES_RELATIVE_ACAD_WEEKNO",
+									"type": "Decimal",
+									"physicalType": "decimal",
+									"scale": 0,
+									"precision": 18
+								}
+							},
+							{
+								"source": {
+									"name": "STU_FRIDAY_SNAPSHOT_REL_WEEKNO",
+									"type": "Decimal",
+									"physicalType": "decimal",
+									"scale": 0,
+									"precision": 18
+								},
+								"sink": {
+									"name": "STU_FRIDAY_SNAPSHOT_REL_WEEKNO",
+									"type": "Decimal",
+									"physicalType": "decimal",
+									"scale": 0,
+									"precision": 18
+								}
+							},
+							{
+								"source": {
+									"name": "REP_DATES_WEEK_OF_MONTH",
+									"type": "Decimal",
+									"physicalType": "decimal",
+									"scale": 0,
+									"precision": 18
+								},
+								"sink": {
+									"name": "REP_DATES_WEEK_OF_MONTH",
+									"type": "Decimal",
+									"physicalType": "decimal",
+									"scale": 0,
+									"precision": 18
+								}
+							},
+							{
+								"source": {
+									"name": "REP_DATES_START_OF_WEEK",
+									"type": "DateTime",
+									"physicalType": "date"
+								},
+								"sink": {
+									"name": "REP_DATES_START_OF_WEEK",
+									"type": "DateTime",
+									"physicalType": "date"
+								}
+							},
+							{
+								"source": {
+									"name": "REP_DATES_END_OF_WEEK",
+									"type": "DateTime",
+									"physicalType": "date"
+								},
+								"sink": {
+									"name": "REP_DATES_END_OF_WEEK",
+									"type": "DateTime",
+									"physicalType": "date"
+								}
+							},
+							{
+								"source": {
+									"name": "REP_DATES_MONDAY_OF_WEEK",
+									"type": "DateTime",
+									"physicalType": "date"
+								},
+								"sink": {
+									"name": "REP_DATES_MONDAY_OF_WEEK",
+									"type": "DateTime",
+									"physicalType": "date"
+								}
+							},
+							{
+								"source": {
+									"name": "REP_DATES_FRIDAY_OF_WEEK",
+									"type": "DateTime",
+									"physicalType": "date"
+								},
+								"sink": {
+									"name": "REP_DATES_FRIDAY_OF_WEEK",
+									"type": "DateTime",
+									"physicalType": "date"
+								}
+							},
+							{
+								"source": {
+									"name": "REP_DATES_MONTH_NUMBER",
+									"type": "Decimal",
+									"physicalType": "decimal",
+									"scale": 0,
+									"precision": 18
+								},
+								"sink": {
+									"name": "REP_DATES_MONTH_NUMBER",
+									"type": "Decimal",
+									"physicalType": "decimal",
+									"scale": 0,
+									"precision": 18
+								}
+							},
+							{
+								"source": {
+									"name": "REP_DATES_MONTH_SHORT_NAME",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "REP_DATES_MONTH_SHORT_NAME",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "REP_DATES_MONTH_LONG_NAME",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "REP_DATES_MONTH_LONG_NAME",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "REP_DATES_CALENDAR_YEAR",
+									"type": "Decimal",
+									"physicalType": "decimal",
+									"scale": 0,
+									"precision": 18
+								},
+								"sink": {
+									"name": "REP_DATES_CALENDAR_YEAR",
+									"type": "Decimal",
+									"physicalType": "decimal",
+									"scale": 0,
+									"precision": 18
+								}
+							},
+							{
+								"source": {
+									"name": "REP_DATES_ACADEMIC_YEAR",
+									"type": "Decimal",
+									"physicalType": "decimal",
+									"scale": 0,
+									"precision": 18
+								},
+								"sink": {
+									"name": "REP_DATES_ACADEMIC_YEAR",
+									"type": "Decimal",
+									"physicalType": "decimal",
+									"scale": 0,
+									"precision": 18
+								}
+							},
+							{
+								"source": {
+									"name": "REP_DATES_FACILITY_YEAR",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "REP_DATES_FACILITY_YEAR",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "REP_DATES_RELATIVE_YEAR",
+									"type": "Decimal",
+									"physicalType": "decimal",
+									"scale": 0,
+									"precision": 18
+								},
+								"sink": {
+									"name": "REP_DATES_RELATIVE_YEAR",
+									"type": "Decimal",
+									"physicalType": "decimal",
+									"scale": 0,
+									"precision": 18
+								}
+							},
+							{
+								"source": {
+									"name": "REP_DATES_RELATIVE_YEAR_DESC",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "REP_DATES_RELATIVE_YEAR_DESC",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "REP_DATES_ACADEMIC_START_YEAR",
+									"type": "Decimal",
+									"physicalType": "decimal",
+									"scale": 0,
+									"precision": 18
+								},
+								"sink": {
+									"name": "REP_DATES_ACADEMIC_START_YEAR",
+									"type": "Decimal",
+									"physicalType": "decimal",
+									"scale": 0,
+									"precision": 18
+								}
+							},
+							{
+								"source": {
+									"name": "REP_DATES_ACADEMIC_END_YEAR",
+									"type": "Decimal",
+									"physicalType": "decimal",
+									"scale": 0,
+									"precision": 18
+								},
+								"sink": {
+									"name": "REP_DATES_ACADEMIC_END_YEAR",
+									"type": "Decimal",
+									"physicalType": "decimal",
+									"scale": 0,
+									"precision": 18
+								}
+							},
+							{
+								"source": {
+									"name": "REP_DATES_ACADEMIC_QUARTER",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "REP_DATES_ACADEMIC_QUARTER",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "REP_DATES_ACADEMIC_PERIOD",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "REP_DATES_ACADEMIC_PERIOD",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "REP_DATES_TERM_WEEK_FLAG",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "REP_DATES_TERM_WEEK_FLAG",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "REP_DATES_TERM_WEEK_DESC",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "REP_DATES_TERM_WEEK_DESC",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "REP_DATES_FINANCIAL_YEAR",
+									"type": "Decimal",
+									"physicalType": "decimal",
+									"scale": 0,
+									"precision": 18
+								},
+								"sink": {
+									"name": "REP_DATES_FINANCIAL_YEAR",
+									"type": "Decimal",
+									"physicalType": "decimal",
+									"scale": 0,
+									"precision": 18
+								}
+							},
+							{
+								"source": {
+									"name": "REP_DATES_FINANCIAL_QUARTER",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "REP_DATES_FINANCIAL_QUARTER",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "REP_DATES_FINANCIAL_PERIOD",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "REP_DATES_FINANCIAL_PERIOD",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "REP_DATES_TAX_YEAR",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "REP_DATES_TAX_YEAR",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "REP_DATES_TAX_QUARTER",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "REP_DATES_TAX_QUARTER",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "REP_DATES_TAX_PERIOD",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "REP_DATES_TAX_PERIOD",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "REP_DATES_CALENDAR_YEAR_FLAG",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "REP_DATES_CALENDAR_YEAR_FLAG",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "REP_DATES_ACADEMIC_YEAR_FLAG",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "REP_DATES_ACADEMIC_YEAR_FLAG",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "REP_DATES_FACILITY_YEAR_FLAG",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "REP_DATES_FACILITY_YEAR_FLAG",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "REP_DATES_FINANCIAL_YEAR_FLAG",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "REP_DATES_FINANCIAL_YEAR_FLAG",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "REP_DATES_TAX_YEAR_FLAG",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "REP_DATES_TAX_YEAR_FLAG",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "REP_DATES_ACADEMIC_QTR_FLAG",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "REP_DATES_ACADEMIC_QTR_FLAG",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "REP_DATES_FINANCIAL_QTR_FLAG",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "REP_DATES_FINANCIAL_QTR_FLAG",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "REP_DATES_TAX_QTR_FLAG",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "REP_DATES_TAX_QTR_FLAG",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "REP_DATES_ACADEMIC_PERIOD_FLAG",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "REP_DATES_ACADEMIC_PERIOD_FLAG",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "REP_DATES_FINANCIALPERIOD_FLAG",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "REP_DATES_FINANCIALPERIOD_FLAG",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "REP_DATES_TAX_PERIOD_FLAG",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "REP_DATES_TAX_PERIOD_FLAG",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "REP_DATES_MONTH_FLAG",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "REP_DATES_MONTH_FLAG",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "REP_DATES_CALENDAR_WEEK_FLAG",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "REP_DATES_CALENDAR_WEEK_FLAG",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "REP_DATES_ACADEMIC_WEEK_FLAG",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "REP_DATES_ACADEMIC_WEEK_FLAG",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "REP_DATES_START_DATE",
+									"type": "DateTime",
+									"physicalType": "datetime"
+								},
+								"sink": {
+									"name": "REP_DATES_START_DATE",
+									"type": "DateTime",
+									"physicalType": "datetime"
+								}
+							},
+							{
+								"source": {
+									"name": "REP_DATES_END_DATE",
+									"type": "DateTime",
+									"physicalType": "datetime"
+								},
+								"sink": {
+									"name": "REP_DATES_END_DATE",
+									"type": "DateTime",
+									"physicalType": "datetime"
+								}
+							},
+							{
+								"source": {
+									"name": "REP_DATES_ACTIVE_IND",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "REP_DATES_ACTIVE_IND",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "REP_DATES_SK_STUDENT",
+									"type": "Decimal",
+									"physicalType": "decimal",
+									"scale": 0,
+									"precision": 18
+								},
+								"sink": {
+									"name": "REP_DATES_SK_STUDENT",
+									"type": "Decimal",
+									"physicalType": "decimal",
+									"scale": 0,
+									"precision": 18
+								}
+							},
+							{
+								"source": {
+									"name": "REP_DATES_REL_TO_START_OF_TERM",
+									"type": "Decimal",
+									"physicalType": "decimal",
+									"scale": 0,
+									"precision": 3
+								},
+								"sink": {
+									"name": "REP_DATES_REL_TO_START_OF_TERM",
+									"type": "Decimal",
+									"physicalType": "decimal",
+									"scale": 0,
+									"precision": 3
+								}
+							}
+						],
+						"typeConversion": true,
+						"typeConversionSettings": {
+							"allowDataTruncation": true,
+							"treatBooleanAsNumber": false
+						}
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "DS_Azure_Destination",
+						"type": "DatasetReference",
+						"parameters": {
+							"TableName": "DIM_REPORTING_DATES",
+							"SchemaName": "KNE_INT"
+						}
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "DS_Azure_Destination",
+						"type": "DatasetReference",
+						"parameters": {
+							"TableName": "DIM_REPORTING_DATES",
+							"SchemaName": "KNE_PRS"
+						}
+					}
+				]
+			}
+		],
+		"folder": {
+			"name": "3_0_PRESENTATION"
+		},
+		"annotations": []
+	}
+}
