@@ -3,7 +3,7 @@
 	"properties": {
 		"activities": [
 			{
-				"name": "Copy data1",
+				"name": "CD_STAGING_PLACEMENTS",
 				"type": "Copy",
 				"dependsOn": [],
 				"policy": {
@@ -234,6 +234,39 @@
 						}
 					}
 				]
+			},
+			{
+				"name": "SC_LPAD_BUSINESS_NUMBER",
+				"type": "Script",
+				"dependsOn": [
+					{
+						"activity": "CD_STAGING_PLACEMENTS",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"linkedServiceName": {
+					"referenceName": "LS_Azure_Destination",
+					"type": "LinkedServiceReference"
+				},
+				"typeProperties": {
+					"scripts": [
+						{
+							"type": "Query",
+							"text": "UPDATE  KNE_STG.Placements\nSET  Business_Number= RIGHT(REPLICATE('0', 8) + Business_Number, 8)  \nWHERE  len(Business_Number) < 8"
+						}
+					],
+					"scriptBlockExecutionTimeout": "02:00:00"
+				}
 			}
 		],
 		"annotations": []
