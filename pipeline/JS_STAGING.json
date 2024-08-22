@@ -81,6 +81,22 @@
 					},
 					"waitOnCompletion": true
 				}
+			},
+			{
+				"name": "PL_STG_BUSINESS_DATA_GENERAL",
+				"type": "ExecutePipeline",
+				"dependsOn": [],
+				"policy": {
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "PL_STG_BUSINESS_DATA_GENERAL",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true
+				}
 			}
 		],
 		"folder": {
