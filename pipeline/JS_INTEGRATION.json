@@ -1,0 +1,117 @@
+{
+	"name": "JS_INTEGRATION",
+	"properties": {
+		"activities": [
+			{
+				"name": "PL_PRS_DIM_COMPANY",
+				"type": "ExecutePipeline",
+				"dependsOn": [],
+				"policy": {
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "PL_PRS_DIM_COMPANY",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true
+				}
+			},
+			{
+				"name": "PL_INT_DIM_REPORTING_DATES",
+				"type": "ExecutePipeline",
+				"dependsOn": [],
+				"policy": {
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "PL_INT_DIM_REPORTING_DATES",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true
+				}
+			},
+			{
+				"name": "PL_INT_DIM_REPORTING_STRUCUTRE",
+				"type": "ExecutePipeline",
+				"dependsOn": [],
+				"policy": {
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "PL_INT_DIM_REPORTING_STRUCUTRE",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true
+				}
+			},
+			{
+				"name": "PL_INT_FACT_PLACEMENTS",
+				"type": "ExecutePipeline",
+				"dependsOn": [
+					{
+						"activity": "PL_INT_DIM_REPORTING_DATES",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					},
+					{
+						"activity": "PL_PRS_DIM_COMPANY",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					},
+					{
+						"activity": "PL_INT_DIM_REPORTING_STRUCUTRE",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "PL_INT_FACT_PLACEMENTS",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true
+				}
+			},
+			{
+				"name": "PL_INT_FACT_INTERVENTIONS",
+				"type": "ExecutePipeline",
+				"dependsOn": [
+					{
+						"activity": "PL_INT_FACT_PLACEMENTS",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "PL_INT_FACT_INTERVENTIONS",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true
+				}
+			}
+		],
+		"folder": {
+			"name": "4_0_JOB_STREAMS"
+		},
+		"annotations": []
+	}
+}
