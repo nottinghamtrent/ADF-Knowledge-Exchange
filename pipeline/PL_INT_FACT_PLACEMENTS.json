@@ -1,0 +1,256 @@
+{
+	"name": "PL_INT_FACT_PLACEMENTS",
+	"properties": {
+		"activities": [
+			{
+				"name": "CD_FACT_PLACEMENTS",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "AzureSqlSource",
+						"sqlReaderQuery": "WITH\nQ_DIM_COMPANY\nAS\n(SELECT COMPANY_SK,COMPANY_BK\nFROM KNE_INT.DIM_COMPANY),\n\nQ_DIM_DATES\nAS\n(SELECT REP_DATES_SK,REP_DATES_BK\n FROM KNE_INT.DIM_REPORTING_DATES\n WHERE REP_DATES_ACTIVE_IND='Y')\n\n\n\nSELECT\nQ_DIM_COMPANY.COMPANY_SK FACT_KE_PLACE_COMP_SK, \nQ_DIM_DATES.REP_DATES_SK  FACT_KE_PLACE_DATE_SK,\nFCT.PROJECT_CODE AS FACT_KE_PLACE_PROJECT,\nFCT.Partner AS FACT_KE_PLACE_PARTNER,\nFCT.University AS FACT_KE_PLACE_UNIVERSITY,\nFCT.INTERVENTION AS FACT_KE_PLACE_INTERVENTION,\nFCT.ROLE AS FACT_KE_PLACE_ROLE,\nFCT.Degree AS FACT_KE_PLACE_DEGREE,\nFCT.Year_Graduated AS FACT_KE_PLACE_GRAD_YEAR,\nFCT.No_of_Placements AS FACT_KE_PLACE_NO_OF_PLACE,\nFCT.Length_Weeks FACT_KE_PLACE_NO_OF_WEEKS,\nFCT.\"GRANT\"  AS FACT_KE_PLACE_GRANT,\nFCT.Salary AS FACT_KE_PLACE_SALARY,\nFCT.\"Match\" AS FACT_KE_PLACE_MATCH\nFROM KNE_STG.PLACEMENTS FCT\nINNER JOIN Q_DIM_COMPANY\nON FCT.BUSINESS_NUMBER=Q_DIM_COMPANY.COMPANY_BK\nINNER JOIN Q_DIM_DATES\nON CASE\nWHEN FCT.QTR = '0' THEN 'N/A'\nWHEN FCT.QTR IS NULL THEN 'N/A'\nELSE FCT.QTR\nEND=Q_DIM_DATES.REP_DATES_BK",
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
+					},
+					"sink": {
+						"type": "AzureSqlSink",
+						"preCopyScript": "TRUNCATE TABLE KNE_INT.FACT_PLACEMENTS",
+						"writeBehavior": "insert",
+						"sqlWriterUseTableLock": false,
+						"disableMetricsCollection": false
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"name": "FACT_KE_PLACE_COMP_SK",
+									"type": "Int32",
+									"physicalType": "int"
+								},
+								"sink": {
+									"name": "FACT_KE_PLACE_COMP_SK",
+									"type": "Decimal",
+									"physicalType": "decimal",
+									"scale": 0,
+									"precision": 19
+								}
+							},
+							{
+								"source": {
+									"name": "FACT_KE_PLACE_DATE_SK",
+									"type": "Decimal",
+									"physicalType": "decimal",
+									"scale": 0,
+									"precision": 18
+								},
+								"sink": {
+									"name": "FACT_KE_PLACE_DATE_SK",
+									"type": "Decimal",
+									"physicalType": "decimal",
+									"scale": 0,
+									"precision": 19
+								}
+							},
+							{
+								"source": {
+									"name": "FACT_KE_PLACE_PROJECT",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "FACT_KE_PLACE_PROJECT",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "FACT_KE_PLACE_PARTNER",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "FACT_KE_PLACE_PARTNER",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "FACT_KE_PLACE_UNIVERSITY",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "FACT_KE_PLACE_UNI",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "FACT_KE_PLACE_INTERVENTION",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "FACT_KE_PLACE_INTERVENTION",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "FACT_KE_PLACE_ROLE",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "FACT_KE_PLACE_ROLE",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "FACT_KE_PLACE_DEGREE",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "FACT_KE_PLACE_DEGREE",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "FACT_KE_PLACE_GRAD_YEAR",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "FACT_KE_PLACE_GRAD_YEAR",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "FACT_KE_PLACE_NO_OF_PLACE",
+									"type": "Decimal",
+									"physicalType": "decimal",
+									"scale": 0,
+									"precision": 6
+								},
+								"sink": {
+									"name": "FACT_KE_PLACE_NO_OF_PLACE",
+									"type": "Decimal",
+									"physicalType": "decimal",
+									"scale": 0,
+									"precision": 4
+								}
+							},
+							{
+								"source": {
+									"name": "FACT_KE_PLACE_NO_OF_WEEKS",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "FACT_KE_PLACE_NO_OF_WEEKS",
+									"type": "Decimal",
+									"physicalType": "decimal",
+									"scale": 0,
+									"precision": 4
+								}
+							},
+							{
+								"source": {
+									"name": "FACT_KE_PLACE_GRANT",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "FACT_KE_PLACE_GRANT",
+									"type": "Decimal",
+									"physicalType": "decimal",
+									"scale": 2,
+									"precision": 10
+								}
+							},
+							{
+								"source": {
+									"name": "FACT_KE_PLACE_SALARY",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "FACT_KE_PLACE_SALARY",
+									"type": "Decimal",
+									"physicalType": "decimal",
+									"scale": 2,
+									"precision": 10
+								}
+							},
+							{
+								"source": {
+									"name": "FACT_KE_PLACE_MATCH",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "FACT_KE_PLACE_MATCH",
+									"type": "Decimal",
+									"physicalType": "decimal",
+									"scale": 2,
+									"precision": 10
+								}
+							}
+						],
+						"typeConversion": true,
+						"typeConversionSettings": {
+							"allowDataTruncation": true,
+							"treatBooleanAsNumber": false
+						}
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "DS_Azure_Destination",
+						"type": "DatasetReference",
+						"parameters": {
+							"TableName": "KNE_STG.PLACEMENTS",
+							"SchemaName": "KNE_STG"
+						}
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "DS_Azure_Destination",
+						"type": "DatasetReference",
+						"parameters": {
+							"TableName": "FACT_PLACEMENTS",
+							"SchemaName": "KNE_INT"
+						}
+					}
+				]
+			}
+		],
+		"folder": {
+			"name": "INTEGRATION"
+		},
+		"annotations": []
+	}
+}
