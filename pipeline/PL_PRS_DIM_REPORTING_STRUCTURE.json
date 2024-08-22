@@ -1,0 +1,453 @@
+{
+	"name": "PL_PRS_DIM_REPORTING_STRUCTURE",
+	"properties": {
+		"activities": [
+			{
+				"name": "CD_PRS_REPORTING_STRUCTURE",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "AzureSqlSource",
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
+					},
+					"sink": {
+						"type": "AzureSqlSink",
+						"preCopyScript": "TRUNCATE TABLE KNE_PRS.DIM_REPORTING_STRUCTURE",
+						"writeBehavior": "insert",
+						"sqlWriterUseTableLock": false,
+						"disableMetricsCollection": false
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"name": "BI_REP_STRUCT_SK",
+									"type": "Int32",
+									"physicalType": "int"
+								},
+								"sink": {
+									"name": "BI_REP_STRUCT_SK",
+									"type": "Int32",
+									"physicalType": "int"
+								}
+							},
+							{
+								"source": {
+									"name": "BI_REP_STRUCT_LEVEL1",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "BI_REP_STRUCT_LEVEL1",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "BI_REP_STRUCT_LEVEL2",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "BI_REP_STRUCT_LEVEL2",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "BI_REP_STRUCT_LEVEL3",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "BI_REP_STRUCT_LEVEL3",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "BI_REP_STRUCT_LEVEL4",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "BI_REP_STRUCT_LEVEL4",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "BI_REP_STRUCT_LEVEL5",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "BI_REP_STRUCT_LEVEL5",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "BI_REP_STRUCT_LEVEL6",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "BI_REP_STRUCT_LEVEL6",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "BI_REP_STRUCT_LEVEL7",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "BI_REP_STRUCT_LEVEL7",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "BI_REP_STRUCT_LEVEL8",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "BI_REP_STRUCT_LEVEL8",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "BI_REP_STRUCT_LEAF_NODE",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "BI_REP_STRUCT_LEAF_NODE",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "BI_REP_STRUCT_LEAF_TYPE",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "BI_REP_STRUCT_LEAF_TYPE",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "BI_REP_STRUCT_MAJOR_BUS_ARA",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "BI_REP_STRUCT_MAJOR_BUS_ARA",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "BI_REP_STRUCT_COLLEGE_A",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "BI_REP_STRUCT_COLLEGE_A",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "BI_REP_STRUCT_COLLEGE_B",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "BI_REP_STRUCT_COLLEGE_B",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "BI_REP_STRUCT_SCHOOL_A",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "BI_REP_STRUCT_SCHOOL_A",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "BI_REP_STRUCT_SCHOOL_B",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "BI_REP_STRUCT_SCHOOL_B",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "BI_REP_STRUCT_SCHOOL_C",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "BI_REP_STRUCT_SCHOOL_C",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "BI_REP_STRUCT_DEPT",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "BI_REP_STRUCT_DEPT",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "BI_REP_STRUCT_3YR_PLAN_ARA",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "BI_REP_STRUCT_3YR_PLAN_ARA",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "BI_REP_STRUCT_MAJ_BUS_ARA_NME",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "BI_REP_STRUCT_MAJ_BUS_ARA_NME",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "BI_REP_STRUCT_COLLEGE_A_NME",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "BI_REP_STRUCT_COLLEGE_A_NME",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "BI_REP_STRUCT_COLLEGE_B_NME",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "BI_REP_STRUCT_COLLEGE_B_NME",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "BI_REP_STRUCT_SCHOOL_A_NME",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "BI_REP_STRUCT_SCHOOL_A_NME",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "BI_REP_STRUCT_SCHOOL_B_NME",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "BI_REP_STRUCT_SCHOOL_B_NME",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "BI_REP_STRUCT_SCHOOL_C_NME",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "BI_REP_STRUCT_SCHOOL_C_NME",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "BI_REP_STRUCT_DEPT_NME",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "BI_REP_STRUCT_DEPT_NME",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "BI_REP_STRUCT_3YR_PLN_ARA_NME",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "BI_REP_STRUCT_3YR_PLN_ARA_NME",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "BI_REP_STUCT_HR_ORG_UNIT",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "BI_REP_STUCT_HR_ORG_UNIT",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "BI_REP_STRUCT_START_DATE",
+									"type": "DateTime",
+									"physicalType": "datetime"
+								},
+								"sink": {
+									"name": "BI_REP_STRUCT_START_DATE",
+									"type": "DateTime",
+									"physicalType": "datetime"
+								}
+							},
+							{
+								"source": {
+									"name": "BI_REP_STRUCT_END_DATE",
+									"type": "DateTime",
+									"physicalType": "datetime"
+								},
+								"sink": {
+									"name": "BI_REP_STRUCT_END_DATE",
+									"type": "DateTime",
+									"physicalType": "datetime"
+								}
+							},
+							{
+								"source": {
+									"name": "BI_REP_STRUCT_ACTIVE_IND",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "BI_REP_STRUCT_ACTIVE_IND",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "BI_REP_STRUCT_SCHOOL_SUBSET",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "BI_REP_STRUCT_SCHOOL_SUBSET",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							}
+						],
+						"typeConversion": true,
+						"typeConversionSettings": {
+							"allowDataTruncation": true,
+							"treatBooleanAsNumber": false
+						}
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "DS_Azure_Destination",
+						"type": "DatasetReference",
+						"parameters": {
+							"TableName": "DIM_REPORTING_STRUCTURE",
+							"SchemaName": "KNE_INT"
+						}
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "DS_Azure_Destination",
+						"type": "DatasetReference",
+						"parameters": {
+							"TableName": "DIM_REPORTING_STRUCTURE",
+							"SchemaName": "KNE_PRS"
+						}
+					}
+				]
+			}
+		],
+		"folder": {
+			"name": "3_0_PRESENTATION"
+		},
+		"annotations": []
+	}
+}
