@@ -22,7 +22,7 @@
 					},
 					"sink": {
 						"type": "AzureSqlSink",
-						"preCopyScript": "TRUNCATE KNE_PRS.FACT_INTERVENTIONS",
+						"preCopyScript": "TRUNCATE TABLE KNE_PRS.FACT_INTERVENTIONS",
 						"writeBehavior": "insert",
 						"sqlWriterUseTableLock": false,
 						"disableMetricsCollection": false
