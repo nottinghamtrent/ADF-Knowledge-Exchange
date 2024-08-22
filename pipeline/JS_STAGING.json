@@ -1,0 +1,27 @@
+{
+	"name": "JS_STAGING",
+	"properties": {
+		"activities": [
+			{
+				"name": "PL_STG_BUSINESS_OUTPUTS",
+				"type": "ExecutePipeline",
+				"dependsOn": [],
+				"policy": {
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "PL_STG_BUSINESS_OUTPUTS",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true
+				}
+			}
+		],
+		"folder": {
+			"name": "4_0_JOB_STREAMS"
+		},
+		"annotations": []
+	}
+}
