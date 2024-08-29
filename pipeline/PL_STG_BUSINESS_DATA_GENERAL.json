@@ -548,7 +548,7 @@
 					"scripts": [
 						{
 							"type": "Query",
-							"text": "UPDATE  KNE_STG.BusinessData_General\nSET  Broad_Industry= COALESCE(Broad_Industry,'Not Supplied')\nWHERE LEN(Broad_Industry) =0;\n\nUPDATE  KNE_STG.BusinessData_General\nSET  Local_Area= COALESCE(Local_Area,'Not Supplied')\nWHERE LEN(Local_Area) =0;\n\n     \n   \n       \n"
+							"text": "UPDATE  KNE_STG.BusinessData_General\nSET  Broad_Industry='Not Supplied'\nWHERE LEN(Broad_Industry) =0;\n\nUPDATE  KNE_STG.BusinessData_General\nSET  Local_Area= 'Not Supplied'\nWHERE LEN(Local_Area) =0;\n\n     \n   \n       \n"
 						}
 					],
 					"scriptBlockExecutionTimeout": "02:00:00"
