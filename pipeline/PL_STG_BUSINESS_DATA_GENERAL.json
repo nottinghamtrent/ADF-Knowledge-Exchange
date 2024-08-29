@@ -239,6 +239,8 @@
 			{
 				"name": "SC_LPAD_BUSINESS_NUMBER",
 				"type": "Script",
+				"state": "Inactive",
+				"onInactiveMarkAs": "Succeeded",
 				"dependsOn": [
 					{
 						"activity": "CD_STG_Busines_Data_General",
@@ -487,7 +489,10 @@
 								},
 								"sink": {
 									"name": "Occurrence",
-									"physicalType": "decimal"
+									"type": "Decimal",
+									"physicalType": "decimal",
+									"scale": 0,
+									"precision": 5
 								}
 							}
 						],
