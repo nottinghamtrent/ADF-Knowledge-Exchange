@@ -5,6 +5,8 @@
 			{
 				"name": "CD_STG_Busines_Data_General",
 				"type": "Copy",
+				"state": "Inactive",
+				"onInactiveMarkAs": "Succeeded",
 				"dependsOn": [],
 				"policy": {
 					"timeout": "0.12:00:00",
@@ -243,6 +245,12 @@
 						"dependencyConditions": [
 							"Succeeded"
 						]
+					},
+					{
+						"activity": "CD_STG_Busines_Data_General_All_Projects",
+						"dependencyConditions": [
+							"Succeeded"
+						]
 					}
 				],
 				"policy": {
@@ -266,6 +274,249 @@
 					],
 					"scriptBlockExecutionTimeout": "02:00:00"
 				}
+			},
+			{
+				"name": "CD_STG_Busines_Data_General_All_Projects",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "DelimitedTextSource",
+						"storeSettings": {
+							"type": "FileServerReadSettings",
+							"recursive": true,
+							"enablePartitionDiscovery": false
+						},
+						"formatSettings": {
+							"type": "DelimitedTextReadSettings"
+						}
+					},
+					"sink": {
+						"type": "AzureSqlSink",
+						"preCopyScript": "Truncate table KNE_STG.BusinessData_General",
+						"writeBehavior": "insert",
+						"sqlWriterUseTableLock": false,
+						"tableOption": "autoCreate",
+						"disableMetricsCollection": false
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"name": "Project Code",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "Project_Code",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Business Number",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "Business_Number",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Business Name",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "Business_Name",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Postcode",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "Postcode",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Enrolment Date",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "Enrolment_Date",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "5 Digit SIC Code",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "FIVE_Digit_SIC_Code",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Turnover",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "Turnover",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "No. Employees",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "No_of_Employees",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Size",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "Size",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Business Number Type",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "Business_No_Type2",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Partner",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "Partner",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Broad Industry",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "Broad_Industry",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "LA",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "Local_Area",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Year",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "Year",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Occurrence",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "Occurrence",
+									"physicalType": "decimal"
+								}
+							}
+						],
+						"typeConversion": true,
+						"typeConversionSettings": {
+							"allowDataTruncation": true,
+							"treatBooleanAsNumber": false
+						}
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "DS_Knowledge_Exchange",
+						"type": "DatasetReference",
+						"parameters": {
+							"FileName": "ALL_Business_Data.txt"
+						}
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "DS_Azure_Destination",
+						"type": "DatasetReference",
+						"parameters": {
+							"TableName": "BusinessData_General",
+							"SchemaName": "KNE_STG"
+						}
+					}
+				]
 			}
 		],
 		"folder": {
