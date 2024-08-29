@@ -113,6 +113,22 @@
 					},
 					"waitOnCompletion": true
 				}
+			},
+			{
+				"name": "PL_STG_OTHER_GRANTS",
+				"type": "ExecutePipeline",
+				"dependsOn": [],
+				"policy": {
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "PL_STG_OTHER_GRANTS",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true
+				}
 			}
 		],
 		"folder": {
