@@ -239,8 +239,6 @@
 			{
 				"name": "SC_LPAD_BUSINESS_NUMBER",
 				"type": "Script",
-				"state": "Inactive",
-				"onInactiveMarkAs": "Succeeded",
 				"dependsOn": [
 					{
 						"activity": "CD_STG_Busines_Data_General",
@@ -522,6 +520,39 @@
 						}
 					}
 				]
+			},
+			{
+				"name": "SC_SET_DEFAULT_VALUES",
+				"type": "Script",
+				"dependsOn": [
+					{
+						"activity": "SC_LPAD_BUSINESS_NUMBER",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"linkedServiceName": {
+					"referenceName": "LS_Azure_Destination",
+					"type": "LinkedServiceReference"
+				},
+				"typeProperties": {
+					"scripts": [
+						{
+							"type": "Query",
+							"text": "UPDATE  KNE_STG.BusinessData_General\nSET  Broad_Industry= COALESCE(Broad_Industry,'Not Supplied'),\n        Local_Area= COALESCE(Local_Area,'Not Supplied')\n       \n"
+						}
+					],
+					"scriptBlockExecutionTimeout": "02:00:00"
+				}
 			}
 		],
 		"folder": {
