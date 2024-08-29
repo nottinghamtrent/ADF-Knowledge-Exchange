@@ -63,12 +63,12 @@
 							},
 							{
 								"source": {
-									"name": "Business Name",
+									"name": "Business Number",
 									"type": "String",
 									"physicalType": "String"
 								},
 								"sink": {
-									"name": "Business_Name",
+									"name": "Business_Number",
 									"type": "String",
 									"physicalType": "varchar"
 								}
