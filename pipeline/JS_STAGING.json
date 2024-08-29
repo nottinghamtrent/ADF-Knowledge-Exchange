@@ -97,6 +97,22 @@
 					},
 					"waitOnCompletion": true
 				}
+			},
+			{
+				"name": "PL_STG_STATE_AID",
+				"type": "ExecutePipeline",
+				"dependsOn": [],
+				"policy": {
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "PL_STG_STATE_AID",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true
+				}
 			}
 		],
 		"folder": {
