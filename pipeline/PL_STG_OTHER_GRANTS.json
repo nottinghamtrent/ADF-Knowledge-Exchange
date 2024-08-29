@@ -1,0 +1,194 @@
+{
+	"name": "PL_STG_OTHER_GRANTS",
+	"properties": {
+		"activities": [
+			{
+				"name": "CD_STG_OTHER_GRANTS",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "DelimitedTextSource",
+						"storeSettings": {
+							"type": "FileServerReadSettings",
+							"recursive": true,
+							"enablePartitionDiscovery": false
+						},
+						"formatSettings": {
+							"type": "DelimitedTextReadSettings"
+						}
+					},
+					"sink": {
+						"type": "AzureSqlSink",
+						"preCopyScript": "Truncate Table KNE_STG.Other_Grants",
+						"writeBehavior": "insert",
+						"sqlWriterUseTableLock": false,
+						"disableMetricsCollection": false
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"name": "Project Code",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "Project_Code",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Partner",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "Partner",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Business Number",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "Business_Number",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "School",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "School",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Grant Type",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "Grant_Type",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Match",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "Match",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "tCO2e",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "tCO2e",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Grant",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "Grant",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Date",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "Grant_Date",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Business Name",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "Business_Name",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							}
+						],
+						"typeConversion": true,
+						"typeConversionSettings": {
+							"allowDataTruncation": true,
+							"treatBooleanAsNumber": false
+						}
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "DS_Knowledge_Exchange",
+						"type": "DatasetReference",
+						"parameters": {
+							"FileName": "All_Other_Grants.txt"
+						}
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "DS_Azure_Destination",
+						"type": "DatasetReference",
+						"parameters": {
+							"TableName": "Other_Grants",
+							"SchemaName": "KNE_STG"
+						}
+					}
+				]
+			}
+		],
+		"folder": {
+			"name": "1_0_STAGING"
+		},
+		"annotations": []
+	}
+}
