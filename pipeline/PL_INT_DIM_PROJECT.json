@@ -1,0 +1,92 @@
+{
+	"name": "PL_INT_DIM_PROJECT",
+	"properties": {
+		"activities": [
+			{
+				"name": "CD_INT_DIM_PROJECT",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "AzureSqlSource",
+						"sqlReaderQuery": "Select distinct Project AS Project,\nCASE\nWHEN Project='EI'\nTHEN 'Enabling Innovation '\nWHEN Project='EIC'\nTHEN 'Enterprise Innovation Centre'\nWHEN Project='GRADS'\nTHEN 'Grads for D2N2'\nWHEN Project='PTI'\nTHEN 'Productivity Through innovation'\nWHEN Project='SIE'\nTHEN 'Sustainability in Enterprise'\nWHEN Project='UPS'\nTHEN 'UpScaler'\nWHEN Project='BH'\nTHEN 'Big House'\nEND  PROJECT_DESCRIPTION\nfrom kne_stg.Interventions",
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
+					},
+					"sink": {
+						"type": "AzureSqlSink",
+						"writeBehavior": "insert",
+						"sqlWriterUseTableLock": false
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"name": "Project",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "PROJECT_BK",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "PROJECT_DESCRIPTION",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "PROJECT_NAME",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							}
+						],
+						"typeConversion": true,
+						"typeConversionSettings": {
+							"allowDataTruncation": true,
+							"treatBooleanAsNumber": false
+						}
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "DS_Azure_Destination",
+						"type": "DatasetReference",
+						"parameters": {
+							"TableName": "Interventions",
+							"SchemaName": "KNE_STG"
+						}
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "DS_Azure_Destination",
+						"type": "DatasetReference",
+						"parameters": {
+							"TableName": "DIM_PROJECT",
+							"SchemaName": "KNE_INT"
+						}
+					}
+				]
+			}
+		],
+		"folder": {
+			"name": "2_0_INTEGRATION"
+		},
+		"annotations": []
+	}
+}
