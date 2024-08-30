@@ -39,18 +39,6 @@
 									"physicalType": "varchar"
 								},
 								"sink": {
-									"name": "PARTNER_SK",
-									"type": "Int32",
-									"physicalType": "int"
-								}
-							},
-							{
-								"source": {
-									"name": "PARTNER",
-									"type": "String",
-									"physicalType": "varchar"
-								},
-								"sink": {
 									"name": "PARTNER_BK",
 									"type": "String",
 									"physicalType": "varchar"
