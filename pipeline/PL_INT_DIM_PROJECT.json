@@ -17,7 +17,7 @@
 				"typeProperties": {
 					"source": {
 						"type": "AzureSqlSource",
-						"sqlReaderQuery": "Select distinct Project AS Project,\nCASE\nWHEN Project='EI'\nTHEN 'Enabling Innovation '\nWHEN Project='EIC'\nTHEN 'Enterprise Innovation Centre'\nWHEN Project='GRADS'\nTHEN 'Grads for D2N2'\nWHEN Project='PTI'\nTHEN 'Productivity Through innovation'\nWHEN Project='SIE'\nTHEN 'Sustainability in Enterprise'\nWHEN Project='UPS'\nTHEN 'UpScaler'\nWHEN Project='BH'\nTHEN 'Big House'\nEND  PROJECT_DESCRIPTION\nfrom kne_stg.Interventions\nUNION\nSelect 'N/A','Not Entered'",
+						"sqlReaderQuery": "Select distinct Project AS Project,\nCASE\nWHEN Project='EI'\nTHEN 'Enabling Innovation '\nWHEN Project='EIC'\nTHEN 'Enterprise Innovation Centre'\nWHEN Project='GRADS'\nTHEN 'Grads for D2N2'\nWHEN Project='PTI'\nTHEN 'Productivity Through innovation'\nWHEN Project='SIE'\nTHEN 'Sustainability in Enterprise'\nWHEN Project='UPS'\nTHEN 'UpScaler'\nWHEN  Project='BH'\nTHEN 'Big House'\nWHEN  COALESCE(Project,'N/A') IS NULL\nTHEN 'Not Entered'\nEND  PROJECT_DESCRIPTION\nfrom kne_stg.Interventions\nWHERE len(Project) <> 0\nUNION\nSelect DISTINCT Project_Code,\nCASE\nWHEN Project_Code='EI'\nTHEN 'Enabling Innovation '\nWHEN Project_Code='EIC'\nTHEN 'Enterprise Innovation Centre'\nWHEN Project_Code='GRADS'\nTHEN 'Grads for D2N2'\nWHEN Project_Code='PTI'\nTHEN 'Productivity Through innovation'\nWHEN Project_Code='SIE'\nTHEN 'Sustainability in Enterprise'\nWHEN Project_Code='UPS'\nTHEN 'UpScaler'\nWHEN  Project_Code='BH'\nTHEN 'Big House'\nEND  PROJECT_DESCRIPTION\nfrom kne_stg.Placements\nWHERE len(Project_Code)<>0 \nUNION\nSelect 'N/A','Not Entered'",
 						"queryTimeout": "02:00:00",
 						"partitionOption": "None"
 					},
