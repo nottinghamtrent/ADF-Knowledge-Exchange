@@ -1,0 +1,106 @@
+{
+	"name": "PL_INT_DIM_PARTNER",
+	"properties": {
+		"activities": [
+			{
+				"name": "CD_INT_DIM_PARTNER",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "AzureSqlSource",
+						"sqlReaderQuery": "Select distinct Partner AS PARTNER,\nCASE\nWHEN Partner='DC'\nTHEN 'Derby College'\nWHEN Partner='NC'\nTHEN 'Nottingham College'\nWHEN Partner='NCC'\nTHEN 'Nottingham City Council'\nWHEN Partner='NTU'\nTHEN 'Nottingham Trent University'\nWHEN Partner='UOD'\nTHEN 'University of Derby'\nEND  PARTNER_DESCRIPTION\nfrom kne_stg.Interventions",
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
+					},
+					"sink": {
+						"type": "AzureSqlSink",
+						"preCopyScript": "TRUNCATE TABLE KNE_INT.DIM_PARTNER",
+						"writeBehavior": "insert",
+						"sqlWriterUseTableLock": false,
+						"disableMetricsCollection": false
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"name": "PARTNER",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "PARTNER_SK",
+									"type": "Int32",
+									"physicalType": "int"
+								}
+							},
+							{
+								"source": {
+									"name": "PARTNER",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "PARTNER_BK",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "PARTNER_DESCRIPTION",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "PARTNER_NAME",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							}
+						],
+						"typeConversion": true,
+						"typeConversionSettings": {
+							"allowDataTruncation": true,
+							"treatBooleanAsNumber": false
+						}
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "DS_Azure_Destination",
+						"type": "DatasetReference",
+						"parameters": {
+							"TableName": "Interventions",
+							"SchemaName": "KNE_STG"
+						}
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "DS_Azure_Destination",
+						"type": "DatasetReference",
+						"parameters": {
+							"TableName": "DIM_PARTNER",
+							"SchemaName": "KNE_INT"
+						}
+					}
+				]
+			}
+		],
+		"folder": {
+			"name": "2_0_INTEGRATION"
+		},
+		"annotations": []
+	}
+}
