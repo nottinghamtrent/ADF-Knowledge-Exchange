@@ -39,7 +39,7 @@
 						"mappings": [
 							{
 								"source": {
-									"name": "Project ",
+									"name": "Project Code",
 									"type": "String",
 									"physicalType": "String"
 								},
@@ -113,7 +113,7 @@
 							},
 							{
 								"source": {
-									"name": "School_Debt",
+									"name": "School/Dept",
 									"type": "String",
 									"physicalType": "String"
 								},
@@ -162,7 +162,7 @@
 						"referenceName": "DS_Knowledge_Exchange",
 						"type": "DatasetReference",
 						"parameters": {
-							"FileName": "SiE_Interventions.txt"
+							"FileName": "All_Interventions.txt"
 						}
 					}
 				],
