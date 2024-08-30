@@ -63,19 +63,7 @@
 							},
 							{
 								"source": {
-									"name": "Qtr",
-									"type": "String",
-									"physicalType": "String"
-								},
-								"sink": {
-									"name": "Qtr",
-									"type": "String",
-									"physicalType": "varchar"
-								}
-							},
-							{
-								"source": {
-									"name": "No of Placements",
+									"name": "No. of Placements",
 									"type": "String",
 									"physicalType": "String"
 								},
@@ -113,24 +101,12 @@
 							},
 							{
 								"source": {
-									"name": "Role",
+									"name": "Job Title",
 									"type": "String",
 									"physicalType": "String"
 								},
 								"sink": {
 									"name": "Role",
-									"type": "String",
-									"physicalType": "varchar"
-								}
-							},
-							{
-								"source": {
-									"name": "Length_Weeks",
-									"type": "String",
-									"physicalType": "String"
-								},
-								"sink": {
-									"name": "Length_Weeks",
 									"type": "String",
 									"physicalType": "varchar"
 								}
@@ -185,7 +161,7 @@
 							},
 							{
 								"source": {
-									"name": "Year_Graduated",
+									"name": "Year Graduated",
 									"type": "String",
 									"physicalType": "String"
 								},
@@ -220,7 +196,7 @@
 						"referenceName": "DS_Knowledge_Exchange",
 						"type": "DatasetReference",
 						"parameters": {
-							"FileName": "Placements.txt"
+							"FileName": "all_Placements.txt"
 						}
 					}
 				],
