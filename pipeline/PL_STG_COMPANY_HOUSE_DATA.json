@@ -725,8 +725,6 @@
 			{
 				"name": "CD_CompanyHouse6",
 				"type": "Copy",
-				"state": "Inactive",
-				"onInactiveMarkAs": "Succeeded",
 				"dependsOn": [
 					{
 						"activity": "CD_CompanyHouse5",
@@ -1427,7 +1425,7 @@
 						"referenceName": "DS_Knowledge_Exchange",
 						"type": "DatasetReference",
 						"parameters": {
-							"FileName": "CompanyData6of7.txt"
+							"FileName": "CompanyData6of7Sep.txt"
 						}
 					}
 				],
