@@ -5,6 +5,8 @@
 			{
 				"name": "CD_CompanyHouse7",
 				"type": "Copy",
+				"state": "Inactive",
+				"onInactiveMarkAs": "Succeeded",
 				"dependsOn": [
 					{
 						"activity": "CD_CompanyHouse6",
@@ -723,6 +725,8 @@
 			{
 				"name": "CD_CompanyHouse6",
 				"type": "Copy",
+				"state": "Inactive",
+				"onInactiveMarkAs": "Succeeded",
 				"dependsOn": [
 					{
 						"activity": "CD_CompanyHouse5",
@@ -1441,6 +1445,8 @@
 			{
 				"name": "CD_CompanyHouse5",
 				"type": "Copy",
+				"state": "Inactive",
+				"onInactiveMarkAs": "Succeeded",
 				"dependsOn": [
 					{
 						"activity": "CD_CompanyHouse4",
@@ -2159,6 +2165,8 @@
 			{
 				"name": "CD_CompanyHouse4",
 				"type": "Copy",
+				"state": "Inactive",
+				"onInactiveMarkAs": "Succeeded",
 				"dependsOn": [
 					{
 						"activity": "CD_CompanyHouse3",
@@ -2877,6 +2885,8 @@
 			{
 				"name": "CD_CompanyHouse3",
 				"type": "Copy",
+				"state": "Inactive",
+				"onInactiveMarkAs": "Succeeded",
 				"dependsOn": [
 					{
 						"activity": "CD_CompanyHouse2",
@@ -3595,6 +3605,8 @@
 			{
 				"name": "CD_CompanyHouse2",
 				"type": "Copy",
+				"state": "Inactive",
+				"onInactiveMarkAs": "Succeeded",
 				"dependsOn": [
 					{
 						"activity": "CD_CompanyHouse1",
@@ -4295,7 +4307,7 @@
 						"referenceName": "DS_Knowledge_Exchange",
 						"type": "DatasetReference",
 						"parameters": {
-							"FileName": "CompanyData2of7.txt"
+							"FileName": "CompanyData2of7Sep.txt"
 						}
 					}
 				],
@@ -4313,6 +4325,8 @@
 			{
 				"name": "CD_CompanyHouse1",
 				"type": "Copy",
+				"state": "Inactive",
+				"onInactiveMarkAs": "Succeeded",
 				"dependsOn": [],
 				"policy": {
 					"timeout": "0.12:00:00",
@@ -5007,7 +5021,7 @@
 						"referenceName": "DS_Knowledge_Exchange",
 						"type": "DatasetReference",
 						"parameters": {
-							"FileName": "CompanyData1of7.txt"
+							"FileName": "CompanyData1of7SEP.txt"
 						}
 					}
 				],
