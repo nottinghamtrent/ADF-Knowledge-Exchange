@@ -1,0 +1,31 @@
+{
+	"name": "PL_INT_DIM_COMPANY_HOUSE",
+	"properties": {
+		"activities": [
+			{
+				"name": "SP_INT_DIM_COMPANY_HOUSE",
+				"type": "SqlServerStoredProcedure",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"storedProcedureName": "[KNE_INTSP].[DIM_COMPANY_HOUSE]"
+				},
+				"linkedServiceName": {
+					"referenceName": "LS_Azure_Destination",
+					"type": "LinkedServiceReference"
+				}
+			}
+		],
+		"folder": {
+			"name": "2_0_INTEGRATION"
+		},
+		"annotations": []
+	}
+}
