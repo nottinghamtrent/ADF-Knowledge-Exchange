@@ -10,7 +10,7 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobFSLocation",
-				"fileName": "part-00000-tid-237163987904398407-458cb540-0231-4aa6-bc5c-29bb4ede154d-0-1-c000.csv",
+				"fileName": "part-00001-tid-237163987904398407-458cb540-0231-4aa6-bc5c-29bb4ede154d-1-1-c000.csv",
 				"folderPath": "inclusions.csv",
 				"fileSystem": "companynewinclusions"
 			},
