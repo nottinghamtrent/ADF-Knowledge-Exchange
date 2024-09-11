@@ -45,7 +45,7 @@
 				},
 				"inputs": [
 					{
-						"referenceName": "DS_COMPANY_HOUSE_DATALAKE",
+						"referenceName": "DS_COMPANY_HOUSE_DELETIONS_DATALAKE",
 						"type": "DatasetReference"
 					}
 				],
@@ -111,7 +111,7 @@
 				},
 				"inputs": [
 					{
-						"referenceName": "DS_COMPANY_HOUSE_DATALAKE",
+						"referenceName": "DS_COMPANY_HOUSE_DELETIONS_DATALAKE",
 						"type": "DatasetReference"
 					}
 				],
