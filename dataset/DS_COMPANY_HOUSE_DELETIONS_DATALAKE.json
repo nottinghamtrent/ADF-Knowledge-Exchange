@@ -1,5 +1,5 @@
 {
-	"name": "DS_COMPANY_HOUSE_DATALAKE",
+	"name": "DS_COMPANY_HOUSE_DELETIONS_DATALAKE",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "LS_COMPANY_HOUSE_DATA",
@@ -10,8 +10,9 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobFSLocation",
-				"folderPath": "inclusions.csv",
-				"fileSystem": "companynewinclusions"
+				"fileName": "part*",
+				"folderPath": "dissolutions.csv",
+				"fileSystem": "companydissolutions"
 			},
 			"columnDelimiter": ",",
 			"escapeChar": "\\",
