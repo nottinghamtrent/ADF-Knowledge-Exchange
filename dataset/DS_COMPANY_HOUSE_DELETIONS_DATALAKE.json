@@ -10,7 +10,6 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobFSLocation",
-				"fileName": "part*",
 				"folderPath": "dissolutions.csv",
 				"fileSystem": "companydissolutions"
 			},
