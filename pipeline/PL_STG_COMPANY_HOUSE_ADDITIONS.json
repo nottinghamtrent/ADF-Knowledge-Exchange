@@ -1,0 +1,288 @@
+{
+	"name": "PL_STG_COMPANY_HOUSE_ADDITIONS",
+	"properties": {
+		"activities": [
+			{
+				"name": "STG_COMPANY_HOUSE_ADDITIONS",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "DelimitedTextSource",
+						"storeSettings": {
+							"type": "AzureBlobFSReadSettings",
+							"recursive": true,
+							"wildcardFileName": "part*",
+							"enablePartitionDiscovery": false
+						},
+						"formatSettings": {
+							"type": "DelimitedTextReadSettings"
+						}
+					},
+					"sink": {
+						"type": "AzureSqlSink",
+						"preCopyScript": "TRUNCATE TABLE KNE_STG.COMPANY_HOUSE_ADDITIONS",
+						"writeBehavior": "insert",
+						"sqlWriterUseTableLock": false,
+						"disableMetricsCollection": false
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"name": "accounts",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "accounts",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "can_file",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "can_file",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "company_name",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "company_name",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "company_number",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "company_number",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "company_status",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "company_status",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "confirmation_statement",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "confirmation_statement",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "date_of_creation",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "date_of_creation",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "etag",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "etag",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "has_charges",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "has_charges",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "has_insolvency_history",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "has_insolvency_history",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "jurisdiction",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "jurisdiction",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "links",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "links",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "registered_office_address",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "registered_office_address",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "registered_office_is_in_dispute",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "registered_office_is_in_dispute",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "sic_codes",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "sic_codes",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "type",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "type",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "undeliverable_registered_office_address",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "undeliverable_registered_office_address",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "has_super_secure_pscs",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "has_super_secure_pscs",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							}
+						],
+						"typeConversion": true,
+						"typeConversionSettings": {
+							"allowDataTruncation": true,
+							"treatBooleanAsNumber": false
+						}
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "DS_COMPANY_HOUSE_ADDITIONS_DATALAKE",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "DS_Azure_Destination",
+						"type": "DatasetReference",
+						"parameters": {
+							"TableName": "COMPANY_HOUSE_ADDITIONS",
+							"SchemaName": "KNE_STG"
+						}
+					}
+				]
+			}
+		],
+		"folder": {
+			"name": "1_0_STAGING"
+		},
+		"annotations": []
+	}
+}
