@@ -17,11 +17,208 @@
 				"typeProperties": {
 					"source": {
 						"type": "AzureSqlSource",
-						"sqlReaderQuery": "WITH\nQ_SIC_CODES\nAS\n(Select COMPANY_NUMBER,\n replace(replace(replace(replace(sic_codes,'[',''),']',''),char(39),''),' ','')  LIST_OF_SIC_CODES,\n CHARINDEX(',', replace(replace(replace(replace(sic_codes,'[',''),']',''),char(39),''),' ',''))  FIRST_SEPERATOR,\nCHARINDEX(',', replace(replace(replace(replace(sic_codes,'[',''),']',''),char(39),''),' ',''),CHARINDEX(',', replace(replace(replace(replace(sic_codes,'[',''),']',''),char(39),''),' ',''))+1)   SECOND_SEPERATOR,\n\nCHARINDEX(',', replace(replace(replace(replace(sic_codes,'[',''),']',''),char(39),''),' ',''),CHARINDEX(',', replace(replace(replace(replace(sic_codes,'[',''),']',''),char(39),''),' ',''),CHARINDEX(',',replace(replace(replace(replace(sic_codes,'[',''),']',''),char(39),''),' ',''))+1)+1) THIRD_SEPERATOR\n from [KNE_STG].[COMPANY_HOUSE_ADDITIONS]),\n\nQ_ADDRESS_LIST\nAS\n( SELECT COMPANY_NUMBER,registered_office_Address, \n         replace(replace(replace(replace(registered_office_Address,'{',''),'}',''),char(39),''),': ','')  Address_List,\n   CASE\n WHEN CHARINDEX('address_line_1',(replace(replace(replace(replace(registered_office_Address,'{',''),'}',''),char(39),''),': ',''))) > 0\n THEN CHARINDEX('address_line_1',(replace(replace(replace(replace(registered_office_Address,'{',''),'}',''),char(39),''),': ',''))) +14\n END START_OF_ADDRESS_1,\n \n\n CASE\n WHEN CHARINDEX('address_line_1',(replace(replace(replace(replace(registered_office_Address,'{',''),'}',''),char(39),''),': ',''))) > 0\n THEN (CHARINDEX(',',replace(replace(replace(replace(registered_office_Address,'{',''),'}',''),char(39),''),': ',''),CHARINDEX('address_line_1',(replace(replace(replace(replace(registered_office_Address,'{',''),'}',''),char(39),''),': ',''))) +14)) - (CHARINDEX('address_line_1',(replace(replace(replace(replace(registered_office_Address,'{',''),'}',''),char(39),''),': ',''))) +14)\n END LENGTH_OF_ADDRESS_1,\n \n CASE\n WHEN CHARINDEX('address_line_2',(replace(replace(replace(replace(registered_office_Address,'{',''),'}',''),char(39),''),': ',''))) > 0 \n THEN CHARINDEX('address_line_2',(replace(replace(replace(replace(registered_office_Address,'{',''),'}',''),char(39),''),': ',''))) +14 \n END START_OF_ADDRESS_2, \n \n CASE\n WHEN CHARINDEX('address_line_2',(replace(replace(replace(replace(registered_office_Address,'{',''),'}',''),char(39),''),': ',''))) > 0 \n THEN (CHARINDEX(',',replace(replace(replace(replace(registered_office_Address,'{',''),'}',''),char(39),''),': ',''),CHARINDEX('address_line_2',(replace(replace(replace(replace(registered_office_Address,'{',''),'}',''),char(39),''),': ',''))) +14)) - (CHARINDEX('address_line_2',(replace(replace(replace(replace(registered_office_Address,'{',''),'}',''),char(39),''),': ',''))) +14) \n END LENGTH_OF_ADDRESS_2,\n \n\n CASE\n WHEN CHARINDEX('country',(replace(replace(replace(replace(registered_office_Address,'{',''),'}',''),char(39),''),': ',''))) > 0 \n THEN CHARINDEX('country',(replace(replace(replace(replace(registered_office_Address,'{',''),'}',''),char(39),''),': ',''))) +7\n END START_OF_COUNTRY, \n\n CASE\n WHEN CHARINDEX('country',(replace(replace(replace(replace(registered_office_Address,'{',''),'}',''),char(39),''),': ',''))) > 0 \n THEN (CHARINDEX(',',replace(replace(replace(replace(registered_office_Address,'{',''),'}',''),char(39),''),': ',''),CHARINDEX('country',(replace(replace(replace(replace(registered_office_Address,'{',''),'}',''),char(39),''),': ',''))) +7)) - (CHARINDEX('country',(replace(replace(replace(replace(registered_office_Address,'{',''),'}',''),char(39),''),': ',''))) +7) \n END LENGTH_OF_COUNTRY,\n \n \n CASE\n WHEN CHARINDEX('locality',(replace(replace(replace(replace(registered_office_Address,'{',''),'}',''),char(39),''),': ',''))) > 0 \n THEN CHARINDEX('locality',(replace(replace(replace(replace(registered_office_Address,'{',''),'}',''),char(39),''),': ',''))) +8\n END START_OF_LOCALITY, \n \n CASE\n WHEN CHARINDEX('locality',(replace(replace(replace(replace(registered_office_Address,'{',''),'}',''),char(39),''),': ',''))) > 0 \n THEN (CHARINDEX(',',replace(replace(replace(replace(registered_office_Address,'{',''),'}',''),char(39),''),': ',''),CHARINDEX('locality',(replace(replace(replace(replace(registered_office_Address,'{',''),'}',''),char(39),''),': ',''))) +7)) - (CHARINDEX('locality',(replace(replace(replace(replace(registered_office_Address,'{',''),'}',''),char(39),''),': ',''))) +7) \n END LENGTH_OF_LOCALITY,\n \n CASE\n WHEN CHARINDEX('postal_code',(replace(replace(replace(replace(registered_office_Address,'{',''),'}',''),char(39),''),': ',''))) > 0 \n THEN CHARINDEX('postal_code',(replace(replace(replace(replace(registered_office_Address,'{',''),'}',''),char(39),''),': ',''))) +11\n END START_OF_POSTCODE, \n\n CASE\n WHEN CHARINDEX('postal_code',(replace(replace(replace(replace(registered_office_Address,'{',''),'}',''),char(39),''),': ',''))) > 0 \n THEN 20\n END LENGTH_OF_POSTCODE\n\n\n FROM [KNE_STG].[COMPANY_HOUSE_ADDITIONS])\n\n\n\n SELECT \n Q_ADDRESS_LIST.COMPANY_NUMBER,\n Q_ADDRESS_LIST.Address_List,\n SUBSTRING(Q_ADDRESS_LIST.Address_List,START_OF_ADDRESS_1,LENGTH_OF_ADDRESS_1) ADDRESS_LINE_1,\n SUBSTRING(Q_ADDRESS_LIST.Address_List,START_OF_ADDRESS_2,LENGTH_OF_ADDRESS_2) ADDRESS_LINE_2,\n SUBSTRING(Q_ADDRESS_LIST.Address_List,START_OF_COUNTRY,LENGTH_OF_COUNTRY) COUNTRY,\n SUBSTRING(Q_ADDRESS_LIST.Address_List,START_OF_LOCALITY,LENGTH_OF_LOCALITY) TOWN,\n SUBSTRING(Q_ADDRESS_LIST.Address_List,START_OF_POSTCODE,LENGTH_OF_POSTCODE) POSTCODE,\n SUBSTRING(LIST_OF_SIC_CODES,1,5) SIC_CODE_1,\n CASE\n WHEN FIRST_SEPERATOR > 0\n THEN SUBSTRING(LIST_OF_SIC_CODES,(FIRST_SEPERATOR+1),5)\n END SIC_CODE_2,\n CASE\n WHEN SECOND_SEPERATOR > 0\n THEN SUBSTRING(LIST_OF_SIC_CODES,(SECOND_SEPERATOR+1),5)\n END SIC_CODE_3,\n CASE\n WHEN THIRD_SEPERATOR > 0\n THEN SUBSTRING(LIST_OF_SIC_CODES,(THIRD_SEPERATOR+1),5)\n END SIC_CODE_4\n FROM Q_ADDRESS_LIST\n INNER JOIN Q_SIC_CODES\n ON Q_ADDRESS_LIST.COMPANY_NUMBER=Q_SIC_CODES.COMPANY_NUMBER",
+						"sqlReaderQuery": "WITH\nQ_SIC_CODES\nAS\n(Select COMPANY_NUMBER,\n replace(replace(replace(replace(sic_codes,'[',''),']',''),char(39),''),' ','')  LIST_OF_SIC_CODES,\n CHARINDEX(',', replace(replace(replace(replace(sic_codes,'[',''),']',''),char(39),''),' ',''))  FIRST_SEPERATOR,\nCHARINDEX(',', replace(replace(replace(replace(sic_codes,'[',''),']',''),char(39),''),' ',''),CHARINDEX(',', replace(replace(replace(replace(sic_codes,'[',''),']',''),char(39),''),' ',''))+1)   SECOND_SEPERATOR,\n\nCHARINDEX(',', replace(replace(replace(replace(sic_codes,'[',''),']',''),char(39),''),' ',''),CHARINDEX(',', replace(replace(replace(replace(sic_codes,'[',''),']',''),char(39),''),' ',''),CHARINDEX(',',replace(replace(replace(replace(sic_codes,'[',''),']',''),char(39),''),' ',''))+1)+1) THIRD_SEPERATOR\n from [KNE_STG].[COMPANY_HOUSE_ADDITIONS]),\n\nQ_ADDRESS_LIST\nAS\n( SELECT COMPANY_NUMBER,registered_office_Address, company_name,\n         replace(replace(replace(replace(registered_office_Address,'{',''),'}',''),char(39),''),': ','')  Address_List,\n   CASE\n WHEN CHARINDEX('address_line_1',(replace(replace(replace(replace(registered_office_Address,'{',''),'}',''),char(39),''),': ',''))) > 0\n THEN CHARINDEX('address_line_1',(replace(replace(replace(replace(registered_office_Address,'{',''),'}',''),char(39),''),': ',''))) +14\n END START_OF_ADDRESS_1,\n \n\n CASE\n WHEN CHARINDEX('address_line_1',(replace(replace(replace(replace(registered_office_Address,'{',''),'}',''),char(39),''),': ',''))) > 0\n THEN (CHARINDEX(',',replace(replace(replace(replace(registered_office_Address,'{',''),'}',''),char(39),''),': ',''),CHARINDEX('address_line_1',(replace(replace(replace(replace(registered_office_Address,'{',''),'}',''),char(39),''),': ',''))) +14)) - (CHARINDEX('address_line_1',(replace(replace(replace(replace(registered_office_Address,'{',''),'}',''),char(39),''),': ',''))) +14)\n END LENGTH_OF_ADDRESS_1,\n \n CASE\n WHEN CHARINDEX('address_line_2',(replace(replace(replace(replace(registered_office_Address,'{',''),'}',''),char(39),''),': ',''))) > 0 \n THEN CHARINDEX('address_line_2',(replace(replace(replace(replace(registered_office_Address,'{',''),'}',''),char(39),''),': ',''))) +14 \n END START_OF_ADDRESS_2, \n \n CASE\n WHEN CHARINDEX('address_line_2',(replace(replace(replace(replace(registered_office_Address,'{',''),'}',''),char(39),''),': ',''))) > 0 \n THEN (CHARINDEX(',',replace(replace(replace(replace(registered_office_Address,'{',''),'}',''),char(39),''),': ',''),CHARINDEX('address_line_2',(replace(replace(replace(replace(registered_office_Address,'{',''),'}',''),char(39),''),': ',''))) +14)) - (CHARINDEX('address_line_2',(replace(replace(replace(replace(registered_office_Address,'{',''),'}',''),char(39),''),': ',''))) +14) \n END LENGTH_OF_ADDRESS_2,\n \n\n CASE\n WHEN CHARINDEX('country',(replace(replace(replace(replace(registered_office_Address,'{',''),'}',''),char(39),''),': ',''))) > 0 \n THEN CHARINDEX('country',(replace(replace(replace(replace(registered_office_Address,'{',''),'}',''),char(39),''),': ',''))) +7\n END START_OF_COUNTRY, \n\n CASE\n WHEN CHARINDEX('country',(replace(replace(replace(replace(registered_office_Address,'{',''),'}',''),char(39),''),': ',''))) > 0 \n THEN (CHARINDEX(',',replace(replace(replace(replace(registered_office_Address,'{',''),'}',''),char(39),''),': ',''),CHARINDEX('country',(replace(replace(replace(replace(registered_office_Address,'{',''),'}',''),char(39),''),': ',''))) +7)) - (CHARINDEX('country',(replace(replace(replace(replace(registered_office_Address,'{',''),'}',''),char(39),''),': ',''))) +7) \n END LENGTH_OF_COUNTRY,\n \n \n CASE\n WHEN CHARINDEX('locality',(replace(replace(replace(replace(registered_office_Address,'{',''),'}',''),char(39),''),': ',''))) > 0 \n THEN CHARINDEX('locality',(replace(replace(replace(replace(registered_office_Address,'{',''),'}',''),char(39),''),': ',''))) +8\n END START_OF_LOCALITY, \n \n CASE\n WHEN CHARINDEX('locality',(replace(replace(replace(replace(registered_office_Address,'{',''),'}',''),char(39),''),': ',''))) > 0 \n THEN (CHARINDEX(',',replace(replace(replace(replace(registered_office_Address,'{',''),'}',''),char(39),''),': ',''),CHARINDEX('locality',(replace(replace(replace(replace(registered_office_Address,'{',''),'}',''),char(39),''),': ',''))) +7)) - (CHARINDEX('locality',(replace(replace(replace(replace(registered_office_Address,'{',''),'}',''),char(39),''),': ',''))) +7) \n END LENGTH_OF_LOCALITY,\n \n CASE\n WHEN CHARINDEX('postal_code',(replace(replace(replace(replace(registered_office_Address,'{',''),'}',''),char(39),''),': ',''))) > 0 \n THEN CHARINDEX('postal_code',(replace(replace(replace(replace(registered_office_Address,'{',''),'}',''),char(39),''),': ',''))) +11\n END START_OF_POSTCODE, \n\n CASE\n WHEN CHARINDEX('postal_code',(replace(replace(replace(replace(registered_office_Address,'{',''),'}',''),char(39),''),': ',''))) > 0 \n THEN 20\n END LENGTH_OF_POSTCODE\n\n\n FROM [KNE_STG].[COMPANY_HOUSE_ADDITIONS]),\n \n \n \n Q_ACCOUNTS\n AS\n ( Select company_number,replace(accounts,char(39),'') accounts, \n charindex('{day:',replace(accounts,char(39),'')) +6 REF_DAY_START,\n charindex('month:',replace(accounts,char(39),'')) +7 REF_MONTH_START,\n charindex('due_on',replace(accounts,char(39),'')) +8 NEXT_DUE_START\n from [KNE_STG].[COMPANY_HOUSE_ADDITIONS])\n\n\n\n SELECT \n Q_ADDRESS_LIST.COMPANY_NUMBER,Q_ADDRESS_LIST.COMPANY_NAME,\n Q_ADDRESS_LIST.Address_List,\n SUBSTRING(Q_ADDRESS_LIST.Address_List,START_OF_ADDRESS_1,LENGTH_OF_ADDRESS_1) ADDRESS_LINE_1,\n SUBSTRING(Q_ADDRESS_LIST.Address_List,START_OF_ADDRESS_2,LENGTH_OF_ADDRESS_2) ADDRESS_LINE_2,\n SUBSTRING(Q_ADDRESS_LIST.Address_List,START_OF_COUNTRY,LENGTH_OF_COUNTRY) COUNTRY,\n SUBSTRING(Q_ADDRESS_LIST.Address_List,START_OF_LOCALITY,LENGTH_OF_LOCALITY) TOWN,\n SUBSTRING(Q_ADDRESS_LIST.Address_List,START_OF_POSTCODE,LENGTH_OF_POSTCODE) POSTCODE,\n SUBSTRING(LIST_OF_SIC_CODES,1,5) SIC_CODE_1,\n CASE\n WHEN FIRST_SEPERATOR > 0\n THEN SUBSTRING(LIST_OF_SIC_CODES,(FIRST_SEPERATOR+1),5)\n END SIC_CODE_2,\n CASE\n WHEN SECOND_SEPERATOR > 0\n THEN SUBSTRING(LIST_OF_SIC_CODES,(SECOND_SEPERATOR+1),5)\n END SIC_CODE_3,\n CASE\n WHEN THIRD_SEPERATOR > 0\n THEN SUBSTRING(LIST_OF_SIC_CODES,(THIRD_SEPERATOR+1),5)\n END SIC_CODE_4,\n SUBSTRING(Q_ACCOUNTS.ACCOUNTS,REF_DAY_START,2) AS ACCOUNT_REF_DAY,\n SUBSTRING(Q_ACCOUNTS.ACCOUNTS,REF_MONTH_START,2) AS ACCOUNT_REF_MONTH,\n SUBSTRING(Q_ACCOUNTS.ACCOUNTS,NEXT_DUE_START,10) AS ACCOUNT_DUE_DATE\n FROM Q_ADDRESS_LIST\n INNER JOIN Q_SIC_CODES\n ON Q_ADDRESS_LIST.COMPANY_NUMBER=Q_SIC_CODES.COMPANY_NUMBER\n INNER JOIN Q_ACCOUNTS\n ON Q_ADDRESS_LIST.COMPANY_NUMBER=Q_ACCOUNTS.COMPANY_NUMBER\n\n\n\n\n",
 						"queryTimeout": "02:00:00",
 						"partitionOption": "None"
 					},
-					"enableStaging": false
+					"sink": {
+						"type": "AzureSqlSink",
+						"preCopyScript": "TRINCATE KNE_INT.COMPANY_HOUSE_ADDITIONS",
+						"writeBehavior": "insert",
+						"sqlWriterUseTableLock": false,
+						"disableMetricsCollection": false
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"name": "COMPANY_NUMBER",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "COMPANY_NUMBER",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Address_List",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Address_List",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "ADDRESS_LINE_1",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "ADDRESS_LINE_1",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "ADDRESS_LINE_2",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "ADDRESS_LINE_2",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "COUNTRY",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "COUNTRY",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "TOWN",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "TOWN",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "POSTCODE",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "POSTCODE",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "SIC_CODE_1",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "SICCODE_SIC_TEXT_1",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "SIC_CODE_2",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "SICCODE_SIC_TEXT_2",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "SIC_CODE_3",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "SICCODE_SIC_TEXT_3",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "SIC_CODE_4",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "SICCODE_SIC_TEXT_4",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "ACCOUNT_REF_DAY",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "ACCOUNTS_REFDAY",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "ACCOUNT_REF_MONTH",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "ACCOUNTS_REFMONTH",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "ACCOUNT_DUE_DATE",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "ACCOUNTS_NEXTDUEDATE",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "COMPANY_NAME",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "COMPANY_NAME",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							}
+						],
+						"typeConversion": true,
+						"typeConversionSettings": {
+							"allowDataTruncation": true,
+							"treatBooleanAsNumber": false
+						}
+					}
 				},
 				"inputs": [
 					{
@@ -30,6 +227,16 @@
 						"parameters": {
 							"TableName": "X",
 							"SchemaName": "X"
+						}
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "DS_Azure_Destination",
+						"type": "DatasetReference",
+						"parameters": {
+							"TableName": "COMPANY_HOUSE_ADDITIONS",
+							"SchemaName": "KNE_INT"
 						}
 					}
 				]
