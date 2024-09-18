@@ -23,7 +23,7 @@
 					},
 					"sink": {
 						"type": "AzureSqlSink",
-						"preCopyScript": "TRINCATE KNE_INT.COMPANY_HOUSE_ADDITIONS",
+						"preCopyScript": "TRUNCATE TABLE KNE_INT.COMPANY_HOUSE_ADDITIONS",
 						"writeBehavior": "insert",
 						"sqlWriterUseTableLock": false,
 						"disableMetricsCollection": false
