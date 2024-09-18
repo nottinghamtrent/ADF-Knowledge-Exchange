@@ -258,6 +258,90 @@
 									"type": "String",
 									"physicalType": "varchar"
 								}
+							},
+							{
+								"source": {
+									"name": "company_type",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "company_type",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "kind",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "kind",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "links",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "links",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "date_of_cessation",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "date_of_cessation",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "date_of_creation",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "date_of_creation",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "registered_office_address",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "registered_office_address",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "sic_codes",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "sic_codes",
+									"type": "String",
+									"physicalType": "varchar"
+								}
 							}
 						],
 						"typeConversion": true,
