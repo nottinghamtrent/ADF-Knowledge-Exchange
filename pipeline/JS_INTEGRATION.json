@@ -12,7 +12,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"pipeline": {
-						"referenceName": "PL_PRS_DIM_COMPANY",
+						"referenceName": "PL_INT_DIM_COMPANY",
 						"type": "PipelineReference"
 					},
 					"waitOnCompletion": true
