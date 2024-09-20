@@ -127,10 +127,8 @@
 							{
 								"source": {
 									"name": "FACT_KE_INT_INTERVENTION_HOURS",
-									"type": "Decimal",
-									"physicalType": "decimal",
-									"scale": 2,
-									"precision": 7
+									"type": "String",
+									"physicalType": "varchar"
 								},
 								"sink": {
 									"name": "FACT_KE_INT_INTERVENTION_HOURS",
@@ -143,10 +141,8 @@
 							{
 								"source": {
 									"name": "FACT_KE_INT_INTERVENTION_CO2",
-									"type": "Decimal",
-									"physicalType": "decimal",
-									"scale": 4,
-									"precision": 10
+									"type": "String",
+									"physicalType": "varchar"
 								},
 								"sink": {
 									"name": "FACT_KE_INT_INTERVENTION_CO2",
