@@ -69,18 +69,6 @@
 							},
 							{
 								"source": {
-									"name": "COMPANY_PROJECT_CODE",
-									"type": "String",
-									"physicalType": "varchar"
-								},
-								"sink": {
-									"name": "COMPANY_PROJECT_CODE",
-									"type": "String",
-									"physicalType": "varchar"
-								}
-							},
-							{
-								"source": {
 									"name": "COMPANY_POSTCODE",
 									"type": "String",
 									"physicalType": "varchar"
@@ -145,72 +133,12 @@
 							},
 							{
 								"source": {
-									"name": "COMPANY_REGISTRATION_DATE",
-									"type": "DateTime",
-									"physicalType": "datetime"
-								},
-								"sink": {
-									"name": "COMPANY_REGISTRATION_DATE",
-									"type": "DateTime",
-									"physicalType": "datetime"
-								}
-							},
-							{
-								"source": {
-									"name": "COMPANY_EQUALITY_POLICY",
-									"type": "String",
-									"physicalType": "varchar"
-								},
-								"sink": {
-									"name": "COMPANY_EQUALITY_POLICY",
-									"type": "String",
-									"physicalType": "varchar"
-								}
-							},
-							{
-								"source": {
-									"name": "COMPANY_ENVIRONMENTAL_POLICY",
-									"type": "String",
-									"physicalType": "varchar"
-								},
-								"sink": {
-									"name": "COMPANY_ENVIRONMENTAL_POLICY",
-									"type": "String",
-									"physicalType": "varchar"
-								}
-							},
-							{
-								"source": {
 									"name": "COMPANY_SIZE",
 									"type": "String",
 									"physicalType": "varchar"
 								},
 								"sink": {
 									"name": "COMPANY_SIZE",
-									"type": "String",
-									"physicalType": "varchar"
-								}
-							},
-							{
-								"source": {
-									"name": "COMPANY__NO_TYPE2",
-									"type": "String",
-									"physicalType": "varchar"
-								},
-								"sink": {
-									"name": "COMPANY__NO_TYPE2",
-									"type": "String",
-									"physicalType": "varchar"
-								}
-							},
-							{
-								"source": {
-									"name": "COMPANY_PARTNER",
-									"type": "String",
-									"physicalType": "varchar"
-								},
-								"sink": {
-									"name": "COMPANY_PARTNER",
 									"type": "String",
 									"physicalType": "varchar"
 								}
