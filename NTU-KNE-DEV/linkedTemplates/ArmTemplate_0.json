@@ -1,0 +1,1751 @@
+{
+	"$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"type": "string",
+			"metadata": "Data Factory name",
+			"defaultValue": "NTU-KNE-DEV"
+		},
+		"LS_COMPANY_HOUSE_DATA_accountKey": {
+			"type": "secureString",
+			"metadata": "Secure string for 'accountKey' of 'LS_COMPANY_HOUSE_DATA'"
+		},
+		"LS_DBricks_Company_House_Data_accessToken": {
+			"type": "secureString",
+			"metadata": "Secure string for 'accessToken' of 'LS_DBricks_Company_House_Data'"
+		},
+		"LS_COMPANY_HOUSE_DATA_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://storageforcompanyhouse.dfs.core.windows.net/"
+		},
+		"LS_DBricks_Company_House_Data_properties_typeProperties_existingClusterId": {
+			"type": "string",
+			"defaultValue": "0905-140100-minfc4nk"
+		},
+		"LS_KV_NTU_ADF_PRD_properties_typeProperties_baseUrl": {
+			"type": "string",
+			"defaultValue": "https://NTU-ADF-PRD-KeyVault.vault.azure.net/"
+		},
+		"IR-Esther-PRD_properties_typeProperties_linkedInfo_resourceId": {
+			"type": "string",
+			"defaultValue": "/subscriptions/a310f81c-e035-4642-b38d-81c71a14db84/resourcegroups/prod_confirmationandclearing/providers/Microsoft.DataFactory/factories/NTU-ADF-PRD/integrationruntimes/IR-Esther-Prd"
+		},
+		"LS_AzureDB_properties_typeProperties_connectionString_secretName": {
+			"type": "string",
+			"defaultValue": "AzureDb-ConnectionString"
+		},
+		"LS_Azure_Destination_properties_typeProperties_connectionString_secretName": {
+			"type": "string",
+			"defaultValue": "KV-AzureDB-DEV-ConnectionString"
+		},
+		"LS_Knowledge_Exchange_properties_typeProperties_host": {
+			"type": "string",
+			"defaultValue": "\\\\renault\\BISHARE\\Cognos_production\\External Data Sources\\Knowledge Exchange"
+		},
+		"LS_Knowledge_Exchange_properties_typeProperties_userId": {
+			"type": "string",
+			"defaultValue": "ads\\Cognos10_prd"
+		}
+	},
+	"variables": {
+		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
+	},
+	"resources": [
+		{
+			"name": "[concat(parameters('factoryName'), '/LS_COMPANY_HOUSE_DATA')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureBlobFS",
+				"typeProperties": {
+					"url": "[parameters('LS_COMPANY_HOUSE_DATA_properties_typeProperties_url')]",
+					"accountKey": {
+						"type": "SecureString",
+						"value": "[parameters('LS_COMPANY_HOUSE_DATA_accountKey')]"
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/LS_DBricks_Company_House_Data')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureDatabricks",
+				"typeProperties": {
+					"domain": "https://adb-3844244507375380.0.azuredatabricks.net",
+					"accessToken": {
+						"type": "SecureString",
+						"value": "[parameters('LS_DBricks_Company_House_Data_accessToken')]"
+					},
+					"existingClusterId": "[parameters('LS_DBricks_Company_House_Data_properties_typeProperties_existingClusterId')]"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/LS_KV_NTU_ADF_PRD')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureKeyVault",
+				"typeProperties": {
+					"baseUrl": "[parameters('LS_KV_NTU_ADF_PRD_properties_typeProperties_baseUrl')]"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/IR-Esther-PRD')]",
+			"type": "Microsoft.DataFactory/factories/integrationRuntimes",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"type": "SelfHosted",
+				"typeProperties": {
+					"linkedInfo": {
+						"resourceId": "[parameters('IR-Esther-PRD_properties_typeProperties_linkedInfo_resourceId')]",
+						"authorizationType": "Rbac"
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/pipeline2')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Notebook1",
+						"type": "DatabricksNotebook",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"notebookPath": "/Users/wayne.vaughan@ntu.ac.uk/Advanced Company Search and Data Retrieval API"
+						},
+						"linkedServiceName": {
+							"referenceName": "LS_DBricks_Company_House_Data",
+							"type": "LinkedServiceReference"
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {}
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/LS_DBricks_Company_House_Data')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DS_COMPANY_HOUSE_ADDITIONS_DATALAKE')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "LS_COMPANY_HOUSE_DATA",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"folderPath": "newinclusions.csv",
+						"fileSystem": "companynewinclusions"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/LS_COMPANY_HOUSE_DATA')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DS_COMPANY_HOUSE_DELETIONS_DATALAKE')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "LS_COMPANY_HOUSE_DATA",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"folderPath": "dissolutions.csv",
+						"fileSystem": "companydissolutions"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/LS_COMPANY_HOUSE_DATA')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/LS_AzureDB')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureSqlDatabase",
+				"typeProperties": {
+					"connectionString": {
+						"type": "AzureKeyVaultSecret",
+						"store": {
+							"referenceName": "LS_KV_NTU_ADF_PRD",
+							"type": "LinkedServiceReference"
+						},
+						"secretName": "[parameters('LS_AzureDB_properties_typeProperties_connectionString_secretName')]"
+					}
+				},
+				"connectVia": {
+					"referenceName": "IR-Esther-PRD",
+					"type": "IntegrationRuntimeReference"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/integrationRuntimes/IR-Esther-PRD')]",
+				"[concat(variables('factoryId'), '/linkedServices/LS_KV_NTU_ADF_PRD')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/LS_Azure_Destination')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureSqlDatabase",
+				"typeProperties": {
+					"connectionString": {
+						"type": "AzureKeyVaultSecret",
+						"store": {
+							"referenceName": "LS_KV_NTU_ADF_PRD",
+							"type": "LinkedServiceReference"
+						},
+						"secretName": "[parameters('LS_Azure_Destination_properties_typeProperties_connectionString_secretName')]"
+					}
+				},
+				"connectVia": {
+					"referenceName": "IR-Esther-PRD",
+					"type": "IntegrationRuntimeReference"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/integrationRuntimes/IR-Esther-PRD')]",
+				"[concat(variables('factoryId'), '/linkedServices/LS_KV_NTU_ADF_PRD')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/LS_Knowledge_Exchange')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "FileServer",
+				"typeProperties": {
+					"host": "[parameters('LS_Knowledge_Exchange_properties_typeProperties_host')]",
+					"userId": "[parameters('LS_Knowledge_Exchange_properties_typeProperties_userId')]",
+					"password": {
+						"type": "AzureKeyVaultSecret",
+						"store": {
+							"referenceName": "LS_KV_NTU_ADF_PRD",
+							"type": "LinkedServiceReference"
+						},
+						"secretName": "RenaultBiUserPassword"
+					}
+				},
+				"connectVia": {
+					"referenceName": "IR-Esther-PRD",
+					"type": "IntegrationRuntimeReference"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/integrationRuntimes/IR-Esther-PRD')]",
+				"[concat(variables('factoryId'), '/linkedServices/LS_KV_NTU_ADF_PRD')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/PL_INT_COMPANY_HOUSE')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "SP_INT_COMPANY_HOUSE",
+						"type": "SqlServerStoredProcedure",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"storedProcedureName": "[[KNE_INT].[INT_COMPANY_HOUSE]"
+						},
+						"linkedServiceName": {
+							"referenceName": "LS_Azure_Destination",
+							"type": "LinkedServiceReference"
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {}
+				},
+				"folder": {
+					"name": "2_0_INTEGRATION"
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/LS_Azure_Destination')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DS_AzureDB')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "LS_AzureDB",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [],
+				"typeProperties": {}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/LS_AzureDB')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DS_Azure_Destination')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "LS_Azure_Destination",
+					"type": "LinkedServiceReference"
+				},
+				"parameters": {
+					"TableName": {
+						"type": "string",
+						"defaultValue": "X"
+					},
+					"SchemaName": {
+						"type": "string",
+						"defaultValue": "X"
+					}
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [],
+				"typeProperties": {
+					"schema": {
+						"value": "@dataset().SchemaName",
+						"type": "Expression"
+					},
+					"table": {
+						"value": "@dataset().TableName",
+						"type": "Expression"
+					}
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/LS_Azure_Destination')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DS_Knowledge_Exchange')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "LS_Knowledge_Exchange",
+					"type": "LinkedServiceReference"
+				},
+				"parameters": {
+					"FileName": {
+						"type": "string"
+					}
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "FileServerLocation",
+						"fileName": {
+							"value": "@dataset().FileName",
+							"type": "Expression"
+						}
+					},
+					"columnDelimiter": "\t",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"nullValue": "X",
+					"quoteChar": "\""
+				},
+				"schema": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/LS_Knowledge_Exchange')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/PL_INT_COMPANY_HOUSE_ADDITIONS')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "CD_INT_COMPANY_HOUSE_ADDITIONS",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "AzureSqlSource",
+								"sqlReaderQuery": "WITH\nQ_SIC_CODES\nAS\n(Select COMPANY_NUMBER,\n replace(replace(replace(replace(sic_codes,'[',''),']',''),char(39),''),' ','')  LIST_OF_SIC_CODES,\n CHARINDEX(',', replace(replace(replace(replace(sic_codes,'[',''),']',''),char(39),''),' ',''))  FIRST_SEPERATOR,\nCHARINDEX(',', replace(replace(replace(replace(sic_codes,'[',''),']',''),char(39),''),' ',''),CHARINDEX(',', replace(replace(replace(replace(sic_codes,'[',''),']',''),char(39),''),' ',''))+1)   SECOND_SEPERATOR,\n\nCHARINDEX(',', replace(replace(replace(replace(sic_codes,'[',''),']',''),char(39),''),' ',''),CHARINDEX(',', replace(replace(replace(replace(sic_codes,'[',''),']',''),char(39),''),' ',''),CHARINDEX(',',replace(replace(replace(replace(sic_codes,'[',''),']',''),char(39),''),' ',''))+1)+1) THIRD_SEPERATOR\n from [KNE_STG].[COMPANY_HOUSE_ADDITIONS]),\n\nQ_ACCOUNTS\nAS\n(SELECT  \ncompany_name,\ncompany_number,\nsubstring(accounts,(CHARINDEX(concat(char(39),'day',char(39),':'),accounts) +8 ),2) AS ACCOUNTS_REF_DAY,\nsubstring(accounts,(CHARINDEX(concat(char(39),'month',char(39),':'),accounts) +10 ),2) AS ACCOUNTS_REF_MONTH,\nsubstring(accounts,(CHARINDEX(concat(char(39),'due_on',char(39),':'),accounts) +11 ),10) AS ACCOUNTS_NEXTDUEDATE,\nsubstring(accounts,(CHARINDEX(concat(char(39),'overdue',char(39),':'),accounts) +11 ),5) AS ACCOUNTS_OVERDUE\n  FROM [KNE_STG].[COMPANY_HOUSE_ADDITIONS]),\n\nQ_ADDRESS_LIST\nAS\n( SELECT COMPANY_NUMBER, COMPANY_NAME,registered_office_Address, \n         replace(replace(replace(replace(registered_office_Address,'{',''),'}',''),char(39),''),': ','')  Address_List,\n   CASE\n WHEN CHARINDEX('address_line_1',(replace(replace(replace(replace(registered_office_Address,'{',''),'}',''),char(39),''),': ',''))) > 0\n THEN CHARINDEX('address_line_1',(replace(replace(replace(replace(registered_office_Address,'{',''),'}',''),char(39),''),': ',''))) +14\n END START_OF_ADDRESS_1,\n \n\n CASE\n WHEN CHARINDEX('address_line_1',(replace(replace(replace(replace(registered_office_Address,'{',''),'}',''),char(39),''),': ',''))) > 0\n THEN (CHARINDEX(',',replace(replace(replace(replace(registered_office_Address,'{',''),'}',''),char(39),''),': ',''),CHARINDEX('address_line_1',(replace(replace(replace(replace(registered_office_Address,'{',''),'}',''),char(39),''),': ',''))) +14)) - (CHARINDEX('address_line_1',(replace(replace(replace(replace(registered_office_Address,'{',''),'}',''),char(39),''),': ',''))) +14)\n END LENGTH_OF_ADDRESS_1,\n \n CASE\n WHEN CHARINDEX('address_line_2',(replace(replace(replace(replace(registered_office_Address,'{',''),'}',''),char(39),''),': ',''))) > 0 \n THEN CHARINDEX('address_line_2',(replace(replace(replace(replace(registered_office_Address,'{',''),'}',''),char(39),''),': ',''))) +14 \n END START_OF_ADDRESS_2, \n \n CASE\n WHEN CHARINDEX('address_line_2',(replace(replace(replace(replace(registered_office_Address,'{',''),'}',''),char(39),''),': ',''))) > 0 \n THEN (CHARINDEX(',',replace(replace(replace(replace(registered_office_Address,'{',''),'}',''),char(39),''),': ',''),CHARINDEX('address_line_2',(replace(replace(replace(replace(registered_office_Address,'{',''),'}',''),char(39),''),': ',''))) +14)) - (CHARINDEX('address_line_2',(replace(replace(replace(replace(registered_office_Address,'{',''),'}',''),char(39),''),': ',''))) +14) \n END LENGTH_OF_ADDRESS_2,\n \n\n CASE\n WHEN CHARINDEX('country',(replace(replace(replace(replace(registered_office_Address,'{',''),'}',''),char(39),''),': ',''))) > 0 \n THEN CHARINDEX('country',(replace(replace(replace(replace(registered_office_Address,'{',''),'}',''),char(39),''),': ',''))) +7\n END START_OF_COUNTRY, \n\n CASE\n WHEN CHARINDEX('country',(replace(replace(replace(replace(registered_office_Address,'{',''),'}',''),char(39),''),': ',''))) > 0 \n THEN (CHARINDEX(',',replace(replace(replace(replace(registered_office_Address,'{',''),'}',''),char(39),''),': ',''),CHARINDEX('country',(replace(replace(replace(replace(registered_office_Address,'{',''),'}',''),char(39),''),': ',''))) +7)) - (CHARINDEX('country',(replace(replace(replace(replace(registered_office_Address,'{',''),'}',''),char(39),''),': ',''))) +7) \n END LENGTH_OF_COUNTRY,\n \n \n CASE\n WHEN CHARINDEX('locality',(replace(replace(replace(replace(registered_office_Address,'{',''),'}',''),char(39),''),': ',''))) > 0 \n THEN CHARINDEX('locality',(replace(replace(replace(replace(registered_office_Address,'{',''),'}',''),char(39),''),': ',''))) +8\n END START_OF_LOCALITY, \n \n CASE\n WHEN CHARINDEX('locality',(replace(replace(replace(replace(registered_office_Address,'{',''),'}',''),char(39),''),': ',''))) > 0 \n THEN (CHARINDEX(',',replace(replace(replace(replace(registered_office_Address,'{',''),'}',''),char(39),''),': ',''),CHARINDEX('locality',(replace(replace(replace(replace(registered_office_Address,'{',''),'}',''),char(39),''),': ',''))) +7)) - (CHARINDEX('locality',(replace(replace(replace(replace(registered_office_Address,'{',''),'}',''),char(39),''),': ',''))) +7) \n END LENGTH_OF_LOCALITY,\n \n CASE\n WHEN CHARINDEX('postal_code',(replace(replace(replace(replace(registered_office_Address,'{',''),'}',''),char(39),''),': ',''))) > 0 \n THEN CHARINDEX('postal_code',(replace(replace(replace(replace(registered_office_Address,'{',''),'}',''),char(39),''),': ',''))) +11\n END START_OF_POSTCODE, \n\n CASE\n WHEN CHARINDEX('postal_code',(replace(replace(replace(replace(registered_office_Address,'{',''),'}',''),char(39),''),': ',''))) > 0 \n THEN 20\n END LENGTH_OF_POSTCODE\n\n\n FROM [KNE_STG].[COMPANY_HOUSE_ADDITIONS])\n\n\n\n SELECT  \n Q_ADDRESS_LIST.COMPANY_NUMBER,Q_ADDRESS_LIST.COMPANY_NAME,\n Q_ADDRESS_LIST.Address_List,\n SUBSTRING(Q_ADDRESS_LIST.Address_List,START_OF_ADDRESS_1,LENGTH_OF_ADDRESS_1) ADDRESS_LINE_1,\n SUBSTRING(Q_ADDRESS_LIST.Address_List,START_OF_ADDRESS_2,LENGTH_OF_ADDRESS_2) ADDRESS_LINE_2,\n SUBSTRING(Q_ADDRESS_LIST.Address_List,START_OF_COUNTRY,LENGTH_OF_COUNTRY) COUNTRY,\n SUBSTRING(Q_ADDRESS_LIST.Address_List,START_OF_LOCALITY,LENGTH_OF_LOCALITY) TOWN,\n SUBSTRING(Q_ADDRESS_LIST.Address_List,START_OF_POSTCODE,LENGTH_OF_POSTCODE) POSTCODE,\n SUBSTRING(LIST_OF_SIC_CODES,1,5) SIC_CODE_1,\n CASE\n WHEN FIRST_SEPERATOR > 0\n THEN SUBSTRING(LIST_OF_SIC_CODES,(FIRST_SEPERATOR+1),5)\n END SIC_CODE_2,\n CASE\n WHEN SECOND_SEPERATOR > 0\n THEN SUBSTRING(LIST_OF_SIC_CODES,(SECOND_SEPERATOR+1),5)\n END SIC_CODE_3,\n CASE\n WHEN THIRD_SEPERATOR > 0\n THEN SUBSTRING(LIST_OF_SIC_CODES,(THIRD_SEPERATOR+1),5)\n END SIC_CODE_4,\n ACCOUNTS_REF_DAY,\n ACCOUNTS_REF_MONTH,\n ACCOUNTS_NEXTDUEDATE,\n ACCOUNTS_OVERDUE\n\n FROM Q_ADDRESS_LIST\n INNER JOIN Q_SIC_CODES\n ON Q_ADDRESS_LIST.COMPANY_NUMBER=Q_SIC_CODES.COMPANY_NUMBER\n INNER JOIN Q_ACCOUNTS\n ON Q_ADDRESS_LIST.COMPANY_NUMBER=Q_ACCOUNTS.COMPANY_NUMBER",
+								"queryTimeout": "02:00:00",
+								"partitionOption": "None"
+							},
+							"sink": {
+								"type": "AzureSqlSink",
+								"preCopyScript": "TRUNCATE TABLE KNE_INT.COMPANY_HOUSE_ADDITIONS",
+								"writeBehavior": "insert",
+								"sqlWriterUseTableLock": false,
+								"tableOption": "autoCreate",
+								"disableMetricsCollection": false
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"mappings": [
+									{
+										"source": {
+											"name": "COMPANY_NUMBER",
+											"type": "String",
+											"physicalType": "varchar"
+										},
+										"sink": {
+											"name": "COMPANY_NUMBER",
+											"type": "String",
+											"physicalType": "varchar"
+										}
+									},
+									{
+										"source": {
+											"name": "Address_List",
+											"type": "String",
+											"physicalType": "varchar"
+										},
+										"sink": {
+											"name": "Address_List",
+											"type": "String",
+											"physicalType": "varchar"
+										}
+									},
+									{
+										"source": {
+											"name": "ADDRESS_LINE_1",
+											"type": "String",
+											"physicalType": "varchar"
+										},
+										"sink": {
+											"name": "ADDRESS_LINE_1",
+											"type": "String",
+											"physicalType": "varchar"
+										}
+									},
+									{
+										"source": {
+											"name": "ADDRESS_LINE_2",
+											"type": "String",
+											"physicalType": "varchar"
+										},
+										"sink": {
+											"name": "ADDRESS_LINE_2",
+											"type": "String",
+											"physicalType": "varchar"
+										}
+									},
+									{
+										"source": {
+											"name": "COUNTRY",
+											"type": "String",
+											"physicalType": "varchar"
+										},
+										"sink": {
+											"name": "COUNTRY",
+											"type": "String",
+											"physicalType": "varchar"
+										}
+									},
+									{
+										"source": {
+											"name": "TOWN",
+											"type": "String",
+											"physicalType": "varchar"
+										},
+										"sink": {
+											"name": "TOWN",
+											"type": "String",
+											"physicalType": "varchar"
+										}
+									},
+									{
+										"source": {
+											"name": "POSTCODE",
+											"type": "String",
+											"physicalType": "varchar"
+										},
+										"sink": {
+											"name": "POSTCODE",
+											"type": "String",
+											"physicalType": "varchar"
+										}
+									},
+									{
+										"source": {
+											"name": "SIC_CODE_1",
+											"type": "String",
+											"physicalType": "varchar"
+										},
+										"sink": {
+											"name": "SICCODE_SIC_TEXT_1",
+											"type": "String",
+											"physicalType": "varchar"
+										}
+									},
+									{
+										"source": {
+											"name": "SIC_CODE_2",
+											"type": "String",
+											"physicalType": "varchar"
+										},
+										"sink": {
+											"name": "SICCODE_SIC_TEXT_2",
+											"type": "String",
+											"physicalType": "varchar"
+										}
+									},
+									{
+										"source": {
+											"name": "SIC_CODE_3",
+											"type": "String",
+											"physicalType": "varchar"
+										},
+										"sink": {
+											"name": "SICCODE_SIC_TEXT_3",
+											"type": "String",
+											"physicalType": "varchar"
+										}
+									},
+									{
+										"source": {
+											"name": "SIC_CODE_4",
+											"type": "String",
+											"physicalType": "varchar"
+										},
+										"sink": {
+											"name": "SICCODE_SIC_TEXT_4",
+											"type": "String",
+											"physicalType": "varchar"
+										}
+									},
+									{
+										"source": {
+											"name": "ACCOUNTS_REF_DAY",
+											"type": "String",
+											"physicalType": "varchar"
+										},
+										"sink": {
+											"name": "ACCOUNTS_REFDAY",
+											"type": "String",
+											"physicalType": "varchar"
+										}
+									},
+									{
+										"source": {
+											"name": "ACCOUNTS_REF_MONTH",
+											"type": "String",
+											"physicalType": "varchar"
+										},
+										"sink": {
+											"name": "ACCOUNTS_REFMONTH",
+											"type": "String",
+											"physicalType": "varchar"
+										}
+									},
+									{
+										"source": {
+											"name": "ACCOUNTS_NEXTDUEDATE",
+											"type": "String",
+											"physicalType": "varchar"
+										},
+										"sink": {
+											"name": "ACCOUNTS_NEXTDUEDATE",
+											"type": "String",
+											"physicalType": "varchar"
+										}
+									},
+									{
+										"source": {
+											"name": "ACCOUNTS_OVERDUE",
+											"type": "String",
+											"physicalType": "varchar"
+										},
+										"sink": {
+											"name": "ACCOUNTS_OVERDUE",
+											"type": "String",
+											"physicalType": "varchar"
+										}
+									},
+									{
+										"source": {
+											"name": "COMPANY_NAME",
+											"type": "String",
+											"physicalType": "varchar"
+										},
+										"sink": {
+											"name": "COMPANY_NAME",
+											"type": "String",
+											"physicalType": "varchar"
+										}
+									}
+								],
+								"typeConversion": true,
+								"typeConversionSettings": {
+									"allowDataTruncation": true,
+									"treatBooleanAsNumber": false
+								}
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "DS_Azure_Destination",
+								"type": "DatasetReference",
+								"parameters": {
+									"TableName": "COMPANY_HOUSE_ADDITIONS",
+									"SchemaName": "KNE_STG"
+								}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "DS_Azure_Destination",
+								"type": "DatasetReference",
+								"parameters": {
+									"TableName": "COMPANY_HOUSE_ADDITIONS",
+									"SchemaName": "KNE_INT"
+								}
+							}
+						]
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {}
+				},
+				"folder": {
+					"name": "2_0_INTEGRATION"
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/DS_Azure_Destination')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/PL_INT_DIM_COMPANY')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "CD_INT_DIM_COMPANY",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "AzureSqlSource",
+								"additionalColumns": [
+									{
+										"name": "CURRENT_DATE",
+										"value": {
+											"value": "@formatDateTime(utcnow())",
+											"type": "Expression"
+										}
+									},
+									{
+										"name": "ACTIVE_IND",
+										"value": "Y"
+									}
+								],
+								"sqlReaderQuery": "WITH\nQ_OUPUTS\nAS\n(\nSELECT project_Code, partner,Business_Number,\nCASE\nWHEN [C1] IS NOT NULL THEN 'Y'\nELSE 'N'\nEND C1,\nCASE\nWHEN [C2] IS NOT NULL THEN 'Y'\nELSE 'N'\nEND C2,\nCASE\nWHEN [C4] IS NOT NULL THEN 'Y'\nELSE 'N'\nEND C4,\nCASE\nWHEN [C6] IS NOT NULL THEN 'Y'\nELSE 'N'\nEND C6,\nCASE\nWHEN [C34] IS NOT NULL THEN 'Y'\nELSE 'N'\nEND C34,\nCASE\nWHEN [C26] IS NOT NULL THEN 'Y'\nELSE 'N'\nEND C26,\nCASE\nWHEN [C28] IS NOT NULL THEN 'Y'\nELSE 'N'\nEND C28,\nCASE\nWHEN [C29] IS NOT NULL THEN 'Y'\nELSE 'N'\nEND C29,\nCASE\nWHEN [C5] IS NOT NULL THEN 'Y'\nELSE 'N'\nEND C5,\nCASE\nWHEN [C8] IS NOT NULL THEN 'Y'\nELSE 'N'\nEND C8,\nCASE\nWHEN [C023] IS NOT NULL THEN 'Y'\nELSE 'N'\nEND C023,\nCASE\nWHEN [P11] IS NOT NULL THEN 'Y'\nELSE 'N'\nEND P11,\nCASE\nWHEN [P13] IS NOT NULL THEN 'Y'\nELSE 'N'\nEND P13,\nCASE\nWHEN [R9] IS NOT NULL THEN 'Y'\nELSE 'N'\nEND R9\nFROM (\n    SELECT Project_Code, partner,Business_Number,Output FROM [KNE_STG].[Outputs]\n) AS SourceTable\nPIVOT (\n    MAX(output)\n    FOR output IN ([C1], [C2], [C4], [C6], [C34], [C26],[C28],[C29],[C5],[C8],[C023],[P11],[P13],[R9] )\n\n) AS PivotTable),\n\n\n\n\n\nQ_CARBON\nAS\n(\nSELECT BUSINESS_NUMBER,\nSUM(CAST(\"MATCH\" AS DECIMAL (10,2))) AS MATCH_TOTAL,\nSUM(CASE\nWHEN LEN(tCo2e) > 0\nTHEN CAST(REPLACE(tCo2e,'t','') AS DECIMAL (10,2)) \nELSE CAST('0.00' AS DECIMAL (10,2))\nEND) CO2_TOTAL,\nSUM(CAST(REPLACE(REPLACE(\"Grant\",'\"',''),',','')AS DECIMAL (10,2))) AS  GRANT_TOTAL\nFROM KNE_STG.BUSINESSDATA_CARBON\nGROUP BY BUSINESS_NUMBER)\n\n  \n  \n  SELECT \n      MAIN.Project_Code,\n      MAIN.Business_Number,\n      MAIN.Business_Name,\n      MAIN.Postcode,\n      \n\t  CONVERT(date, MAIN.Enrolment_Date, 103) AS Enrolment_Date,\n\t  \n\t\n      MAIN.FIVE_Digit_SIC_Code,\n      Turnover,\n      CAST(MAIN.No_of_Employees AS NUMERIC) AS No_of_Employees,\n\n\t  CONVERT(date, MAIN.Business_Registration_Date, 103) AS Business_Registration_Date,\n      MAIN.Equality_Policy,\n      MAIN.Environmental_Policy,\n      MAIN.Size,\n      MAIN.Business_No_Type2,\n      MAIN.Partner,\n\t  COALESCE(OUTPUTS.C1,'N') OUTPUT_C1,\n\t  COALESCE(OUTPUTS.C2,'N') OUTPUT_C2,\n\t  COALESCE(OUTPUTS.C4,'N') OUTPUT_C4,\n\t  COALESCE(OUTPUTS.C6,'N') OUTPUT_C6,\n\t  COALESCE(OUTPUTS.C34,'N') OUTPUT_C34,\n      COALESCE(OUTPUTS.C26,'N') OUTPUT_C26,\n\t  COALESCE(OUTPUTS.C28,'N') OUTPUT_C28,\n\t  COALESCE(OUTPUTS.C29,'N') OUTPUT_C29,\n\t  COALESCE(OUTPUTS.C5,'N') OUTPUT_C5,\n      COALESCE(OUTPUTS.C8,'N') OUTPUT_C8,\n\t  COALESCE(OUTPUTS.C023,'N') OUTPUT_C023,\n\t  COALESCE(OUTPUTS.P11,'N') OUTPUT_P11,\n\t  COALESCE(OUTPUTS.P13,'N') OUTPUT_P13,\n\t  COALESCE(OUTPUTS.R9,'N') OUTPUT_R9,\n\t  COALESCE(Q_CARBON.CO2_TOTAL,'0.00') CO2_TOTAL,\n\t  COALESCE(Q_CARBON.GRANT_TOTAL,'0.00') GRANT_TOTAL,\n\t  COALESCE(Q_CARBON.MATCH_TOTAL,'0.00') MATCH_TOTAL\n  FROM KNE_STG.BusinessData_General MAIN\n  LEFT OUTER JOIN Q_OUPUTS OUTPUTS\n  ON MAIN.Project_Code=OUTPUTS.Project_Code\n  AND MAIN.Business_Number=OUTPUTS.Business_Number\n  AND MAIN.PARTNER=OUTPUTS.Partner\n  LEFT OUTER JOIN Q_CARBON\n  ON MAIN.Business_Number=Q_CARBON.Business_Number\n  WHERE CONCAT(MAIN.Project_Code,MAIN.Enrolment_Date)=\n  (SELECT MAX(CONCAT(SUB.Project_Code,SUB.Enrolment_Date))\n  FROM [KNE_STG].[BusinessData_General] SUB\n  WHERE SUB.Business_Number=MAIN.Business_Number)",
+								"queryTimeout": "02:00:00",
+								"partitionOption": "None"
+							},
+							"sink": {
+								"type": "AzureSqlSink",
+								"preCopyScript": "TRUNCATE TABLE KNE_INT.DIM_COMPANY",
+								"writeBehavior": "insert",
+								"sqlWriterUseTableLock": false,
+								"disableMetricsCollection": false
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"mappings": [
+									{
+										"source": {
+											"name": "Business_Number",
+											"type": "String",
+											"physicalType": "varchar"
+										},
+										"sink": {
+											"name": "COMPANY_BK",
+											"type": "String",
+											"physicalType": "varchar"
+										}
+									},
+									{
+										"source": {
+											"name": "Business_Name",
+											"type": "String",
+											"physicalType": "varchar"
+										},
+										"sink": {
+											"name": "COMPANY_NAME",
+											"type": "String",
+											"physicalType": "varchar"
+										}
+									},
+									{
+										"source": {
+											"name": "Postcode",
+											"type": "String",
+											"physicalType": "varchar"
+										},
+										"sink": {
+											"name": "COMPANY_POSTCODE",
+											"type": "String",
+											"physicalType": "varchar"
+										}
+									},
+									{
+										"source": {
+											"name": "Enrolment_Date",
+											"type": "DateTime",
+											"physicalType": "date"
+										},
+										"sink": {
+											"name": "COMPANY_ENROLMENT_DATE",
+											"type": "DateTime",
+											"physicalType": "datetime"
+										}
+									},
+									{
+										"source": {
+											"name": "FIVE_Digit_SIC_Code",
+											"type": "String",
+											"physicalType": "varchar"
+										},
+										"sink": {
+											"name": "COMPANY_FIVE_DIGIT_SIC_CODE",
+											"type": "String",
+											"physicalType": "varchar"
+										}
+									},
+									{
+										"source": {
+											"name": "Turnover",
+											"type": "String",
+											"physicalType": "varchar"
+										},
+										"sink": {
+											"name": "COMPANY_TURNOVER",
+											"type": "String",
+											"physicalType": "varchar"
+										}
+									},
+									{
+										"source": {
+											"name": "No_of_Employees",
+											"type": "Decimal",
+											"physicalType": "decimal",
+											"scale": 0,
+											"precision": 18
+										},
+										"sink": {
+											"name": "COMPANY_NO_OF_EMPLOYEES",
+											"type": "Decimal",
+											"physicalType": "decimal",
+											"scale": 0,
+											"precision": 8
+										}
+									},
+									{
+										"source": {
+											"name": "Size",
+											"type": "String",
+											"physicalType": "varchar"
+										},
+										"sink": {
+											"name": "COMPANY_SIZE",
+											"type": "String",
+											"physicalType": "varchar"
+										}
+									},
+									{
+										"source": {
+											"name": "Business_No_Type2",
+											"type": "String",
+											"physicalType": "varchar"
+										},
+										"sink": {
+											"name": "COMPANY_NO_TYPE2",
+											"type": "String",
+											"physicalType": "varchar"
+										}
+									},
+									{
+										"source": {
+											"name": "OUTPUT_C1",
+											"type": "String",
+											"physicalType": "varchar"
+										},
+										"sink": {
+											"name": "COMANY_OUTPUT_C1",
+											"type": "String",
+											"physicalType": "varchar"
+										}
+									},
+									{
+										"source": {
+											"name": "OUTPUT_C2",
+											"type": "String",
+											"physicalType": "varchar"
+										},
+										"sink": {
+											"name": "COMANY_OUTPUT_C2",
+											"type": "String",
+											"physicalType": "varchar"
+										}
+									},
+									{
+										"source": {
+											"name": "OUTPUT_C4",
+											"type": "String",
+											"physicalType": "varchar"
+										},
+										"sink": {
+											"name": "COMANY_OUTPUT_C4",
+											"type": "String",
+											"physicalType": "varchar"
+										}
+									},
+									{
+										"source": {
+											"name": "OUTPUT_C6",
+											"type": "String",
+											"physicalType": "varchar"
+										},
+										"sink": {
+											"name": "COMANY_OUTPUT_C6",
+											"type": "String",
+											"physicalType": "varchar"
+										}
+									},
+									{
+										"source": {
+											"name": "OUTPUT_C34",
+											"type": "String",
+											"physicalType": "varchar"
+										},
+										"sink": {
+											"name": "COMANY_OUTPUT_C34",
+											"type": "String",
+											"physicalType": "varchar"
+										}
+									},
+									{
+										"source": {
+											"name": "OUTPUT_C26",
+											"type": "String",
+											"physicalType": "varchar"
+										},
+										"sink": {
+											"name": "COMANY_OUTPUT_C26",
+											"type": "String",
+											"physicalType": "varchar"
+										}
+									},
+									{
+										"source": {
+											"name": "OUTPUT_C28",
+											"type": "String",
+											"physicalType": "varchar"
+										},
+										"sink": {
+											"name": "COMANY_OUTPUT_C28",
+											"type": "String",
+											"physicalType": "varchar"
+										}
+									},
+									{
+										"source": {
+											"name": "OUTPUT_C29",
+											"type": "String",
+											"physicalType": "varchar"
+										},
+										"sink": {
+											"name": "COMANY_OUTPUT_C29",
+											"type": "String",
+											"physicalType": "varchar"
+										}
+									},
+									{
+										"source": {
+											"name": "OUTPUT_C5",
+											"type": "String",
+											"physicalType": "varchar"
+										},
+										"sink": {
+											"name": "COMANY_OUTPUT_C5",
+											"type": "String",
+											"physicalType": "varchar"
+										}
+									},
+									{
+										"source": {
+											"name": "OUTPUT_C8",
+											"type": "String",
+											"physicalType": "varchar"
+										},
+										"sink": {
+											"name": "COMANY_OUTPUT_C8",
+											"type": "String",
+											"physicalType": "varchar"
+										}
+									},
+									{
+										"source": {
+											"name": "OUTPUT_C023",
+											"type": "String",
+											"physicalType": "varchar"
+										},
+										"sink": {
+											"name": "COMANY_OUTPUT_C023",
+											"type": "String",
+											"physicalType": "varchar"
+										}
+									},
+									{
+										"source": {
+											"name": "OUTPUT_P11",
+											"type": "String",
+											"physicalType": "varchar"
+										},
+										"sink": {
+											"name": "COMANY_OUTPUT_P11",
+											"type": "String",
+											"physicalType": "varchar"
+										}
+									},
+									{
+										"source": {
+											"name": "OUTPUT_P13",
+											"type": "String",
+											"physicalType": "varchar"
+										},
+										"sink": {
+											"name": "COMANY_OUTPUT_P13",
+											"type": "String",
+											"physicalType": "varchar"
+										}
+									},
+									{
+										"source": {
+											"name": "OUTPUT_R9",
+											"type": "String",
+											"physicalType": "varchar"
+										},
+										"sink": {
+											"name": "COMANY_OUTPUT_R9",
+											"type": "String",
+											"physicalType": "varchar"
+										}
+									},
+									{
+										"source": {
+											"name": "CO2_TOTAL",
+											"type": "Decimal",
+											"physicalType": "decimal",
+											"scale": 2,
+											"precision": 38
+										},
+										"sink": {
+											"name": "COMPANY_CO2_TOTAL",
+											"type": "Decimal",
+											"physicalType": "decimal",
+											"scale": 0,
+											"precision": 10
+										}
+									},
+									{
+										"source": {
+											"name": "GRANT_TOTAL",
+											"type": "Decimal",
+											"physicalType": "decimal",
+											"scale": 2,
+											"precision": 38
+										},
+										"sink": {
+											"name": "COMPANY_GRANT_TOTAL",
+											"type": "Decimal",
+											"physicalType": "decimal",
+											"scale": 0,
+											"precision": 10
+										}
+									},
+									{
+										"source": {
+											"name": "MATCH_TOTAL",
+											"type": "Decimal",
+											"physicalType": "decimal",
+											"scale": 2,
+											"precision": 38
+										},
+										"sink": {
+											"name": "COMPANY_MATCH_TOTAL",
+											"type": "Decimal",
+											"physicalType": "decimal",
+											"scale": 0,
+											"precision": 10
+										}
+									},
+									{
+										"source": {
+											"name": "CURRENT_DATE",
+											"type": "String"
+										},
+										"sink": {
+											"name": "COMPANY_START_DATE",
+											"type": "DateTime",
+											"physicalType": "datetime"
+										}
+									},
+									{
+										"source": {
+											"name": "ACTIVE_IND",
+											"type": "String"
+										},
+										"sink": {
+											"name": "COMPANY_ACTIVE_IND",
+											"type": "String",
+											"physicalType": "char"
+										}
+									}
+								],
+								"typeConversion": true,
+								"typeConversionSettings": {
+									"allowDataTruncation": true,
+									"treatBooleanAsNumber": false
+								}
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "DS_Azure_Destination",
+								"type": "DatasetReference",
+								"parameters": {
+									"TableName": "STG.BusinessData_Genera",
+									"SchemaName": "KNE_STG"
+								}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "DS_Azure_Destination",
+								"type": "DatasetReference",
+								"parameters": {
+									"TableName": "DIM_COMPANY",
+									"SchemaName": "KNE_INT"
+								}
+							}
+						]
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {}
+				},
+				"folder": {
+					"name": "2_0_INTEGRATION"
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/DS_Azure_Destination')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/PL_INT_DIM_COMPANY_HOUSE_ADDITIONAS_AND_DELETIONS')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "SP_INT_DIM_COMPANY_HOUSE",
+						"type": "SqlServerStoredProcedure",
+						"state": "Inactive",
+						"onInactiveMarkAs": "Succeeded",
+						"dependsOn": [
+							{
+								"activity": "SC_SET_DELETIONS_INACTIVE",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"storedProcedureName": "[[KNE_INTSP].[DIM_COMPANY_HOUSE]"
+						},
+						"linkedServiceName": {
+							"referenceName": "LS_Azure_Destination",
+							"type": "LinkedServiceReference"
+						}
+					},
+					{
+						"name": "SC_SET_DELETIONS_INACTIVE",
+						"type": "Script",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"linkedServiceName": {
+							"referenceName": "LS_Azure_Destination",
+							"type": "LinkedServiceReference"
+						},
+						"typeProperties": {
+							"scripts": [
+								{
+									"type": "Query",
+									"text": "UPDATE KNE_INT.DIM_COMPANY_HOUSE\nSET COMPANY_HOUSE_ACT_IND='N',\nCOMPANY_HOUSE_END_DATE=GETDATE()\nWHERE COMPANY_HOUSE_BK\nIN\n(SELECT COMPANY_NUMBER\nFROM KNE_STG.COMPANY_HOUSE_DELETIONS)"
+								}
+							],
+							"scriptBlockExecutionTimeout": "02:00:00"
+						}
+					},
+					{
+						"name": "CD_ADD_NEW_ADDITIONS",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "AzureSqlSource",
+								"sqlReaderQuery": "     SELECT \n  COMPANY_NUMBER,\n  COMPANY_NAME,\n  ADDRESS_LINE_1,\n  ADDRESS_LINE_2,\n  COUNTRY,\n  TOWN,\n  POSTCODE,\n  SICCODE_SIC_TEXT_1,\n  SICCODE_SIC_TEXT_2,\n  SICCODE_SIC_TEXT_3,\n  SICCODE_SIC_TEXT_4,\n  ACCOUNTS_REFDAY,\n  ACCOUNTS_REFMONTH,\n  ACCOUNTS_NEXTDUEDATE,\n  ACCOUNTS_OVERDUE,\n  'Y' ACTIVE_IND,\n  GETDATE() START_DATE,\n    CONVERT (BIGINT, HASHBYTES('SHA1', CONCAT(COMPANY_NUMBER,COMPANY_NAME,ADDRESS_LINE_1,ADDRESS_LINE_2,COUNTRY,TOWN,POSTCODE,SICCODE_SIC_TEXT_1,SICCODE_SIC_TEXT_2,SICCODE_SIC_TEXT_3,SICCODE_SIC_TEXT_4,ACCOUNTS_REFDAY,ACCOUNTS_REFMONTH,ACCOUNTS_NEXTDUEDATE,ACCOUNTS_OVERDUE))) AS HashId\n  FROM KNE_INT.COMPANY_HOUSE_ADDITIONS\n  WHERE COMPANY_NUMBER\n  NOT IN \n  (SELECT Company_House_BK\n   FROM KNE_INT.DIM_COMPANY_HOUSE)",
+								"queryTimeout": "02:00:00",
+								"partitionOption": "None"
+							},
+							"sink": {
+								"type": "AzureSqlSink",
+								"writeBehavior": "insert",
+								"sqlWriterUseTableLock": false,
+								"disableMetricsCollection": false
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"mappings": [
+									{
+										"source": {
+											"name": "COMPANY_NUMBER",
+											"type": "String",
+											"physicalType": "varchar"
+										},
+										"sink": {
+											"name": "Company_House_BK",
+											"type": "String",
+											"physicalType": "varchar"
+										}
+									},
+									{
+										"source": {
+											"name": "COMPANY_NAME",
+											"type": "String",
+											"physicalType": "varchar"
+										},
+										"sink": {
+											"name": "Company_Name",
+											"type": "String",
+											"physicalType": "varchar"
+										}
+									},
+									{
+										"source": {
+											"name": "ADDRESS_LINE_1",
+											"type": "String",
+											"physicalType": "varchar"
+										},
+										"sink": {
+											"name": "Address_Line_1",
+											"type": "String",
+											"physicalType": "varchar"
+										}
+									},
+									{
+										"source": {
+											"name": "ADDRESS_LINE_2",
+											"type": "String",
+											"physicalType": "varchar"
+										},
+										"sink": {
+											"name": "Address_Line_2",
+											"type": "String",
+											"physicalType": "varchar"
+										}
+									},
+									{
+										"source": {
+											"name": "TOWN",
+											"type": "String",
+											"physicalType": "varchar"
+										},
+										"sink": {
+											"name": "Town",
+											"type": "String",
+											"physicalType": "varchar"
+										}
+									},
+									{
+										"source": {
+											"name": "COUNTRY",
+											"type": "String",
+											"physicalType": "varchar"
+										},
+										"sink": {
+											"name": "Country",
+											"type": "String",
+											"physicalType": "varchar"
+										}
+									},
+									{
+										"source": {
+											"name": "POSTCODE",
+											"type": "String",
+											"physicalType": "varchar"
+										},
+										"sink": {
+											"name": "Postcode",
+											"type": "String",
+											"physicalType": "nvarchar"
+										}
+									},
+									{
+										"source": {
+											"name": "ACCOUNTS_REFDAY",
+											"type": "String",
+											"physicalType": "varchar"
+										},
+										"sink": {
+											"name": "Account_Refday",
+											"type": "String",
+											"physicalType": "varchar"
+										}
+									},
+									{
+										"source": {
+											"name": "ACCOUNTS_REFMONTH",
+											"type": "String",
+											"physicalType": "varchar"
+										},
+										"sink": {
+											"name": "Account_Refmonth",
+											"type": "String",
+											"physicalType": "varchar"
+										}
+									},
+									{
+										"source": {
+											"name": "ACCOUNTS_NEXTDUEDATE",
+											"type": "String",
+											"physicalType": "varchar"
+										},
+										"sink": {
+											"name": "Accounts_NextDueDate",
+											"type": "DateTime",
+											"physicalType": "datetime"
+										}
+									},
+									{
+										"source": {
+											"name": "SICCODE_SIC_TEXT_1",
+											"type": "String",
+											"physicalType": "varchar"
+										},
+										"sink": {
+											"name": "SICCode_SicText_1",
+											"type": "String",
+											"physicalType": "varchar"
+										}
+									},
+									{
+										"source": {
+											"name": "SICCODE_SIC_TEXT_2",
+											"type": "String",
+											"physicalType": "varchar"
+										},
+										"sink": {
+											"name": "SICCode_SicText_2",
+											"type": "String",
+											"physicalType": "varchar"
+										}
+									},
+									{
+										"source": {
+											"name": "SICCODE_SIC_TEXT_3",
+											"type": "String",
+											"physicalType": "varchar"
+										},
+										"sink": {
+											"name": "SICCode_SicText_3",
+											"type": "String",
+											"physicalType": "varchar"
+										}
+									},
+									{
+										"source": {
+											"name": "SICCODE_SIC_TEXT_4",
+											"type": "String",
+											"physicalType": "varchar"
+										},
+										"sink": {
+											"name": "SICCode_SicText_4",
+											"type": "String",
+											"physicalType": "varchar"
+										}
+									},
+									{
+										"source": {
+											"name": "START_DATE",
+											"type": "DateTime",
+											"physicalType": "datetime"
+										},
+										"sink": {
+											"name": "Company_House_Start_Date",
+											"type": "DateTime",
+											"physicalType": "datetime"
+										}
+									},
+									{
+										"source": {
+											"name": "ACTIVE_IND",
+											"type": "String",
+											"physicalType": "varchar"
+										},
+										"sink": {
+											"name": "Company_House_Act_Ind",
+											"type": "String",
+											"physicalType": "char"
+										}
+									},
+									{
+										"source": {
+											"name": "HashId",
+											"type": "Int64",
+											"physicalType": "bigint"
+										},
+										"sink": {
+											"name": "HashID",
+											"type": "Int64",
+											"physicalType": "bigint"
+										}
+									}
+								],
+								"typeConversion": true,
+								"typeConversionSettings": {
+									"allowDataTruncation": true,
+									"treatBooleanAsNumber": false
+								}
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "DS_Azure_Destination",
+								"type": "DatasetReference",
+								"parameters": {
+									"TableName": "COMPANY_HOUSE_ADDITIONS",
+									"SchemaName": "KNE_INT"
+								}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "DS_Azure_Destination",
+								"type": "DatasetReference",
+								"parameters": {
+									"TableName": "DIM_COMPANY_HOUSE",
+									"SchemaName": "KNE_INT"
+								}
+							}
+						]
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {}
+				},
+				"folder": {
+					"name": "2_0_INTEGRATION"
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/LS_Azure_Destination')]",
+				"[concat(variables('factoryId'), '/datasets/DS_Azure_Destination')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/PL_INT_DIM_PARTNER')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "CD_INT_DIM_PARTNER",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "AzureSqlSource",
+								"sqlReaderQuery": "Select distinct Partner AS PARTNER,\nCASE\nWHEN Partner='DC'\nTHEN 'Derby College'\nWHEN Partner='NC'\nTHEN 'Nottingham College'\nWHEN Partner='NCC'\nTHEN 'Nottingham City Council'\nWHEN Partner='NTU'\nTHEN 'Nottingham Trent University'\nWHEN Partner='UOD'\nTHEN 'University of Derby'\nEND  PARTNER_DESCRIPTION\nfrom kne_stg.Interventions",
+								"queryTimeout": "02:00:00",
+								"partitionOption": "None"
+							},
+							"sink": {
+								"type": "AzureSqlSink",
+								"preCopyScript": "TRUNCATE TABLE KNE_INT.DIM_PARTNER",
+								"writeBehavior": "insert",
+								"sqlWriterUseTableLock": false,
+								"disableMetricsCollection": false
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"mappings": [
+									{
+										"source": {
+											"name": "PARTNER",
+											"type": "String",
+											"physicalType": "varchar"
+										},
+										"sink": {
+											"name": "PARTNER_BK",
+											"type": "String",
+											"physicalType": "varchar"
+										}
+									},
+									{
+										"source": {
+											"name": "PARTNER_DESCRIPTION",
+											"type": "String",
+											"physicalType": "varchar"
+										},
+										"sink": {
+											"name": "PARTNER_NAME",
+											"type": "String",
+											"physicalType": "varchar"
+										}
+									}
+								],
+								"typeConversion": true,
+								"typeConversionSettings": {
+									"allowDataTruncation": true,
+									"treatBooleanAsNumber": false
+								}
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "DS_Azure_Destination",
+								"type": "DatasetReference",
+								"parameters": {
+									"TableName": "Interventions",
+									"SchemaName": "KNE_STG"
+								}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "DS_Azure_Destination",
+								"type": "DatasetReference",
+								"parameters": {
+									"TableName": "DIM_PARTNER",
+									"SchemaName": "KNE_INT"
+								}
+							}
+						]
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {}
+				},
+				"folder": {
+					"name": "2_0_INTEGRATION"
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/DS_Azure_Destination')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/PL_INT_DIM_PROJECT')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "CD_INT_DIM_PROJECT",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "AzureSqlSource",
+								"sqlReaderQuery": "Select distinct Project AS Project,\nCASE\nWHEN Project='EI'\nTHEN 'Enabling Innovation '\nWHEN Project='EIC'\nTHEN 'Enterprise Innovation Centre'\nWHEN Project='GRADS'\nTHEN 'Grads for D2N2'\nWHEN Project='PTI'\nTHEN 'Productivity Through innovation'\nWHEN Project='SIE'\nTHEN 'Sustainability in Enterprise'\nWHEN Project='UPS'\nTHEN 'UpScaler'\nWHEN  Project='BH'\nTHEN 'Big House'\nWHEN  COALESCE(Project,'N/A') IS NULL\nTHEN 'Not Entered'\nEND  PROJECT_DESCRIPTION\nfrom kne_stg.Interventions\nWHERE len(Project) <> 0\nUNION\nSelect DISTINCT Project_Code,\nCASE\nWHEN Project_Code='EI'\nTHEN 'Enabling Innovation '\nWHEN Project_Code='EIC'\nTHEN 'Enterprise Innovation Centre'\nWHEN Project_Code='GRADS'\nTHEN 'Grads for D2N2'\nWHEN Project_Code='PTI'\nTHEN 'Productivity Through innovation'\nWHEN Project_Code='SIE'\nTHEN 'Sustainability in Enterprise'\nWHEN Project_Code='UPS'\nTHEN 'UpScaler'\nWHEN  Project_Code='BH'\nTHEN 'Big House'\nEND  PROJECT_DESCRIPTION\nfrom kne_stg.Placements\nWHERE len(Project_Code)<>0 \nUNION\nSelect 'N/A','Not Entered'",
+								"queryTimeout": "02:00:00",
+								"partitionOption": "None"
+							},
+							"sink": {
+								"type": "AzureSqlSink",
+								"preCopyScript": "TRUNCATE TABLE kne_int.DIM_PROJECT",
+								"writeBehavior": "insert",
+								"sqlWriterUseTableLock": false,
+								"disableMetricsCollection": false
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"mappings": [
+									{
+										"source": {
+											"name": "Project",
+											"type": "String",
+											"physicalType": "varchar"
+										},
+										"sink": {
+											"name": "PROJECT_BK",
+											"type": "String",
+											"physicalType": "varchar"
+										}
+									},
+									{
+										"source": {
+											"name": "PROJECT_DESCRIPTION",
+											"type": "String",
+											"physicalType": "varchar"
+										},
+										"sink": {
+											"name": "PROJECT_NAME",
+											"type": "String",
+											"physicalType": "varchar"
+										}
+									}
+								],
+								"typeConversion": true,
+								"typeConversionSettings": {
+									"allowDataTruncation": true,
+									"treatBooleanAsNumber": false
+								}
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "DS_Azure_Destination",
+								"type": "DatasetReference",
+								"parameters": {
+									"TableName": "Interventions",
+									"SchemaName": "KNE_STG"
+								}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "DS_Azure_Destination",
+								"type": "DatasetReference",
+								"parameters": {
+									"TableName": "DIM_PROJECT",
+									"SchemaName": "KNE_INT"
+								}
+							}
+						]
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {}
+				},
+				"folder": {
+					"name": "2_0_INTEGRATION"
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/DS_Azure_Destination')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/PL_INT_DIM_REPORTING_DATES')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "CD_DIM_ACADEMIC_YEAR",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "AzureSqlSource",
+								"sqlReaderQuery": "SELECT \n      [REP_DATES_BK]\n      ,[REP_DATES_FULL_DATE]\n      ,[REP_DATES_DAY_OF_YEAR]\n      ,[REP_DATES_DAY_OF_MONTH]\n      ,[REP_DATES_DAY_OF_WEEK]\n      ,[REP_DATES_DAY_NAME]\n      ,[REP_DATES_WEEKDAY]\n      ,[REP_DATES_WEEK_NUMBER]\n      ,[REP_DATES_ACADEMIC_WEEK_NUMBER]\n      ,[REP_DATES_EQUIV_HIST_WEEK_FLAG]\n      ,[REP_DATES_RELATIVE_ACAD_WEEKNO]\n      ,[STU_FRIDAY_SNAPSHOT_REL_WEEKNO]\n      ,[REP_DATES_WEEK_OF_MONTH]\n      ,[REP_DATES_START_OF_WEEK]\n      ,[REP_DATES_END_OF_WEEK]\n      ,[REP_DATES_MONDAY_OF_WEEK]\n      ,[REP_DATES_FRIDAY_OF_WEEK]\n      ,[REP_DATES_MONTH_NUMBER]\n      ,[REP_DATES_MONTH_SHORT_NAME]\n      ,[REP_DATES_MONTH_LONG_NAME]\n      ,[REP_DATES_CALENDAR_YEAR]\n      ,[REP_DATES_ACADEMIC_YEAR]\n      ,[REP_DATES_FACILITY_YEAR]\n      ,[REP_DATES_RELATIVE_YEAR]\n      ,[REP_DATES_RELATIVE_YEAR_DESC]\n      ,[REP_DATES_ACADEMIC_START_YEAR]\n      ,[REP_DATES_ACADEMIC_END_YEAR]\n      ,[REP_DATES_ACADEMIC_QUARTER]\n      ,[REP_DATES_ACADEMIC_PERIOD]\n      ,[REP_DATES_TERM_WEEK_FLAG]\n      ,[REP_DATES_TERM_WEEK_DESC]\n      ,[REP_DATES_FINANCIAL_YEAR]\n      ,[REP_DATES_FINANCIAL_QUARTER]\n      ,[REP_DATES_FINANCIAL_PERIOD]\n      ,[REP_DATES_TAX_YEAR]\n      ,[REP_DATES_TAX_QUARTER]\n      ,[REP_DATES_TAX_PERIOD]\n      ,[REP_DATES_CALENDAR_YEAR_FLAG]\n      ,[REP_DATES_ACADEMIC_YEAR_FLAG]\n      ,[REP_DATES_FACILITY_YEAR_FLAG]\n      ,[REP_DATES_FINANCIAL_YEAR_FLAG]\n      ,[REP_DATES_TAX_YEAR_FLAG]\n      ,[REP_DATES_ACADEMIC_QTR_FLAG]\n      ,[REP_DATES_FINANCIAL_QTR_FLAG]\n      ,[REP_DATES_TAX_QTR_FLAG]\n      ,[REP_DATES_ACADEMIC_PERIOD_FLAG]\n      ,[REP_DATES_FINANCIALPERIOD_FLAG]\n      ,[REP_DATES_TAX_PERIOD_FLAG]\n      ,[REP_DATES_MONTH_FLAG]\n      ,[REP_DATES_CALENDAR_WEEK_FLAG]\n      ,[REP_DATES_ACADEMIC_WEEK_FLAG]\n      ,[REP_DATES_START_DATE]\n      ,[REP_DATES_END_DATE]\n      ,[REP_DATES_ACTIVE_IND]\n      ,[REP_DATES_SK_STUDENT]\n      ,[REP_DATES_REL_TO_START_OF_TERM]\n  FROM [GLOBAL].[PRS_DIM_REPORTING_DATES]\n",
+								"queryTimeout": "02:00:00",
+								"partitionOption": "None"
+							},
+							"sink": {
+								"type": "AzureSqlSink",
+								"preCopyScript": "TRUNCATE TABLE  KNE_INT.DIM_REPORTING_DATES;\n\n\nINSERT INTO KNE_INT.DIM_REPORTING_DATES\n(REP_DATES_BK,REP_DATES_ACTIVE_IND)\nVALUES ('N/A','Y');\n",
+								"writeBehavior": "insert",
+								"sqlWriterUseTableLock": false,
+								"disableMetricsCollection": false
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"typeConversion": true,
+								"typeConversionSettings": {
+									"allowDataTruncation": true,
+									"treatBooleanAsNumber": false
+								}
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "DS_AzureDB",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "DS_Azure_Destination",
+								"type": "DatasetReference",
+								"parameters": {
+									"TableName": "DIM_REPORTING_DATES",
+									"SchemaName": "KNE_INT"
+								}
+							}
+						]
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {}
+				},
+				"folder": {
+					"name": "2_0_INTEGRATION"
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/DS_AzureDB')]",
+				"[concat(variables('factoryId'), '/datasets/DS_Azure_Destination')]"
+			]
+		}
+	]
+}

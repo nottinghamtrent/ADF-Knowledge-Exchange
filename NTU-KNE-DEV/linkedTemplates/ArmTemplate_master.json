@@ -1,0 +1,152 @@
+{
+	"$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"type": "string",
+			"metadata": "Data Factory name",
+			"defaultValue": "NTU-KNE-DEV"
+		},
+		"LS_COMPANY_HOUSE_DATA_accountKey": {
+			"type": "secureString",
+			"metadata": "Secure string for 'accountKey' of 'LS_COMPANY_HOUSE_DATA'"
+		},
+		"LS_DBricks_Company_House_Data_accessToken": {
+			"type": "secureString",
+			"metadata": "Secure string for 'accessToken' of 'LS_DBricks_Company_House_Data'"
+		},
+		"LS_AzureDB_properties_typeProperties_connectionString_secretName": {
+			"type": "string",
+			"defaultValue": "AzureDb-ConnectionString"
+		},
+		"LS_Azure_Destination_properties_typeProperties_connectionString_secretName": {
+			"type": "string",
+			"defaultValue": "KV-AzureDB-DEV-ConnectionString"
+		},
+		"LS_COMPANY_HOUSE_DATA_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://storageforcompanyhouse.dfs.core.windows.net/"
+		},
+		"LS_DBricks_Company_House_Data_properties_typeProperties_existingClusterId": {
+			"type": "string",
+			"defaultValue": "0905-140100-minfc4nk"
+		},
+		"LS_KV_NTU_ADF_PRD_properties_typeProperties_baseUrl": {
+			"type": "string",
+			"defaultValue": "https://NTU-ADF-PRD-KeyVault.vault.azure.net/"
+		},
+		"LS_Knowledge_Exchange_properties_typeProperties_host": {
+			"type": "string",
+			"defaultValue": "\\\\renault\\BISHARE\\Cognos_production\\External Data Sources\\Knowledge Exchange"
+		},
+		"LS_Knowledge_Exchange_properties_typeProperties_userId": {
+			"type": "string",
+			"defaultValue": "ads\\Cognos10_prd"
+		},
+		"IR-Esther-PRD_properties_typeProperties_linkedInfo_resourceId": {
+			"type": "string",
+			"defaultValue": "/subscriptions/a310f81c-e035-4642-b38d-81c71a14db84/resourcegroups/prod_confirmationandclearing/providers/Microsoft.DataFactory/factories/NTU-ADF-PRD/integrationruntimes/IR-Esther-Prd"
+		},
+		"containerUri": {
+			"type": "string",
+			"metadata": "URI to storage account containing linked ARM templates"
+		},
+		"containerSasToken": {
+			"type": "string",
+			"metadata": "Sas token to storage account containing linked ARM templates"
+		}
+	},
+	"variables": {
+		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
+	},
+	"resources": [
+		{
+			"name": "NTU-KNE-DEV_ArmTemplate_0",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "2024-03-01",
+			"properties": {
+				"mode": "incremental",
+				"templateLink": {
+					"uri": "[concat(parameters('containerUri'), '/ArmTemplate_0.json', parameters('containerSasToken'))]",
+					"contentVersion": "1.0.0.0"
+				},
+				"parameters": {
+					"factoryName": {
+						"value": "[parameters('factoryName')]"
+					},
+					"LS_COMPANY_HOUSE_DATA_accountKey": {
+						"value": "[parameters('LS_COMPANY_HOUSE_DATA_accountKey')]"
+					},
+					"LS_DBricks_Company_House_Data_accessToken": {
+						"value": "[parameters('LS_DBricks_Company_House_Data_accessToken')]"
+					},
+					"LS_COMPANY_HOUSE_DATA_properties_typeProperties_url": {
+						"value": "[parameters('LS_COMPANY_HOUSE_DATA_properties_typeProperties_url')]"
+					},
+					"LS_DBricks_Company_House_Data_properties_typeProperties_existingClusterId": {
+						"value": "[parameters('LS_DBricks_Company_House_Data_properties_typeProperties_existingClusterId')]"
+					},
+					"LS_KV_NTU_ADF_PRD_properties_typeProperties_baseUrl": {
+						"value": "[parameters('LS_KV_NTU_ADF_PRD_properties_typeProperties_baseUrl')]"
+					},
+					"IR-Esther-PRD_properties_typeProperties_linkedInfo_resourceId": {
+						"value": "[parameters('IR-Esther-PRD_properties_typeProperties_linkedInfo_resourceId')]"
+					},
+					"LS_AzureDB_properties_typeProperties_connectionString_secretName": {
+						"value": "[parameters('LS_AzureDB_properties_typeProperties_connectionString_secretName')]"
+					},
+					"LS_Azure_Destination_properties_typeProperties_connectionString_secretName": {
+						"value": "[parameters('LS_Azure_Destination_properties_typeProperties_connectionString_secretName')]"
+					},
+					"LS_Knowledge_Exchange_properties_typeProperties_host": {
+						"value": "[parameters('LS_Knowledge_Exchange_properties_typeProperties_host')]"
+					},
+					"LS_Knowledge_Exchange_properties_typeProperties_userId": {
+						"value": "[parameters('LS_Knowledge_Exchange_properties_typeProperties_userId')]"
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "NTU-KNE-DEV_ArmTemplate_1",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "2024-03-01",
+			"properties": {
+				"mode": "incremental",
+				"templateLink": {
+					"uri": "[concat(parameters('containerUri'), '/ArmTemplate_1.json', parameters('containerSasToken'))]",
+					"contentVersion": "1.0.0.0"
+				},
+				"parameters": {
+					"factoryName": {
+						"value": "[parameters('factoryName')]"
+					}
+				}
+			},
+			"dependsOn": [
+				"[resourceId('Microsoft.Resources/deployments', 'NTU-KNE-DEV_ArmTemplate_0')]"
+			]
+		},
+		{
+			"name": "NTU-KNE-DEV_ArmTemplate_2",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "2024-03-01",
+			"properties": {
+				"mode": "incremental",
+				"templateLink": {
+					"uri": "[concat(parameters('containerUri'), '/ArmTemplate_2.json', parameters('containerSasToken'))]",
+					"contentVersion": "1.0.0.0"
+				},
+				"parameters": {
+					"factoryName": {
+						"value": "[parameters('factoryName')]"
+					}
+				}
+			},
+			"dependsOn": [
+				"[resourceId('Microsoft.Resources/deployments', 'NTU-KNE-DEV_ArmTemplate_1')]"
+			]
+		}
+	]
+}

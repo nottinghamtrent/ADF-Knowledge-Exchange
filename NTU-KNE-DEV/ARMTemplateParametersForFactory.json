@@ -1,0 +1,39 @@
+{
+	"$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"value": "NTU-KNE-DEV"
+		},
+		"LS_COMPANY_HOUSE_DATA_accountKey": {
+			"value": ""
+		},
+		"LS_DBricks_Company_House_Data_accessToken": {
+			"value": ""
+		},
+		"LS_AzureDB_properties_typeProperties_connectionString_secretName": {
+			"value": "AzureDb-ConnectionString"
+		},
+		"LS_Azure_Destination_properties_typeProperties_connectionString_secretName": {
+			"value": "KV-AzureDB-DEV-ConnectionString"
+		},
+		"LS_COMPANY_HOUSE_DATA_properties_typeProperties_url": {
+			"value": "https://storageforcompanyhouse.dfs.core.windows.net/"
+		},
+		"LS_DBricks_Company_House_Data_properties_typeProperties_existingClusterId": {
+			"value": "0905-140100-minfc4nk"
+		},
+		"LS_KV_NTU_ADF_PRD_properties_typeProperties_baseUrl": {
+			"value": "https://NTU-ADF-PRD-KeyVault.vault.azure.net/"
+		},
+		"LS_Knowledge_Exchange_properties_typeProperties_host": {
+			"value": "\\\\renault\\BISHARE\\Cognos_production\\External Data Sources\\Knowledge Exchange"
+		},
+		"LS_Knowledge_Exchange_properties_typeProperties_userId": {
+			"value": "ads\\Cognos10_prd"
+		},
+		"IR-Esther-PRD_properties_typeProperties_linkedInfo_resourceId": {
+			"value": "/subscriptions/a310f81c-e035-4642-b38d-81c71a14db84/resourcegroups/prod_confirmationandclearing/providers/Microsoft.DataFactory/factories/NTU-ADF-PRD/integrationruntimes/IR-Esther-Prd"
+		}
+	}
+}
