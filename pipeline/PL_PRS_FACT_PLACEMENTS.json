@@ -226,6 +226,18 @@
 									"scale": 2,
 									"precision": 10
 								}
+							},
+							{
+								"source": {
+									"name": "FACT_KE_INT_PROJECT_DESC",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "FACT_KE_INT_PROJECT_DESC",
+									"type": "String",
+									"physicalType": "varchar"
+								}
 							}
 						],
 						"typeConversion": true,
