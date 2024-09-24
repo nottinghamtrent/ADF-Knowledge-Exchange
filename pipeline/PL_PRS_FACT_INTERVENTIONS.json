@@ -132,7 +132,7 @@
 									"name": "FACT_KE_INT_INTERVENTION_HOURS",
 									"type": "Decimal",
 									"physicalType": "decimal",
-									"scale": 2,
+									"scale": 3,
 									"precision": 10
 								},
 								"sink": {
@@ -157,6 +157,18 @@
 									"physicalType": "decimal",
 									"scale": 2,
 									"precision": 10
+								}
+							},
+							{
+								"source": {
+									"name": "FACT_KE_INT_PROJECT_DESC",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "FACT_KE_INT_PROJECT_DESC",
+									"type": "String",
+									"physicalType": "varchar"
 								}
 							}
 						],
