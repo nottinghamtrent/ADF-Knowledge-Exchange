@@ -10,7 +10,7 @@
 					"referenceName": "LS_KV_NTU_ADF_PRD",
 					"type": "LinkedServiceReference"
 				},
-				"secretName": "KV-AzureDB-DEV-ConnectionString"
+				"secretName": "KV-AzureDB-TST-ConnectionString"
 			}
 		},
 		"connectVia": {
