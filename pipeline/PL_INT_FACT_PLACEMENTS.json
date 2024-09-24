@@ -17,7 +17,7 @@
 				"typeProperties": {
 					"source": {
 						"type": "AzureSqlSource",
-						"sqlReaderQuery": "WITH\nQ_DIM_COMPANY\nAS\n(SELECT COMPANY_SK,COMPANY_BK\nFROM KNE_INT.DIM_COMPANY),\n\nQ_DIM_DATES\nAS\n(SELECT REP_DATES_SK,REP_DATES_BK\n FROM KNE_INT.DIM_REPORTING_DATES\n WHERE REP_DATES_ACTIVE_IND='Y'),\n\nQ_DIM_PARTNER\nAS\n(SELECT PARTNER_SK,PARTNER_BK\n FROM KNE_INT.DIM_PARTNER),\n\nQ_DIM_PROJECT\nAS\n(SELECT PROJECT_SK,PROJECT_BK\n FROM KNE_INT.DIM_PROJECT)\n\nSELECT \nQ_DIM_COMPANY.COMPANY_SK FACT_KE_PLACE_COMP_SK, \nQ_DIM_DATES.REP_DATES_SK  FACT_KE_PLACE_DATE_SK,\nQ_DIM_PARTNER.PARTNER_SK  FACT_KE_PLACE_PARTNER_SK,\nQ_DIM_PROJECT.PROJECT_SK  FACT_KE_PLACE_PROJECT_SK,\nFCT.PROJECT_CODE AS FACT_KE_PLACE_PROJECT,\nFCT.Partner AS FACT_KE_PLACE_PARTNER,\nFCT.University AS FACT_KE_PLACE_UNIVERSITY,\nFCT.INTERVENTION AS FACT_KE_PLACE_INTERVENTION,\nFCT.ROLE AS FACT_KE_PLACE_ROLE,\nFCT.Degree AS FACT_KE_PLACE_DEGREE,\nFCT.Year_Graduated AS FACT_KE_PLACE_GRAD_YEAR,\nCASE\nWHEN LEN(FCT.No_of_Placements)=0\nTHEN '0.00'\nELSE CAST(FCT.No_of_Placements AS DECIMAL(6)) \nEND FACT_KE_PLACE_NO_OF_PLACE,\n\nCASE\nWHEN LEN(FCT.Length_Weeks)=0\nTHEN '0.00'\nELSE CAST(FCT.Length_Weeks AS DECIMAL(6)) \nEND FACT_KE_PLACE_NO_OF_WEEKS,\n\nCASE\nWHEN LEN(FCT.\"GRANT\")=0\nTHEN '0.00'\nELSE CAST(FCT.\"GRANT\" AS NUMERIC(10,2)) \nEND FACT_KE_PLACE_GRANT,\n\n\nCASE\nWHEN LEN(FCT.Salary)=0\nTHEN '0.00'\nELSE CAST(FCT.Salary AS NUMERIC(10,2))\nEND FACT_KE_PLACE_SALARY,\n\nCAST(\nCASE\nWHEN LEN(\"Match\")=0\nTHEN '0.00'\nELSE\nFCT.\"Match\" \nEND\nAS NUMERIC(10,2))  AS FACT_KE_PLACE_MATCH\nFROM KNE_STG.PLACEMENTS FCT\nINNER JOIN Q_DIM_COMPANY\nON FCT.BUSINESS_NUMBER=Q_DIM_COMPANY.COMPANY_BK\nINNER JOIN Q_DIM_PARTNER\nON FCT.Partner=Q_DIM_PARTNER.PARTNER_BK\nINNER JOIN Q_DIM_PROJECT\nON \nCASE \nWHEN LEN(FCT.Project_Code)= 0\nTHEN 'N/A'\nELSE FCT.Project_Code\nEND =Q_DIM_PROJECT.PROJECT_BK\nINNER JOIN Q_DIM_DATES\nON CASE\nWHEN FCT.QTR = '0' THEN 'N/A'\nWHEN FCT.QTR IS NULL THEN 'N/A'\nELSE FCT.QTR\nEND=Q_DIM_DATES.REP_DATES_BK\n\n\n\n\n",
+						"sqlReaderQuery": "WITH\nQ_DIM_COMPANY\nAS\n(SELECT COMPANY_SK,COMPANY_BK\nFROM KNE_INT.DIM_COMPANY),\n\nQ_DIM_DATES\nAS\n(SELECT REP_DATES_SK,REP_DATES_BK\n FROM KNE_INT.DIM_REPORTING_DATES\n WHERE REP_DATES_ACTIVE_IND='Y'),\n\nQ_DIM_PARTNER\nAS\n(SELECT PARTNER_SK,PARTNER_BK\n FROM KNE_INT.DIM_PARTNER),\n\nQ_DIM_PROJECT\nAS\n(SELECT PROJECT_SK,PROJECT_BK\n FROM KNE_INT.DIM_PROJECT)\n\nSELECT \nQ_DIM_COMPANY.COMPANY_SK FACT_KE_PLACE_COMP_SK, \nQ_DIM_DATES.REP_DATES_SK  FACT_KE_PLACE_DATE_SK,\nQ_DIM_PARTNER.PARTNER_SK  FACT_KE_PLACE_PARTNER_SK,\nQ_DIM_PROJECT.PROJECT_SK  FACT_KE_PLACE_PROJECT_SK,\nFCT.PROJECT_CODE AS FACT_KE_PLACE_PROJECT,\n\n\nCASE \nWHEN FCT.PROJECT_CODE='EI'\nTHEN 'Enabling Innovation'\nWHEN FCT.PROJECT_CODE='EIC'\nTHEN 'Enterprise and Innovation Centre (DEC)'\nWHEN FCT.PROJECT_CODE='GRADS'\nTHEN 'Grads for D2N2 Small to Medium sized businesses'\nWHEN FCT.PROJECT_CODE='PTI' \nTHEN 'Productivity through Innovation'\nWHEN FCT.PROJECT_CODE='SiE'\nTHEN 'Sustainability in Enterprise'\nWHEN FCT.PROJECT_CODE='UPS'\nTHEN 'Upscaler'\nEND FACT_KE_PLACE_PROJECT_DESC,\n\n\nFCT.Partner AS FACT_KE_PLACE_PARTNER,\nFCT.University AS FACT_KE_PLACE_UNIVERSITY,\nFCT.INTERVENTION AS FACT_KE_PLACE_INTERVENTION,\nFCT.ROLE AS FACT_KE_PLACE_ROLE,\nFCT.Degree AS FACT_KE_PLACE_DEGREE,\nFCT.Year_Graduated AS FACT_KE_PLACE_GRAD_YEAR,\nCASE\nWHEN LEN(FCT.No_of_Placements)=0\nTHEN '0.00'\nELSE CAST(FCT.No_of_Placements AS DECIMAL(6)) \nEND FACT_KE_PLACE_NO_OF_PLACE,\n\nCASE\nWHEN LEN(FCT.Length_Weeks)=0\nTHEN '0.00'\nELSE CAST(FCT.Length_Weeks AS DECIMAL(6)) \nEND FACT_KE_PLACE_NO_OF_WEEKS,\n\nCASE\nWHEN LEN(FCT.\"GRANT\")=0\nTHEN '0.00'\nELSE CAST(FCT.\"GRANT\" AS NUMERIC(10,2)) \nEND FACT_KE_PLACE_GRANT,\n\n\nCASE\nWHEN LEN(FCT.Salary)=0\nTHEN '0.00'\nELSE CAST(FCT.Salary AS NUMERIC(10,2))\nEND FACT_KE_PLACE_SALARY,\n\nCAST(\nCASE\nWHEN LEN(\"Match\")=0\nTHEN '0.00'\nELSE\nFCT.\"Match\" \nEND\nAS NUMERIC(10,2))  AS FACT_KE_PLACE_MATCH\nFROM KNE_STG.PLACEMENTS FCT\nINNER JOIN Q_DIM_COMPANY\nON FCT.BUSINESS_NUMBER=Q_DIM_COMPANY.COMPANY_BK\nINNER JOIN Q_DIM_PARTNER\nON FCT.Partner=Q_DIM_PARTNER.PARTNER_BK\nINNER JOIN Q_DIM_PROJECT\nON \nCASE \nWHEN LEN(FCT.Project_Code)= 0\nTHEN 'N/A'\nELSE FCT.Project_Code\nEND =Q_DIM_PROJECT.PROJECT_BK\nINNER JOIN Q_DIM_DATES\nON CASE\nWHEN FCT.QTR = '0' THEN 'N/A'\nWHEN FCT.QTR IS NULL THEN 'N/A'\nELSE FCT.QTR\nEND=Q_DIM_DATES.REP_DATES_BK\n\n\n\n\n",
 						"queryTimeout": "02:00:00",
 						"partitionOption": "None"
 					},
@@ -165,8 +165,10 @@
 							{
 								"source": {
 									"name": "FACT_KE_PLACE_NO_OF_WEEKS",
-									"type": "String",
-									"physicalType": "varchar"
+									"type": "Decimal",
+									"physicalType": "decimal",
+									"scale": 0,
+									"precision": 6
 								},
 								"sink": {
 									"name": "FACT_KE_PLACE_NO_OF_WEEKS",
@@ -179,8 +181,10 @@
 							{
 								"source": {
 									"name": "FACT_KE_PLACE_GRANT",
-									"type": "String",
-									"physicalType": "varchar"
+									"type": "Decimal",
+									"physicalType": "decimal",
+									"scale": 2,
+									"precision": 10
 								},
 								"sink": {
 									"name": "FACT_KE_PLACE_GRANT",
@@ -193,8 +197,10 @@
 							{
 								"source": {
 									"name": "FACT_KE_PLACE_SALARY",
-									"type": "String",
-									"physicalType": "varchar"
+									"type": "Decimal",
+									"physicalType": "decimal",
+									"scale": 2,
+									"precision": 10
 								},
 								"sink": {
 									"name": "FACT_KE_PLACE_SALARY",
@@ -207,8 +213,10 @@
 							{
 								"source": {
 									"name": "FACT_KE_PLACE_MATCH",
-									"type": "String",
-									"physicalType": "varchar"
+									"type": "Decimal",
+									"physicalType": "decimal",
+									"scale": 2,
+									"precision": 10
 								},
 								"sink": {
 									"name": "FACT_KE_PLACE_MATCH",
@@ -216,6 +224,18 @@
 									"physicalType": "decimal",
 									"scale": 2,
 									"precision": 10
+								}
+							},
+							{
+								"source": {
+									"name": "FACT_KE_PLACE_PROJECT_DESC",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "FACT_KE_INT_PROJECT_DESC",
+									"type": "String",
+									"physicalType": "varchar"
 								}
 							}
 						],
