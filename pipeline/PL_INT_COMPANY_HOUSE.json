@@ -15,7 +15,7 @@
 				},
 				"userProperties": [],
 				"typeProperties": {
-					"storedProcedureName": "[KNE_INT].[INT_COMPANY_HOUSE]"
+					"storedProcedureName": "[KNE_INTSP].[INT_COMPANY_HOUSE]"
 				},
 				"linkedServiceName": {
 					"referenceName": "LS_Azure_Destination",
