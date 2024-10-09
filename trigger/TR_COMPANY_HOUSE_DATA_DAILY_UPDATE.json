@@ -1,0 +1,40 @@
+{
+	"name": "TR_COMPANY_HOUSE_DATA_DAILY_UPDATE",
+	"properties": {
+		"annotations": [],
+		"runtimeState": "Started",
+		"pipelines": [
+			{
+				"pipelineReference": {
+					"referenceName": "JS_COMPANY_HOUSE_DATA",
+					"type": "PipelineReference"
+				}
+			}
+		],
+		"type": "ScheduleTrigger",
+		"typeProperties": {
+			"recurrence": {
+				"frequency": "Week",
+				"interval": 1,
+				"startTime": "2024-10-09T10:26:00",
+				"timeZone": "GMT Standard Time",
+				"schedule": {
+					"minutes": [
+						5
+					],
+					"hours": [
+						9
+					],
+					"weekDays": [
+						"Monday",
+						"Tuesday",
+						"Wednesday",
+						"Thursday",
+						"Friday",
+						"Saturday"
+					]
+				}
+			}
+		}
+	}
+}
