@@ -330,18 +330,6 @@
 									"type": "String",
 									"physicalType": "varchar"
 								}
-							},
-							{
-								"source": {
-									"name": "sic_codes",
-									"type": "String",
-									"physicalType": "String"
-								},
-								"sink": {
-									"name": "sic_codes",
-									"type": "String",
-									"physicalType": "varchar"
-								}
 							}
 						],
 						"typeConversion": true,
