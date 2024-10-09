@@ -1,9 +1,9 @@
 {
-	"name": "pipeline2",
+	"name": "PL_GET_COMPHOUSE_ADDS_AND_DELS",
 	"properties": {
 		"activities": [
 			{
-				"name": "Notebook1",
+				"name": "DBRICK_GET_COMP_HOUSE_ADDS_DELS",
 				"type": "DatabricksNotebook",
 				"dependsOn": [],
 				"policy": {
@@ -23,6 +23,9 @@
 				}
 			}
 		],
+		"folder": {
+			"name": "1_0_STAGING/Company House"
+		},
 		"annotations": []
 	}
 }
