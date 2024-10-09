@@ -116,13 +116,13 @@
 			"dependsOn": []
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/pipeline2')]",
+			"name": "[concat(parameters('factoryName'), '/PL_GET_COMPHOUSE_ADDS_AND_DELS')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
 			"properties": {
 				"activities": [
 					{
-						"name": "Notebook1",
+						"name": "DBRICK_GET_COMP_HOUSE_ADDS_DELS",
 						"type": "DatabricksNotebook",
 						"dependsOn": [],
 						"policy": {
@@ -144,6 +144,9 @@
 				],
 				"policy": {
 					"elapsedTimeMetric": {}
+				},
+				"folder": {
+					"name": "1_0_STAGING/Company House"
 				},
 				"annotations": []
 			},
