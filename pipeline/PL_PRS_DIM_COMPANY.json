@@ -406,6 +406,18 @@
 									"scale": 0,
 									"precision": 10
 								}
+							},
+							{
+								"source": {
+									"name": "COMPANY_NUMBER",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "COMPANY_NUMBER",
+									"type": "String",
+									"physicalType": "varchar"
+								}
 							}
 						],
 						"typeConversion": true,
