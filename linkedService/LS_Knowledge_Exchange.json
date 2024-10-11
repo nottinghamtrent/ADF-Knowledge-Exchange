@@ -12,7 +12,7 @@
 					"referenceName": "LS_KV_NTU_ADF_PRD",
 					"type": "LinkedServiceReference"
 				},
-				"secretName": "RenaultBiUserPassword"
+				"secretName": "KV-Cognos10prd-Pwd"
 			}
 		},
 		"connectVia": {
