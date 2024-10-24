@@ -29,7 +29,7 @@
 					},
 					"sink": {
 						"type": "AzureSqlSink",
-						"preCopyScript": "TRUNCATE TABLE KNE_STG.COMPANY_HOUSE_ADDITIONS",
+						"preCopyScript": "TRUNCATE TABLE CHD_STG.COMPANY_HOUSE_ADDITIONS",
 						"writeBehavior": "insert",
 						"sqlWriterUseTableLock": false,
 						"disableMetricsCollection": false
@@ -274,7 +274,7 @@
 						"type": "DatasetReference",
 						"parameters": {
 							"TableName": "COMPANY_HOUSE_ADDITIONS",
-							"SchemaName": "KNE_STG"
+							"SchemaName": "CHD_STG"
 						}
 					}
 				]
