@@ -23,7 +23,7 @@
 					},
 					"sink": {
 						"type": "AzureSqlSink",
-						"preCopyScript": "TRUNCATE TABLE KNE_INT.COMPANY_HOUSE_ADDITIONS",
+						"preCopyScript": "TRUNCATE TABLE CHD_INT.COMPANY_HOUSE_ADDITIONS",
 						"writeBehavior": "insert",
 						"sqlWriterUseTableLock": false,
 						"tableOption": "autoCreate",
@@ -249,7 +249,7 @@
 						"type": "DatasetReference",
 						"parameters": {
 							"TableName": "COMPANY_HOUSE_ADDITIONS",
-							"SchemaName": "KNE_INT"
+							"SchemaName": "CHD_INT"
 						}
 					}
 				]
