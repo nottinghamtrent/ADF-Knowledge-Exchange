@@ -1,16 +1,22 @@
 {
 	"name": "LS_Azure_Destination",
-	"type": "Microsoft.DataFactory/factories/linkedservices",
 	"properties": {
 		"annotations": [],
 		"type": "AzureSqlDatabase",
 		"typeProperties": {
-			"connectionString": "integrated security=False;encrypt=True;connection timeout=30;data source=ntu-dw-tst.database.windows.net;initial catalog=NtuDataWareHouse-Tst;user id=TestUserAdmin",
-			"encryptedCredential": "eyJDcmVkZW50aWFsSWQiOiIxYThiY2ZkMC00MjE2LTQxYTEtYjE4Mi00NTNhOWVjNzJjNDciLCJWZXJzaW9uIjoiMi4wIiwiQ2xhc3NUeXBlIjoiTWljcm9zb2Z0LkRhdGFQcm94eS5Db3JlLkludGVyU2VydmljZURhdGFDb250cmFjdC5DcmVkZW50aWFsU1UwNkNZMTQifQ=="
+			"connectionString": {
+				"type": "AzureKeyVaultSecret",
+				"store": {
+					"referenceName": "LS_KV_NTU_ADF_PRD",
+					"type": "LinkedServiceReference"
+				},
+				"secretName": "AzureDb-ConnectionString"
+			}
 		},
 		"connectVia": {
 			"referenceName": "IR-Esther-PRD",
 			"type": "IntegrationRuntimeReference"
 		}
-	}
+	},
+	"type": "Microsoft.DataFactory/factories/linkedservices"
 }
