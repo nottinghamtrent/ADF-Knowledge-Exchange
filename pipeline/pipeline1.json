@@ -17,13 +17,13 @@
 				"typeProperties": {
 					"source": {
 						"type": "AzureSqlSource",
-						"sqlReaderQuery": "SELECT DISTINCT  *\nFROM KNE_INT.COMPANY_HOUSE",
+						"sqlReaderQuery": "SELECT DISTINCT  *\nFROM KNE_PRS.DIM_COMPANY_HOUSE",
 						"queryTimeout": "02:00:00",
 						"partitionOption": "None"
 					},
 					"sink": {
 						"type": "AzureSqlSink",
-						"preCopyScript": "TRUNCATE TABLE CHD_INT.COMPANY_HOUSE",
+						"preCopyScript": "TRUNCATE TABLE CHD_PRS.DIM_COMPANY_HOUSE",
 						"writeBehavior": "insert",
 						"sqlWriterUseTableLock": false,
 						"disableMetricsCollection": false
@@ -34,24 +34,36 @@
 						"mappings": [
 							{
 								"source": {
-									"name": "Company_Name",
+									"name": "Company_House_SK",
+									"type": "Int64",
+									"physicalType": "bigint"
+								},
+								"sink": {
+									"name": "Company_House_SK",
+									"type": "Int64",
+									"physicalType": "bigint"
+								}
+							},
+							{
+								"source": {
+									"name": "Company_House_BK",
 									"type": "String",
 									"physicalType": "varchar"
 								},
 								"sink": {
-									"name": "Company_Name",
+									"name": "Company_House_BK",
 									"type": "String",
 									"physicalType": "varchar"
 								}
 							},
 							{
 								"source": {
-									"name": "Company_Number",
+									"name": "Company_Name",
 									"type": "String",
 									"physicalType": "varchar"
 								},
 								"sink": {
-									"name": "Company_Number",
+									"name": "Company_Name",
 									"type": "String",
 									"physicalType": "varchar"
 								}
@@ -678,6 +690,54 @@
 									"name": "ConfStmtLastMadeUpDate",
 									"type": "DateTime",
 									"physicalType": "date"
+								}
+							},
+							{
+								"source": {
+									"name": "Company_House_Start_Date",
+									"type": "DateTime",
+									"physicalType": "datetime"
+								},
+								"sink": {
+									"name": "Company_House_Start_Date",
+									"type": "DateTime",
+									"physicalType": "datetime"
+								}
+							},
+							{
+								"source": {
+									"name": "Company_House_End_Date",
+									"type": "DateTime",
+									"physicalType": "datetime"
+								},
+								"sink": {
+									"name": "Company_House_End_Date",
+									"type": "DateTime",
+									"physicalType": "datetime"
+								}
+							},
+							{
+								"source": {
+									"name": "Company_House_Act_Ind",
+									"type": "String",
+									"physicalType": "char"
+								},
+								"sink": {
+									"name": "Company_House_Act_Ind",
+									"type": "String",
+									"physicalType": "char"
+								}
+							},
+							{
+								"source": {
+									"name": "HashID",
+									"type": "Int64",
+									"physicalType": "bigint"
+								},
+								"sink": {
+									"name": "HashID",
+									"type": "Int64",
+									"physicalType": "bigint"
 								}
 							}
 						],
@@ -694,7 +754,7 @@
 						"type": "DatasetReference",
 						"parameters": {
 							"TableName": "COMPANY_HOUSE",
-							"SchemaName": "KNE_INT"
+							"SchemaName": "KNE_PRS"
 						}
 					}
 				],
@@ -703,8 +763,8 @@
 						"referenceName": "DS_Azure_Destination",
 						"type": "DatasetReference",
 						"parameters": {
-							"TableName": "COMPANY_HOUSE",
-							"SchemaName": "CHD_INT"
+							"TableName": "DIM_COMPANY_HOUSE",
+							"SchemaName": "CHD_PRS"
 						}
 					}
 				]
