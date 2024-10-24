@@ -373,7 +373,7 @@
 						"type": "DatasetReference",
 						"parameters": {
 							"TableName": "COMPANY_HOUSE_ADDITIONS",
-							"SchemaName": "CHDE_INT"
+							"SchemaName": "CHD_INT"
 						}
 					}
 				],
@@ -383,7 +383,7 @@
 						"type": "DatasetReference",
 						"parameters": {
 							"TableName": "DIM_COMPANY_HOUSE",
-							"SchemaName": "KNE_INT"
+							"SchemaName": "CHD_INT"
 						}
 					}
 				]
