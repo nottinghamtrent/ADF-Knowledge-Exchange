@@ -22,7 +22,7 @@
 					},
 					"sink": {
 						"type": "AzureSqlSink",
-						"preCopyScript": "TRUNCATE TABLE KNE_PRS.DIM_COMPANY_HOUSE",
+						"preCopyScript": "TRUNCATE TABLE CHD_PRS.DIM_COMPANY_HOUSE",
 						"writeBehavior": "insert",
 						"sqlWriterUseTableLock": false,
 						"disableMetricsCollection": false
@@ -753,7 +753,7 @@
 						"type": "DatasetReference",
 						"parameters": {
 							"TableName": "DIM_COMPANY_HOUSE",
-							"SchemaName": "KNE_INT"
+							"SchemaName": "CHD_INT"
 						}
 					}
 				],
@@ -763,7 +763,7 @@
 						"type": "DatasetReference",
 						"parameters": {
 							"TableName": "DIM_COMPANY_HOUSE",
-							"SchemaName": "KNE_PRS"
+							"SchemaName": "CHD_PRS"
 						}
 					}
 				]
