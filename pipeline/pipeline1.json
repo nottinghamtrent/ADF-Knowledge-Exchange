@@ -17,13 +17,12 @@
 				"typeProperties": {
 					"source": {
 						"type": "AzureSqlSource",
-						"sqlReaderQuery": "SELECT DISTINCT  *\nFROM KNE_PRS.DIM_COMPANY_HOUSE",
+						"sqlReaderQuery": "SELECT DISTINCT  *\nFROM KNE_INT.DIM_COMPANY_HOUSE",
 						"queryTimeout": "02:00:00",
 						"partitionOption": "None"
 					},
 					"sink": {
 						"type": "AzureSqlSink",
-						"preCopyScript": "TRUNCATE TABLE CHD_PRS.DIM_COMPANY_HOUSE",
 						"writeBehavior": "insert",
 						"sqlWriterUseTableLock": false,
 						"disableMetricsCollection": false
@@ -753,8 +752,8 @@
 						"referenceName": "DS_Azure_Destination",
 						"type": "DatasetReference",
 						"parameters": {
-							"TableName": "COMPANY_HOUSE",
-							"SchemaName": "KNE_PRS"
+							"TableName": "DIM_COMPANY_HOUSE",
+							"SchemaName": "KNE_INT"
 						}
 					}
 				],
