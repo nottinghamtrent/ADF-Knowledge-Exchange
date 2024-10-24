@@ -213,7 +213,7 @@
 					},
 					"sink": {
 						"type": "AzureSqlSink",
-						"preCopyScript": "TRUNCATE TABLE KNE_STG.COMPANY_HOUSE_DELETIONS",
+						"preCopyScript": "TRUNCATE TABLE CHD_STG.COMPANY_HOUSE_DELETIONS",
 						"writeBehavior": "insert",
 						"sqlWriterUseTableLock": false,
 						"tableOption": "autoCreate",
@@ -351,7 +351,7 @@
 						"type": "DatasetReference",
 						"parameters": {
 							"TableName": "COMPANY_HOUSE_DELETIONS",
-							"SchemaName": "KNE_STG"
+							"SchemaName": "CHD_STG"
 						}
 					}
 				]
