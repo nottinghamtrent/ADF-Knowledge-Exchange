@@ -753,7 +753,7 @@
 						"type": "DatasetReference",
 						"parameters": {
 							"TableName": "DIM_COMPANY_HOUSE",
-							"SchemaName": "KNE_INT"
+							"SchemaName": "KNE_PRS"
 						}
 					}
 				],
@@ -763,7 +763,7 @@
 						"type": "DatasetReference",
 						"parameters": {
 							"TableName": "DIM_COMPANY_HOUSE",
-							"SchemaName": "CHD_INT"
+							"SchemaName": "CHD_PRS"
 						}
 					}
 				]
