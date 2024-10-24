@@ -763,7 +763,7 @@
 						"type": "DatasetReference",
 						"parameters": {
 							"TableName": "DIM_COMPANY_HOUSE",
-							"SchemaName": "CHD_PRS"
+							"SchemaName": "CHD_INT"
 						}
 					}
 				]
