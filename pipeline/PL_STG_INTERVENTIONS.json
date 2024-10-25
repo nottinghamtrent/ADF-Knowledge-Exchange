@@ -158,7 +158,7 @@
 						"referenceName": "DS_Knowledge_Exchange",
 						"type": "DatasetReference",
 						"parameters": {
-							"FileName": "All_Interventions.txt"
+							"FileName": "All_InterventionsOLD.txt"
 						}
 					}
 				],
