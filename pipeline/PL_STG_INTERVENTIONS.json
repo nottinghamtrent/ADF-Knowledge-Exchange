@@ -99,6 +99,18 @@
 							},
 							{
 								"source": {
+									"name": "Hours",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "Intervention_Hours",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
 									"name": "School/Dept",
 									"type": "String",
 									"physicalType": "String"
@@ -117,10 +129,8 @@
 								},
 								"sink": {
 									"name": "Intervention_tCO2e",
-									"type": "Decimal",
-									"physicalType": "decimal",
-									"scale": 4,
-									"precision": 10
+									"type": "String",
+									"physicalType": "varchar"
 								}
 							},
 							{
@@ -133,20 +143,6 @@
 									"name": "Intervention_Type",
 									"type": "String",
 									"physicalType": "varchar"
-								}
-							},
-							{
-								"source": {
-									"name": "Hours",
-									"type": "String",
-									"physicalType": "String"
-								},
-								"sink": {
-									"name": "Intervention_Hours",
-									"type": "Decimal",
-									"physicalType": "decimal",
-									"scale": 2,
-									"precision": 7
 								}
 							}
 						],
