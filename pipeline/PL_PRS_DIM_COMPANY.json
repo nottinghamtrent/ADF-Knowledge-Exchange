@@ -418,6 +418,34 @@
 									"type": "String",
 									"physicalType": "varchar"
 								}
+							},
+							{
+								"source": {
+									"name": "COMPANY_STATE_AID",
+									"type": "Decimal",
+									"physicalType": "decimal",
+									"scale": 2,
+									"precision": 10
+								},
+								"sink": {
+									"name": "COMPANY_STATE_AID",
+									"type": "Decimal",
+									"physicalType": "decimal",
+									"scale": 2,
+									"precision": 10
+								}
+							},
+							{
+								"source": {
+									"name": "COMPANY_STATE_AID_DATE",
+									"type": "DateTime",
+									"physicalType": "datetime"
+								},
+								"sink": {
+									"name": "COMPANY_STATE_AID_DATE",
+									"type": "DateTime",
+									"physicalType": "datetime"
+								}
 							}
 						],
 						"typeConversion": true,
