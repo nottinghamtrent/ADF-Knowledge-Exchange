@@ -19,8 +19,9 @@
 						"type": "DelimitedTextSource",
 						"storeSettings": {
 							"type": "FileServerReadSettings",
-							"fileListPath": "NSPL21_MAY_2024_UK.csv",
-							"enablePartitionDiscovery": false
+							"recursive": true,
+							"enablePartitionDiscovery": false,
+							"fileFilter": "NSPL21_MAY_2024_UK.csv"
 						},
 						"formatSettings": {
 							"type": "DelimitedTextReadSettings"
@@ -28,7 +29,6 @@
 					},
 					"sink": {
 						"type": "AzureSqlSink",
-						"preCopyScript": "TRUNCATE TABLE KNE_STG.Postcodes",
 						"writeBehavior": "insert",
 						"sqlWriterUseTableLock": false,
 						"tableOption": "autoCreate",
