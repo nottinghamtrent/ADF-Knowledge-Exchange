@@ -1,0 +1,21 @@
+{
+	"name": "DS_KNE_POSTCODES",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "LS_KNE_POSTCODES",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "FileServerLocation"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": []
+	}
+}
