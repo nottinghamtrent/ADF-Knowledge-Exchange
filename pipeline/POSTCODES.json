@@ -1,0 +1,40 @@
+{
+	"name": "POSTCODES",
+	"properties": {
+		"activities": [
+			{
+				"name": "Copy data1",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "AzureSqlSource",
+						"sqlReaderQuery": "SELECT \nPC.PCD AS POSTCODE,\nWD.WD21NM AS WARDNAME,\nLA.LAD22NM AS LOCAL_AUTHORITY,\nCS.PCON25NM AS PARL_CONSTIT,\nCTY.CTY15NM AS COUNTY,\nRG.RGN14NM AS REGION,\nCOUNTRY.CTRY15NM COUNTRY,\nPC.LAT   AS LATITUDE,\nPC.LONG AS LONGDITUDE\n FROM [KNE_STG].[Postcodes] PC\n LEFT OUTER JOIN KNE_STG.POSTCODE_COUNTRY COUNTRY\n ON PC.CTRY=COUNTRY.CTRY15CD\nLEFT OUTER JOIN KNE_STG.POSTCODE_LOCAL_AUTHORITY LA\n ON PC.LAUA=LA.LAD22CD\n LEFT OUTER JOIN KNE_STG.POSTCODE_WARDS WD\n ON PC.WARD=WD.WD21CD\n LEFT OUTER JOIN KNE_STG.POSTCODE_REGIONS RG\n  ON PC.RGN=RG.RGN14CD \n LEFT OUTER JOIN KNE_STG.POSTCODE_COUNTIES CTY\n ON PC.CTY=CTY.CTY15CD\n LEFT OUTER JOIN KNE_STG.Postcode_Constituencies CS\n ON PC.lsoa21=CS.LSOA21CD",
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
+					},
+					"enableStaging": false
+				},
+				"inputs": [
+					{
+						"referenceName": "DS_Azure_Destination",
+						"type": "DatasetReference",
+						"parameters": {
+							"TableName": "POSTCODE_COUNTRY",
+							"SchemaName": "KNE_STG"
+						}
+					}
+				]
+			}
+		],
+		"annotations": []
+	}
+}
