@@ -5,8 +5,8 @@
 		"annotations": [],
 		"type": "AzureSqlDatabase",
 		"typeProperties": {
-			"connectionString": "integrated security=False;encrypt=True;connection timeout=30;data source=ntu-dw-tst.database.windows.net;initial catalog=NtuDataWareHouse-Tst;user id=TestUserAdmin",
-			"encryptedCredential": "eyJDcmVkZW50aWFsSWQiOiIxYThiY2ZkMC00MjE2LTQxYTEtYjE4Mi00NTNhOWVjNzJjNDciLCJWZXJzaW9uIjoiMi4wIiwiQ2xhc3NUeXBlIjoiTWljcm9zb2Z0LkRhdGFQcm94eS5Db3JlLkludGVyU2VydmljZURhdGFDb250cmFjdC5DcmVkZW50aWFsU1UwNkNZMTQifQ=="
+			"connectionString": "integrated security=False;encrypt=True;connection timeout=30;data source=ntu-dw-tst.database.windows.net;initial catalog=NtuDataWareHouse-DEV;user id=TestUserAdmin",
+			"encryptedCredential": "eyJDcmVkZW50aWFsSWQiOiIyYmIxNjJjNi1jY2JjLTQzYjUtYjk2ZC1mM2QyYzRlYTU5ZTMiLCJWZXJzaW9uIjoiMi4wIiwiQ2xhc3NUeXBlIjoiTWljcm9zb2Z0LkRhdGFQcm94eS5Db3JlLkludGVyU2VydmljZURhdGFDb250cmFjdC5DcmVkZW50aWFsU1UwNkNZMTQifQ=="
 		},
 		"connectVia": {
 			"referenceName": "IR-Esther-PRD",
