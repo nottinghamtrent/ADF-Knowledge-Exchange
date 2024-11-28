@@ -47,7 +47,10 @@
 				"inputs": [
 					{
 						"referenceName": "DS_Knowledge_Exchange",
-						"type": "DatasetReference"
+						"type": "DatasetReference",
+						"parameters": {
+							"FileName": "ONS_Postcodes/ONSPD_AUG_2024_UK.csv"
+						}
 					}
 				],
 				"outputs": [
