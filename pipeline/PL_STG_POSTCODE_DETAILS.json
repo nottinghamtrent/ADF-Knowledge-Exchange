@@ -328,7 +328,7 @@
 					},
 					"sink": {
 						"type": "AzureSqlSink",
-						"preCopyScript": "TRUNCATE KNE_STG.POSTCODE_NATIONAL_PARK",
+						"preCopyScript": "TRUNCATE TABLE\nKNE_STG.POSTCODE_NATIONAL_PARK",
 						"writeBehavior": "insert",
 						"sqlWriterUseTableLock": false,
 						"tableOption": "autoCreate",
