@@ -364,8 +364,6 @@
 			{
 				"name": "PostCodePolice",
 				"type": "Copy",
-				"state": "Inactive",
-				"onInactiveMarkAs": "Succeeded",
 				"dependsOn": [],
 				"policy": {
 					"timeout": "0.12:00:00",
@@ -390,6 +388,7 @@
 					},
 					"sink": {
 						"type": "AzureSqlSink",
+						"preCopyScript": "TRUNCATE TABLE KNE_STG.POSTCODE_POLICE",
 						"writeBehavior": "insert",
 						"sqlWriterUseTableLock": false,
 						"tableOption": "autoCreate",
@@ -425,8 +424,6 @@
 			{
 				"name": "PostCodeTraveltoWork",
 				"type": "Copy",
-				"state": "Inactive",
-				"onInactiveMarkAs": "Succeeded",
 				"dependsOn": [],
 				"policy": {
 					"timeout": "0.12:00:00",
@@ -451,6 +448,7 @@
 					},
 					"sink": {
 						"type": "AzureSqlSink",
+						"preCopyScript": "TRUNCATE TABLE KNE_STG.POSTCODE_TRAVEL_TO_WORK",
 						"writeBehavior": "insert",
 						"sqlWriterUseTableLock": false,
 						"tableOption": "autoCreate",
@@ -486,8 +484,6 @@
 			{
 				"name": "PostCodeIntegratedHealthBoard",
 				"type": "Copy",
-				"state": "Inactive",
-				"onInactiveMarkAs": "Succeeded",
 				"dependsOn": [],
 				"policy": {
 					"timeout": "0.12:00:00",
@@ -512,6 +508,7 @@
 					},
 					"sink": {
 						"type": "AzureSqlSink",
+						"preCopyScript": "TRUNCATE TABLE KNE_STG.POSTCODE_INTEGRATED_HEALTH_BOARD",
 						"writeBehavior": "insert",
 						"sqlWriterUseTableLock": false,
 						"tableOption": "autoCreate",
@@ -547,8 +544,6 @@
 			{
 				"name": "PostCodeNHSCCG",
 				"type": "Copy",
-				"state": "Inactive",
-				"onInactiveMarkAs": "Succeeded",
 				"dependsOn": [],
 				"policy": {
 					"timeout": "0.12:00:00",
@@ -573,6 +568,7 @@
 					},
 					"sink": {
 						"type": "AzureSqlSink",
+						"preCopyScript": "TRUNCATE TABLE KNE_STG.POSTCODE_NHS_CCG",
 						"writeBehavior": "insert",
 						"sqlWriterUseTableLock": false,
 						"tableOption": "autoCreate",
@@ -740,8 +736,6 @@
 			{
 				"name": "PostCode",
 				"type": "Copy",
-				"state": "Inactive",
-				"onInactiveMarkAs": "Succeeded",
 				"dependsOn": [],
 				"policy": {
 					"timeout": "0.12:00:00",
@@ -766,6 +760,7 @@
 					},
 					"sink": {
 						"type": "AzureSqlSink",
+						"preCopyScript": "TRUNCATE TABLE KNE_STG.POSTCODES",
 						"writeBehavior": "insert",
 						"sqlWriterUseTableLock": false,
 						"tableOption": "autoCreate",
@@ -801,8 +796,6 @@
 			{
 				"name": "PostCodeCountry",
 				"type": "Copy",
-				"state": "Inactive",
-				"onInactiveMarkAs": "Succeeded",
 				"dependsOn": [],
 				"policy": {
 					"timeout": "0.12:00:00",
@@ -827,6 +820,7 @@
 					},
 					"sink": {
 						"type": "AzureSqlSink",
+						"preCopyScript": "TRUNCATE TABLE KNE_STG.POSTCODE_COUNTRY",
 						"writeBehavior": "insert",
 						"sqlWriterUseTableLock": false,
 						"tableOption": "autoCreate",
@@ -862,8 +856,6 @@
 			{
 				"name": "PostCodeLocalAuthority",
 				"type": "Copy",
-				"state": "Inactive",
-				"onInactiveMarkAs": "Succeeded",
 				"dependsOn": [],
 				"policy": {
 					"timeout": "0.12:00:00",
@@ -888,6 +880,7 @@
 					},
 					"sink": {
 						"type": "AzureSqlSink",
+						"preCopyScript": "TRUNCATE TABLE KNE_STG.POSTCODE_LOCAL_AUTHORITY",
 						"writeBehavior": "insert",
 						"sqlWriterUseTableLock": false,
 						"tableOption": "autoCreate",
