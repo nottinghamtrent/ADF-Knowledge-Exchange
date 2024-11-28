@@ -19,8 +19,9 @@
 						"type": "DelimitedTextSource",
 						"storeSettings": {
 							"type": "FileServerReadSettings",
-							"fileListPath": "ONS_Postcodes/ONSPD_AUG_2024_UK.csv",
-							"enablePartitionDiscovery": false
+							"recursive": true,
+							"enablePartitionDiscovery": false,
+							"fileFilter": "ONS_Postcodes/ONSPD_AUG_2024_UK.csv"
 						},
 						"formatSettings": {
 							"type": "DelimitedTextReadSettings"
@@ -29,7 +30,9 @@
 					"sink": {
 						"type": "AzureSqlSink",
 						"writeBehavior": "insert",
-						"sqlWriterUseTableLock": false
+						"sqlWriterUseTableLock": false,
+						"tableOption": "autoCreate",
+						"disableMetricsCollection": false
 					},
 					"enableStaging": false,
 					"translator": {
