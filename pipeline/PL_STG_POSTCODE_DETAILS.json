@@ -602,7 +602,7 @@
 				]
 			},
 			{
-				"name": "CD_POSTCODE_DETAILS",
+				"name": "CD_STG_POSTCODE_DETAILS",
 				"type": "Copy",
 				"dependsOn": [
 					{
@@ -1009,8 +1009,6 @@
 			{
 				"name": "PostCode",
 				"type": "Copy",
-				"state": "Inactive",
-				"onInactiveMarkAs": "Succeeded",
 				"dependsOn": [],
 				"policy": {
 					"timeout": "0.12:00:00",
@@ -1124,6 +1122,391 @@
 						"parameters": {
 							"TableName": "POSTCODE_COUNTRY",
 							"SchemaName": "KNE_STG"
+						}
+					}
+				]
+			},
+			{
+				"name": "CD_PRS_POSTCODE_DETAILS",
+				"type": "Copy",
+				"dependsOn": [
+					{
+						"activity": "CD_STG_POSTCODE_DETAILS",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "AzureSqlSource",
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
+					},
+					"sink": {
+						"type": "AzureSqlSink",
+						"preCopyScript": "TRUNCATE TABLE KNE_PRS.POSTCODE_DETAILS",
+						"writeBehavior": "insert",
+						"sqlWriterUseTableLock": false,
+						"disableMetricsCollection": false
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"name": "POSTCODE",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "POSTCODE",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "WARDNAME",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "WARDNAME",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "LOCAL_AUTHORITY",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "LOCAL_AUTHORITY",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "PARL_CONSTIT",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "PARL_CONSTIT",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "COUNTY",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "COUNTY",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "REGION",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "REGION",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "COUNTRY",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "COUNTRY",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "NHS_INTEGRATED_CARE_BOARD",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "NHS_INTEGRATED_CARE_BOARD",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "NHS_REGION",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "NHS_REGION",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "NHS_CLINICAL_COMM_GROUP",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "NHS_CLINICAL_COMM_GROUP",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "NATIONAL_PARK",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "NATIONAL_PARK",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "POLICE_AUTHORITY",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "POLICE_AUTHORITY",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "EMPLOYMENT_RATE",
+									"type": "Decimal",
+									"physicalType": "decimal",
+									"scale": 1,
+									"precision": 4
+								},
+								"sink": {
+									"name": "EMPLOYMENT_RATE",
+									"type": "Decimal",
+									"physicalType": "decimal",
+									"scale": 1,
+									"precision": 4
+								}
+							},
+							{
+								"source": {
+									"name": "MALE_EMPLOYMENT_RATE",
+									"type": "Decimal",
+									"physicalType": "decimal",
+									"scale": 1,
+									"precision": 4
+								},
+								"sink": {
+									"name": "MALE_EMPLOYMENT_RATE",
+									"type": "Decimal",
+									"physicalType": "decimal",
+									"scale": 1,
+									"precision": 4
+								}
+							},
+							{
+								"source": {
+									"name": "FEMALE_EMPLOYMENT_RATE",
+									"type": "Decimal",
+									"physicalType": "decimal",
+									"scale": 1,
+									"precision": 4
+								},
+								"sink": {
+									"name": "FEMALE_EMPLOYMENT_RATE",
+									"type": "Decimal",
+									"physicalType": "decimal",
+									"scale": 1,
+									"precision": 4
+								}
+							},
+							{
+								"source": {
+									"name": "SELF_EMPLOYMENT_RATE",
+									"type": "Decimal",
+									"physicalType": "decimal",
+									"scale": 1,
+									"precision": 4
+								},
+								"sink": {
+									"name": "SELF_EMPLOYMENT_RATE",
+									"type": "Decimal",
+									"physicalType": "decimal",
+									"scale": 1,
+									"precision": 4
+								}
+							},
+							{
+								"source": {
+									"name": "ECON_INACTIVE_RATE",
+									"type": "Decimal",
+									"physicalType": "decimal",
+									"scale": 1,
+									"precision": 4
+								},
+								"sink": {
+									"name": "ECON_INACTIVE_RATE",
+									"type": "Decimal",
+									"physicalType": "decimal",
+									"scale": 1,
+									"precision": 4
+								}
+							},
+							{
+								"source": {
+									"name": "MALE_ECON_INACTIVE_RATE",
+									"type": "Decimal",
+									"physicalType": "decimal",
+									"scale": 1,
+									"precision": 4
+								},
+								"sink": {
+									"name": "MALE_ECON_INACTIVE_RATE",
+									"type": "Decimal",
+									"physicalType": "decimal",
+									"scale": 1,
+									"precision": 4
+								}
+							},
+							{
+								"source": {
+									"name": "FEMALE_ECON_INACTIVE_RATE",
+									"type": "Decimal",
+									"physicalType": "decimal",
+									"scale": 1,
+									"precision": 4
+								},
+								"sink": {
+									"name": "FEMALE_ECON_INACTIVE_RATE",
+									"type": "Decimal",
+									"physicalType": "decimal",
+									"scale": 1,
+									"precision": 4
+								}
+							},
+							{
+								"source": {
+									"name": "NVQ_LVL4_QUALS",
+									"type": "Decimal",
+									"physicalType": "decimal",
+									"scale": 1,
+									"precision": 4
+								},
+								"sink": {
+									"name": "NVQ_LVL4_QUALS",
+									"type": "Decimal",
+									"physicalType": "decimal",
+									"scale": 1,
+									"precision": 4
+								}
+							},
+							{
+								"source": {
+									"name": "NVQ_NO_QUALS",
+									"type": "Decimal",
+									"physicalType": "decimal",
+									"scale": 1,
+									"precision": 4
+								},
+								"sink": {
+									"name": "NVQ_NO_QUALS",
+									"type": "Decimal",
+									"physicalType": "decimal",
+									"scale": 1,
+									"precision": 4
+								}
+							},
+							{
+								"source": {
+									"name": "LATITUDE",
+									"type": "Decimal",
+									"physicalType": "decimal",
+									"scale": 6,
+									"precision": 9
+								},
+								"sink": {
+									"name": "LATITUDE",
+									"type": "Decimal",
+									"physicalType": "decimal",
+									"scale": 6,
+									"precision": 9
+								}
+							},
+							{
+								"source": {
+									"name": "LONGDITUDE",
+									"type": "Decimal",
+									"physicalType": "decimal",
+									"scale": 6,
+									"precision": 9
+								},
+								"sink": {
+									"name": "LONGDITUDE",
+									"type": "Decimal",
+									"physicalType": "decimal",
+									"scale": 6,
+									"precision": 9
+								}
+							}
+						],
+						"typeConversion": true,
+						"typeConversionSettings": {
+							"allowDataTruncation": true,
+							"treatBooleanAsNumber": false
+						}
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "DS_Azure_Destination",
+						"type": "DatasetReference",
+						"parameters": {
+							"TableName": "POSTCODE_DETAILS",
+							"SchemaName": "KNE_STG"
+						}
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "DS_Azure_Destination",
+						"type": "DatasetReference",
+						"parameters": {
+							"TableName": "POSTCODE_DETAILS",
+							"SchemaName": "KNE_PRS"
 						}
 					}
 				]
