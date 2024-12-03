@@ -678,7 +678,7 @@
 						]
 					},
 					{
-						"activity": "PostCodeParlConsti",
+						"activity": "PostCodeParlConstiUpdate2024",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -1518,7 +1518,7 @@
 				]
 			},
 			{
-				"name": "PostCodeParlConsti",
+				"name": "PostCodeParlConstiUpdate2024",
 				"type": "Copy",
 				"dependsOn": [],
 				"policy": {
@@ -1544,6 +1544,7 @@
 					},
 					"sink": {
 						"type": "AzureSqlSink",
+						"preCopyScript": "TRUNCATE TABLE KNE_STG.POSTCODE_PARL_CONSTIT_2024",
 						"writeBehavior": "insert",
 						"sqlWriterUseTableLock": false,
 						"tableOption": "autoCreate",
