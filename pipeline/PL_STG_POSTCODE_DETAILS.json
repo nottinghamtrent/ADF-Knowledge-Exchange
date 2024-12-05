@@ -1645,6 +1645,32 @@
 					"enableStaging": false,
 					"translator": {
 						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"name": "MCTY21CD",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "CTY15CD",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "MCTY21NM",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "CTY15NM",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							}
+						],
 						"typeConversion": true,
 						"typeConversionSettings": {
 							"allowDataTruncation": true,
