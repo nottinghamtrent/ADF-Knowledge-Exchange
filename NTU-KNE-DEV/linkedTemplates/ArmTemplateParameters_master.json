@@ -5,6 +5,9 @@
 		"factoryName": {
 			"value": "NTU-KNE-DEV"
 		},
+		"LS_Azure_Destination_connectionString": {
+			"value": ""
+		},
 		"LS_COMPANY_HOUSE_DATA_accountKey": {
 			"value": ""
 		},
@@ -14,17 +17,20 @@
 		"LS_AzureDB_properties_typeProperties_connectionString_secretName": {
 			"value": "AzureDb-ConnectionString"
 		},
-		"LS_Azure_Destination_properties_typeProperties_connectionString_secretName": {
-			"value": "KV-AzureDB-DEV-ConnectionString"
-		},
 		"LS_COMPANY_HOUSE_DATA_properties_typeProperties_url": {
 			"value": "https://storageforcompanyhouse.dfs.core.windows.net/"
 		},
 		"LS_DBricks_Company_House_Data_properties_typeProperties_existingClusterId": {
 			"value": "0905-140100-minfc4nk"
 		},
+		"LS_KNE_POSTCODES_properties_typeProperties_host": {
+			"value": "\\\\renault\\BISHARE\\Cognos_production\\External Data Sources\\Knowledge Exchange\\ONS_Postcodes"
+		},
+		"LS_KNE_POSTCODES_properties_typeProperties_userId": {
+			"value": "ads\\Cognos10_prd"
+		},
 		"LS_KV_NTU_ADF_PRD_properties_typeProperties_baseUrl": {
-			"value": "https://NTU-ADF-PRD-KeyVault.vault.azure.net/"
+			"value": "https://NTU-ADF-DEV-KeyVault.vault.azure.net/"
 		},
 		"LS_Knowledge_Exchange_properties_typeProperties_host": {
 			"value": "\\\\renault\\BISHARE\\Cognos_production\\External Data Sources\\Knowledge Exchange"

@@ -15,6 +15,10 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'accessToken' of 'LS_DBricks_Company_House_Data'"
 		},
+		"LS_Azure_Destination_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'LS_Azure_Destination'"
+		},
 		"LS_COMPANY_HOUSE_DATA_properties_typeProperties_url": {
 			"type": "string",
 			"defaultValue": "https://storageforcompanyhouse.dfs.core.windows.net/"
@@ -25,7 +29,7 @@
 		},
 		"LS_KV_NTU_ADF_PRD_properties_typeProperties_baseUrl": {
 			"type": "string",
-			"defaultValue": "https://NTU-ADF-PRD-KeyVault.vault.azure.net/"
+			"defaultValue": "https://NTU-ADF-DEV-KeyVault.vault.azure.net/"
 		},
 		"IR-Esther-PRD_properties_typeProperties_linkedInfo_resourceId": {
 			"type": "string",
@@ -35,9 +39,13 @@
 			"type": "string",
 			"defaultValue": "AzureDb-ConnectionString"
 		},
-		"LS_Azure_Destination_properties_typeProperties_connectionString_secretName": {
+		"LS_KNE_POSTCODES_properties_typeProperties_host": {
 			"type": "string",
-			"defaultValue": "KV-AzureDB-DEV-ConnectionString"
+			"defaultValue": "\\\\renault\\BISHARE\\Cognos_production\\External Data Sources\\Knowledge Exchange\\ONS_Postcodes"
+		},
+		"LS_KNE_POSTCODES_properties_typeProperties_userId": {
+			"type": "string",
+			"defaultValue": "ads\\Cognos10_prd"
 		},
 		"LS_Knowledge_Exchange_properties_typeProperties_host": {
 			"type": "string",
@@ -245,13 +253,34 @@
 				"annotations": [],
 				"type": "AzureSqlDatabase",
 				"typeProperties": {
-					"connectionString": {
+					"connectionString": "[parameters('LS_Azure_Destination_connectionString')]"
+				},
+				"connectVia": {
+					"referenceName": "IR-Esther-PRD",
+					"type": "IntegrationRuntimeReference"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/integrationRuntimes/IR-Esther-PRD')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/LS_KNE_POSTCODES')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "FileServer",
+				"typeProperties": {
+					"host": "[parameters('LS_KNE_POSTCODES_properties_typeProperties_host')]",
+					"userId": "[parameters('LS_KNE_POSTCODES_properties_typeProperties_userId')]",
+					"password": {
 						"type": "AzureKeyVaultSecret",
 						"store": {
 							"referenceName": "LS_KV_NTU_ADF_PRD",
 							"type": "LinkedServiceReference"
 						},
-						"secretName": "[parameters('LS_Azure_Destination_properties_typeProperties_connectionString_secretName')]"
+						"secretName": "KV-Cognos10prd-Pwd"
 					}
 				},
 				"connectVia": {
@@ -280,7 +309,7 @@
 							"referenceName": "LS_KV_NTU_ADF_PRD",
 							"type": "LinkedServiceReference"
 						},
-						"secretName": "RenaultBiUserPassword"
+						"secretName": "KV-Cognos10prd-Pwd"
 					}
 				},
 				"connectVia": {
@@ -312,7 +341,7 @@
 						},
 						"userProperties": [],
 						"typeProperties": {
-							"storedProcedureName": "[[KNE_INT].[INT_COMPANY_HOUSE]"
+							"storedProcedureName": "[[KNE_INTSP].[INT_COMPANY_HOUSE]"
 						},
 						"linkedServiceName": {
 							"referenceName": "LS_Azure_Destination",
@@ -385,6 +414,32 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/linkedServices/LS_Azure_Destination')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DS_KNE_POSTCODES')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "LS_KNE_POSTCODES",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "FileServerLocation"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/LS_KNE_POSTCODES')]"
 			]
 		},
 		{
@@ -728,7 +783,7 @@
 										"value": "Y"
 									}
 								],
-								"sqlReaderQuery": "WITH\nQ_OUPUTS\nAS\n(\nSELECT project_Code, partner,Business_Number,\nCASE\nWHEN [C1] IS NOT NULL THEN 'Y'\nELSE 'N'\nEND C1,\nCASE\nWHEN [C2] IS NOT NULL THEN 'Y'\nELSE 'N'\nEND C2,\nCASE\nWHEN [C4] IS NOT NULL THEN 'Y'\nELSE 'N'\nEND C4,\nCASE\nWHEN [C6] IS NOT NULL THEN 'Y'\nELSE 'N'\nEND C6,\nCASE\nWHEN [C34] IS NOT NULL THEN 'Y'\nELSE 'N'\nEND C34,\nCASE\nWHEN [C26] IS NOT NULL THEN 'Y'\nELSE 'N'\nEND C26,\nCASE\nWHEN [C28] IS NOT NULL THEN 'Y'\nELSE 'N'\nEND C28,\nCASE\nWHEN [C29] IS NOT NULL THEN 'Y'\nELSE 'N'\nEND C29,\nCASE\nWHEN [C5] IS NOT NULL THEN 'Y'\nELSE 'N'\nEND C5,\nCASE\nWHEN [C8] IS NOT NULL THEN 'Y'\nELSE 'N'\nEND C8,\nCASE\nWHEN [C023] IS NOT NULL THEN 'Y'\nELSE 'N'\nEND C023,\nCASE\nWHEN [P11] IS NOT NULL THEN 'Y'\nELSE 'N'\nEND P11,\nCASE\nWHEN [P13] IS NOT NULL THEN 'Y'\nELSE 'N'\nEND P13,\nCASE\nWHEN [R9] IS NOT NULL THEN 'Y'\nELSE 'N'\nEND R9\nFROM (\n    SELECT Project_Code, partner,Business_Number,Output FROM [KNE_STG].[Outputs]\n) AS SourceTable\nPIVOT (\n    MAX(output)\n    FOR output IN ([C1], [C2], [C4], [C6], [C34], [C26],[C28],[C29],[C5],[C8],[C023],[P11],[P13],[R9] )\n\n) AS PivotTable),\n\n\n\n\n\nQ_CARBON\nAS\n(\nSELECT BUSINESS_NUMBER,\nSUM(CAST(\"MATCH\" AS DECIMAL (10,2))) AS MATCH_TOTAL,\nSUM(CASE\nWHEN LEN(tCo2e) > 0\nTHEN CAST(REPLACE(tCo2e,'t','') AS DECIMAL (10,2)) \nELSE CAST('0.00' AS DECIMAL (10,2))\nEND) CO2_TOTAL,\nSUM(CAST(REPLACE(REPLACE(\"Grant\",'\"',''),',','')AS DECIMAL (10,2))) AS  GRANT_TOTAL\nFROM KNE_STG.BUSINESSDATA_CARBON\nGROUP BY BUSINESS_NUMBER)\n\n  \n  \n  SELECT \n      MAIN.Project_Code,\n      MAIN.Business_Number,\n      MAIN.Business_Name,\n      MAIN.Postcode,\n      \n\t  CONVERT(date, MAIN.Enrolment_Date, 103) AS Enrolment_Date,\n\t  \n\t\n      MAIN.FIVE_Digit_SIC_Code,\n      Turnover,\n      CAST(MAIN.No_of_Employees AS NUMERIC) AS No_of_Employees,\n\n\t  CONVERT(date, MAIN.Business_Registration_Date, 103) AS Business_Registration_Date,\n      MAIN.Equality_Policy,\n      MAIN.Environmental_Policy,\n      MAIN.Size,\n      MAIN.Business_No_Type2,\n      MAIN.Partner,\n\t  COALESCE(OUTPUTS.C1,'N') OUTPUT_C1,\n\t  COALESCE(OUTPUTS.C2,'N') OUTPUT_C2,\n\t  COALESCE(OUTPUTS.C4,'N') OUTPUT_C4,\n\t  COALESCE(OUTPUTS.C6,'N') OUTPUT_C6,\n\t  COALESCE(OUTPUTS.C34,'N') OUTPUT_C34,\n      COALESCE(OUTPUTS.C26,'N') OUTPUT_C26,\n\t  COALESCE(OUTPUTS.C28,'N') OUTPUT_C28,\n\t  COALESCE(OUTPUTS.C29,'N') OUTPUT_C29,\n\t  COALESCE(OUTPUTS.C5,'N') OUTPUT_C5,\n      COALESCE(OUTPUTS.C8,'N') OUTPUT_C8,\n\t  COALESCE(OUTPUTS.C023,'N') OUTPUT_C023,\n\t  COALESCE(OUTPUTS.P11,'N') OUTPUT_P11,\n\t  COALESCE(OUTPUTS.P13,'N') OUTPUT_P13,\n\t  COALESCE(OUTPUTS.R9,'N') OUTPUT_R9,\n\t  COALESCE(Q_CARBON.CO2_TOTAL,'0.00') CO2_TOTAL,\n\t  COALESCE(Q_CARBON.GRANT_TOTAL,'0.00') GRANT_TOTAL,\n\t  COALESCE(Q_CARBON.MATCH_TOTAL,'0.00') MATCH_TOTAL\n  FROM KNE_STG.BusinessData_General MAIN\n  LEFT OUTER JOIN Q_OUPUTS OUTPUTS\n  ON MAIN.Project_Code=OUTPUTS.Project_Code\n  AND MAIN.Business_Number=OUTPUTS.Business_Number\n  AND MAIN.PARTNER=OUTPUTS.Partner\n  LEFT OUTER JOIN Q_CARBON\n  ON MAIN.Business_Number=Q_CARBON.Business_Number\n  WHERE CONCAT(MAIN.Project_Code,MAIN.Enrolment_Date)=\n  (SELECT MAX(CONCAT(SUB.Project_Code,SUB.Enrolment_Date))\n  FROM [KNE_STG].[BusinessData_General] SUB\n  WHERE SUB.Business_Number=MAIN.Business_Number)",
+								"sqlReaderQuery": "WITH\nQ_OUPUTS\nAS\n(\nSELECT project_Code, partner,Business_Number,\nCASE\nWHEN [C1] IS NOT NULL THEN '1'\nELSE '0'\nEND C1,\nCASE\nWHEN [C2] IS NOT NULL THEN '1'\nELSE '0'\nEND C2,\nCASE\nWHEN [C4] IS NOT NULL THEN '1'\nELSE '0'\nEND C4,\nCASE\nWHEN [C6] IS NOT NULL THEN '1'\nELSE '0'\nEND C6,\nCASE\nWHEN [C34] IS NOT NULL THEN '1'\nELSE '0'\nEND C34,\nCASE\nWHEN [C26] IS NOT NULL THEN '1'\nELSE '0'\nEND C26,\nCASE\nWHEN [C28] IS NOT NULL THEN '1'\nELSE '0'\nEND C28,\nCASE\nWHEN [C29] IS NOT NULL THEN '1'\nELSE '0'\nEND C29,\nCASE\nWHEN [C5] IS NOT NULL THEN '1'\nELSE '0'\nEND C5,\nCASE\nWHEN [C8] IS NOT NULL THEN '1'\nELSE '0'\nEND C8,\nCASE\nWHEN [C023] IS NOT NULL THEN '1'\nELSE '0'\nEND C023,\nCASE\nWHEN [P11] IS NOT NULL THEN '1'\nELSE '0'\nEND P11,\nCASE\nWHEN [P13] IS NOT NULL THEN '1'\nELSE '0'\nEND P13,\nCASE\nWHEN [R9] IS NOT NULL THEN '1'\nELSE '0'\nEND R9\nFROM (\n    SELECT Project_Code, partner,Business_Number,Output FROM [KNE_STG].[Outputs]\n) AS SourceTable\nPIVOT (\n    MAX(output)\n    FOR output IN ([C1], [C2], [C4], [C6], [C34], [C26],[C28],[C29],[C5],[C8],[C023],[P11],[P13],[R9] )\n\n) AS PivotTable),\n\n\n\n\n\nQ_CARBON\nAS\n(\nSELECT BUSINESS_NUMBER,\nSUM(CAST(\"MATCH\" AS DECIMAL (10,2))) AS MATCH_TOTAL,\nSUM(CASE\nWHEN LEN(tCo2e) > 0\nTHEN CAST(REPLACE(tCo2e,'t','') AS DECIMAL (10,2)) \nELSE CAST('0.00' AS DECIMAL (10,2))\nEND) CO2_TOTAL,\nSUM(CAST(REPLACE(REPLACE(\"Grant\",'\"',''),',','')AS DECIMAL (10,2))) AS  GRANT_TOTAL\nFROM KNE_STG.BUSINESSDATA_CARBON\nGROUP BY BUSINESS_NUMBER)\n\n  \n  \n  SELECT \n      MAIN.Project_Code,\n      MAIN.Business_Number,\n\t  CONCAT(MAIN.Project_Code,'|',MAIN.Business_Number) COMPANY_BK,\n      MAIN.Business_Name,\n      MAIN.Postcode,\n      \n\t  CONVERT(date, MAIN.Enrolment_Date, 103) AS Enrolment_Date,\n\t  \n\t\n      MAIN.FIVE_Digit_SIC_Code,\n      Turnover,\n      CAST(MAIN.No_of_Employees AS NUMERIC) AS No_of_Employees,\n\n\t  CONVERT(date, MAIN.Business_Registration_Date, 103) AS Business_Registration_Date,\n      MAIN.Equality_Policy,\n      MAIN.Environmental_Policy,\n      MAIN.Size,\n      MAIN.Business_No_Type2,\n      MAIN.Partner,\n\t  COALESCE(OUTPUTS.C1,'0') OUTPUT_C1,\n\t  COALESCE(OUTPUTS.C2,'0') OUTPUT_C2,\n\t  COALESCE(OUTPUTS.C4,'0') OUTPUT_C4,\n\t  COALESCE(OUTPUTS.C6,'0') OUTPUT_C6,\n\t  COALESCE(OUTPUTS.C34,'0') OUTPUT_C34,\n      COALESCE(OUTPUTS.C26,'0') OUTPUT_C26,\n\t  COALESCE(OUTPUTS.C28,'0') OUTPUT_C28,\n\t  COALESCE(OUTPUTS.C29,'0') OUTPUT_C29,\n\t  COALESCE(OUTPUTS.C5,'0') OUTPUT_C5,\n      COALESCE(OUTPUTS.C8,'0') OUTPUT_C8,\n\t  COALESCE(OUTPUTS.C023,'0') OUTPUT_C023,\n\t  COALESCE(OUTPUTS.P11,'0') OUTPUT_P11,\n\t  COALESCE(OUTPUTS.P13,'0') OUTPUT_P13,\n\t  COALESCE(OUTPUTS.R9,'0') OUTPUT_R9,\n\t  COALESCE(Q_CARBON.CO2_TOTAL,'0.00') CO2_TOTAL,\n\t  COALESCE(Q_CARBON.GRANT_TOTAL,'0.00') GRANT_TOTAL,\n\t  COALESCE(Q_CARBON.MATCH_TOTAL,'0.00') MATCH_TOTAL\n  FROM KNE_STG.BusinessData_General MAIN\n  LEFT OUTER JOIN Q_OUPUTS OUTPUTS\n  ON MAIN.Project_Code=OUTPUTS.Project_Code\n  AND MAIN.Business_Number=OUTPUTS.Business_Number\n  AND MAIN.PARTNER=OUTPUTS.Partner\n  LEFT OUTER JOIN Q_CARBON\n  ON MAIN.Business_Number=Q_CARBON.Business_Number",
 								"queryTimeout": "02:00:00",
 								"partitionOption": "None"
 							},
@@ -745,7 +800,7 @@
 								"mappings": [
 									{
 										"source": {
-											"name": "Business_Number",
+											"name": "COMPANY_BK",
 											"type": "String",
 											"physicalType": "varchar"
 										},
@@ -1025,6 +1080,28 @@
 									},
 									{
 										"source": {
+											"name": "CURRENT_DATE",
+											"type": "String"
+										},
+										"sink": {
+											"name": "COMPANY_START_DATE",
+											"type": "DateTime",
+											"physicalType": "datetime"
+										}
+									},
+									{
+										"source": {
+											"name": "ACTIVE_IND",
+											"type": "String"
+										},
+										"sink": {
+											"name": "COMPANY_ACTIVE_IND",
+											"type": "String",
+											"physicalType": "char"
+										}
+									},
+									{
+										"source": {
 											"name": "CO2_TOTAL",
 											"type": "Decimal",
 											"physicalType": "decimal",
@@ -1073,24 +1150,14 @@
 									},
 									{
 										"source": {
-											"name": "CURRENT_DATE",
-											"type": "String"
-										},
-										"sink": {
-											"name": "COMPANY_START_DATE",
-											"type": "DateTime",
-											"physicalType": "datetime"
-										}
-									},
-									{
-										"source": {
-											"name": "ACTIVE_IND",
-											"type": "String"
-										},
-										"sink": {
-											"name": "COMPANY_ACTIVE_IND",
+											"name": "Business_Number",
 											"type": "String",
-											"physicalType": "char"
+											"physicalType": "varchar"
+										},
+										"sink": {
+											"name": "COMPANY_NUMBER",
+											"type": "String",
+											"physicalType": "varchar"
 										}
 									}
 								],
@@ -1571,182 +1638,6 @@
 				"annotations": []
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/DS_Azure_Destination')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/PL_INT_DIM_PROJECT')]",
-			"type": "Microsoft.DataFactory/factories/pipelines",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"activities": [
-					{
-						"name": "CD_INT_DIM_PROJECT",
-						"type": "Copy",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "0.12:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"source": {
-								"type": "AzureSqlSource",
-								"sqlReaderQuery": "Select distinct Project AS Project,\nCASE\nWHEN Project='EI'\nTHEN 'Enabling Innovation '\nWHEN Project='EIC'\nTHEN 'Enterprise Innovation Centre'\nWHEN Project='GRADS'\nTHEN 'Grads for D2N2'\nWHEN Project='PTI'\nTHEN 'Productivity Through innovation'\nWHEN Project='SIE'\nTHEN 'Sustainability in Enterprise'\nWHEN Project='UPS'\nTHEN 'UpScaler'\nWHEN  Project='BH'\nTHEN 'Big House'\nWHEN  COALESCE(Project,'N/A') IS NULL\nTHEN 'Not Entered'\nEND  PROJECT_DESCRIPTION\nfrom kne_stg.Interventions\nWHERE len(Project) <> 0\nUNION\nSelect DISTINCT Project_Code,\nCASE\nWHEN Project_Code='EI'\nTHEN 'Enabling Innovation '\nWHEN Project_Code='EIC'\nTHEN 'Enterprise Innovation Centre'\nWHEN Project_Code='GRADS'\nTHEN 'Grads for D2N2'\nWHEN Project_Code='PTI'\nTHEN 'Productivity Through innovation'\nWHEN Project_Code='SIE'\nTHEN 'Sustainability in Enterprise'\nWHEN Project_Code='UPS'\nTHEN 'UpScaler'\nWHEN  Project_Code='BH'\nTHEN 'Big House'\nEND  PROJECT_DESCRIPTION\nfrom kne_stg.Placements\nWHERE len(Project_Code)<>0 \nUNION\nSelect 'N/A','Not Entered'",
-								"queryTimeout": "02:00:00",
-								"partitionOption": "None"
-							},
-							"sink": {
-								"type": "AzureSqlSink",
-								"preCopyScript": "TRUNCATE TABLE kne_int.DIM_PROJECT",
-								"writeBehavior": "insert",
-								"sqlWriterUseTableLock": false,
-								"disableMetricsCollection": false
-							},
-							"enableStaging": false,
-							"translator": {
-								"type": "TabularTranslator",
-								"mappings": [
-									{
-										"source": {
-											"name": "Project",
-											"type": "String",
-											"physicalType": "varchar"
-										},
-										"sink": {
-											"name": "PROJECT_BK",
-											"type": "String",
-											"physicalType": "varchar"
-										}
-									},
-									{
-										"source": {
-											"name": "PROJECT_DESCRIPTION",
-											"type": "String",
-											"physicalType": "varchar"
-										},
-										"sink": {
-											"name": "PROJECT_NAME",
-											"type": "String",
-											"physicalType": "varchar"
-										}
-									}
-								],
-								"typeConversion": true,
-								"typeConversionSettings": {
-									"allowDataTruncation": true,
-									"treatBooleanAsNumber": false
-								}
-							}
-						},
-						"inputs": [
-							{
-								"referenceName": "DS_Azure_Destination",
-								"type": "DatasetReference",
-								"parameters": {
-									"TableName": "Interventions",
-									"SchemaName": "KNE_STG"
-								}
-							}
-						],
-						"outputs": [
-							{
-								"referenceName": "DS_Azure_Destination",
-								"type": "DatasetReference",
-								"parameters": {
-									"TableName": "DIM_PROJECT",
-									"SchemaName": "KNE_INT"
-								}
-							}
-						]
-					}
-				],
-				"policy": {
-					"elapsedTimeMetric": {}
-				},
-				"folder": {
-					"name": "2_0_INTEGRATION"
-				},
-				"annotations": []
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/DS_Azure_Destination')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/PL_INT_DIM_REPORTING_DATES')]",
-			"type": "Microsoft.DataFactory/factories/pipelines",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"activities": [
-					{
-						"name": "CD_DIM_ACADEMIC_YEAR",
-						"type": "Copy",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "0.12:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"source": {
-								"type": "AzureSqlSource",
-								"sqlReaderQuery": "SELECT \n      [REP_DATES_BK]\n      ,[REP_DATES_FULL_DATE]\n      ,[REP_DATES_DAY_OF_YEAR]\n      ,[REP_DATES_DAY_OF_MONTH]\n      ,[REP_DATES_DAY_OF_WEEK]\n      ,[REP_DATES_DAY_NAME]\n      ,[REP_DATES_WEEKDAY]\n      ,[REP_DATES_WEEK_NUMBER]\n      ,[REP_DATES_ACADEMIC_WEEK_NUMBER]\n      ,[REP_DATES_EQUIV_HIST_WEEK_FLAG]\n      ,[REP_DATES_RELATIVE_ACAD_WEEKNO]\n      ,[STU_FRIDAY_SNAPSHOT_REL_WEEKNO]\n      ,[REP_DATES_WEEK_OF_MONTH]\n      ,[REP_DATES_START_OF_WEEK]\n      ,[REP_DATES_END_OF_WEEK]\n      ,[REP_DATES_MONDAY_OF_WEEK]\n      ,[REP_DATES_FRIDAY_OF_WEEK]\n      ,[REP_DATES_MONTH_NUMBER]\n      ,[REP_DATES_MONTH_SHORT_NAME]\n      ,[REP_DATES_MONTH_LONG_NAME]\n      ,[REP_DATES_CALENDAR_YEAR]\n      ,[REP_DATES_ACADEMIC_YEAR]\n      ,[REP_DATES_FACILITY_YEAR]\n      ,[REP_DATES_RELATIVE_YEAR]\n      ,[REP_DATES_RELATIVE_YEAR_DESC]\n      ,[REP_DATES_ACADEMIC_START_YEAR]\n      ,[REP_DATES_ACADEMIC_END_YEAR]\n      ,[REP_DATES_ACADEMIC_QUARTER]\n      ,[REP_DATES_ACADEMIC_PERIOD]\n      ,[REP_DATES_TERM_WEEK_FLAG]\n      ,[REP_DATES_TERM_WEEK_DESC]\n      ,[REP_DATES_FINANCIAL_YEAR]\n      ,[REP_DATES_FINANCIAL_QUARTER]\n      ,[REP_DATES_FINANCIAL_PERIOD]\n      ,[REP_DATES_TAX_YEAR]\n      ,[REP_DATES_TAX_QUARTER]\n      ,[REP_DATES_TAX_PERIOD]\n      ,[REP_DATES_CALENDAR_YEAR_FLAG]\n      ,[REP_DATES_ACADEMIC_YEAR_FLAG]\n      ,[REP_DATES_FACILITY_YEAR_FLAG]\n      ,[REP_DATES_FINANCIAL_YEAR_FLAG]\n      ,[REP_DATES_TAX_YEAR_FLAG]\n      ,[REP_DATES_ACADEMIC_QTR_FLAG]\n      ,[REP_DATES_FINANCIAL_QTR_FLAG]\n      ,[REP_DATES_TAX_QTR_FLAG]\n      ,[REP_DATES_ACADEMIC_PERIOD_FLAG]\n      ,[REP_DATES_FINANCIALPERIOD_FLAG]\n      ,[REP_DATES_TAX_PERIOD_FLAG]\n      ,[REP_DATES_MONTH_FLAG]\n      ,[REP_DATES_CALENDAR_WEEK_FLAG]\n      ,[REP_DATES_ACADEMIC_WEEK_FLAG]\n      ,[REP_DATES_START_DATE]\n      ,[REP_DATES_END_DATE]\n      ,[REP_DATES_ACTIVE_IND]\n      ,[REP_DATES_SK_STUDENT]\n      ,[REP_DATES_REL_TO_START_OF_TERM]\n  FROM [GLOBAL].[PRS_DIM_REPORTING_DATES]\n",
-								"queryTimeout": "02:00:00",
-								"partitionOption": "None"
-							},
-							"sink": {
-								"type": "AzureSqlSink",
-								"preCopyScript": "TRUNCATE TABLE  KNE_INT.DIM_REPORTING_DATES;\n\n\nINSERT INTO KNE_INT.DIM_REPORTING_DATES\n(REP_DATES_BK,REP_DATES_ACTIVE_IND)\nVALUES ('N/A','Y');\n",
-								"writeBehavior": "insert",
-								"sqlWriterUseTableLock": false,
-								"disableMetricsCollection": false
-							},
-							"enableStaging": false,
-							"translator": {
-								"type": "TabularTranslator",
-								"typeConversion": true,
-								"typeConversionSettings": {
-									"allowDataTruncation": true,
-									"treatBooleanAsNumber": false
-								}
-							}
-						},
-						"inputs": [
-							{
-								"referenceName": "DS_AzureDB",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						],
-						"outputs": [
-							{
-								"referenceName": "DS_Azure_Destination",
-								"type": "DatasetReference",
-								"parameters": {
-									"TableName": "DIM_REPORTING_DATES",
-									"SchemaName": "KNE_INT"
-								}
-							}
-						]
-					}
-				],
-				"policy": {
-					"elapsedTimeMetric": {}
-				},
-				"folder": {
-					"name": "2_0_INTEGRATION"
-				},
-				"annotations": []
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/DS_AzureDB')]",
 				"[concat(variables('factoryId'), '/datasets/DS_Azure_Destination')]"
 			]
 		}

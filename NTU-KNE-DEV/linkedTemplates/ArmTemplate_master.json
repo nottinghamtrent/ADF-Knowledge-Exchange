@@ -7,6 +7,10 @@
 			"metadata": "Data Factory name",
 			"defaultValue": "NTU-KNE-DEV"
 		},
+		"LS_Azure_Destination_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'LS_Azure_Destination'"
+		},
 		"LS_COMPANY_HOUSE_DATA_accountKey": {
 			"type": "secureString",
 			"metadata": "Secure string for 'accountKey' of 'LS_COMPANY_HOUSE_DATA'"
@@ -19,10 +23,6 @@
 			"type": "string",
 			"defaultValue": "AzureDb-ConnectionString"
 		},
-		"LS_Azure_Destination_properties_typeProperties_connectionString_secretName": {
-			"type": "string",
-			"defaultValue": "KV-AzureDB-DEV-ConnectionString"
-		},
 		"LS_COMPANY_HOUSE_DATA_properties_typeProperties_url": {
 			"type": "string",
 			"defaultValue": "https://storageforcompanyhouse.dfs.core.windows.net/"
@@ -31,9 +31,17 @@
 			"type": "string",
 			"defaultValue": "0905-140100-minfc4nk"
 		},
+		"LS_KNE_POSTCODES_properties_typeProperties_host": {
+			"type": "string",
+			"defaultValue": "\\\\renault\\BISHARE\\Cognos_production\\External Data Sources\\Knowledge Exchange\\ONS_Postcodes"
+		},
+		"LS_KNE_POSTCODES_properties_typeProperties_userId": {
+			"type": "string",
+			"defaultValue": "ads\\Cognos10_prd"
+		},
 		"LS_KV_NTU_ADF_PRD_properties_typeProperties_baseUrl": {
 			"type": "string",
-			"defaultValue": "https://NTU-ADF-PRD-KeyVault.vault.azure.net/"
+			"defaultValue": "https://NTU-ADF-DEV-KeyVault.vault.azure.net/"
 		},
 		"LS_Knowledge_Exchange_properties_typeProperties_host": {
 			"type": "string",
@@ -80,6 +88,9 @@
 					"LS_DBricks_Company_House_Data_accessToken": {
 						"value": "[parameters('LS_DBricks_Company_House_Data_accessToken')]"
 					},
+					"LS_Azure_Destination_connectionString": {
+						"value": "[parameters('LS_Azure_Destination_connectionString')]"
+					},
 					"LS_COMPANY_HOUSE_DATA_properties_typeProperties_url": {
 						"value": "[parameters('LS_COMPANY_HOUSE_DATA_properties_typeProperties_url')]"
 					},
@@ -95,8 +106,11 @@
 					"LS_AzureDB_properties_typeProperties_connectionString_secretName": {
 						"value": "[parameters('LS_AzureDB_properties_typeProperties_connectionString_secretName')]"
 					},
-					"LS_Azure_Destination_properties_typeProperties_connectionString_secretName": {
-						"value": "[parameters('LS_Azure_Destination_properties_typeProperties_connectionString_secretName')]"
+					"LS_KNE_POSTCODES_properties_typeProperties_host": {
+						"value": "[parameters('LS_KNE_POSTCODES_properties_typeProperties_host')]"
+					},
+					"LS_KNE_POSTCODES_properties_typeProperties_userId": {
+						"value": "[parameters('LS_KNE_POSTCODES_properties_typeProperties_userId')]"
 					},
 					"LS_Knowledge_Exchange_properties_typeProperties_host": {
 						"value": "[parameters('LS_Knowledge_Exchange_properties_typeProperties_host')]"
