@@ -30,7 +30,7 @@
 								"value": "Y"
 							}
 						],
-						"sqlReaderQuery": "WITH\nQ_OUPUTS\nAS\n(\nSELECT project_Code, partner,Business_Number,\nCASE\nWHEN [C1] IS NOT NULL THEN '1'\nELSE '0'\nEND C1,\nCASE\nWHEN [C2] IS NOT NULL THEN '1'\nELSE '0'\nEND C2,\nCASE\nWHEN [C4] IS NOT NULL THEN '1'\nELSE '0'\nEND C4,\nCASE\nWHEN [C6] IS NOT NULL THEN '1'\nELSE '0'\nEND C6,\nCASE\nWHEN [C34] IS NOT NULL THEN '1'\nELSE '0'\nEND C34,\nCASE\nWHEN [C26] IS NOT NULL THEN '1'\nELSE '0'\nEND C26,\nCASE\nWHEN [C28] IS NOT NULL THEN '1'\nELSE '0'\nEND C28,\nCASE\nWHEN [C29] IS NOT NULL THEN '1'\nELSE '0'\nEND C29,\nCASE\nWHEN [C5] IS NOT NULL THEN '1'\nELSE '0'\nEND C5,\nCASE\nWHEN [C8] IS NOT NULL THEN '1'\nELSE '0'\nEND C8,\nCASE\nWHEN [C023] IS NOT NULL THEN '1'\nELSE '0'\nEND C023,\nCASE\nWHEN [P11] IS NOT NULL THEN '1'\nELSE '0'\nEND P11,\nCASE\nWHEN [P13] IS NOT NULL THEN '1'\nELSE '0'\nEND P13,\nCASE\nWHEN [R9] IS NOT NULL THEN '1'\nELSE '0'\nEND R9\nFROM (\n    SELECT Project_Code, partner,Business_Number,Output FROM [KNE_STG].[Outputs]\n) AS SourceTable\nPIVOT (\n    MAX(output)\n    FOR output IN ([C1], [C2], [C4], [C6], [C34], [C26],[C28],[C29],[C5],[C8],[C023],[P11],[P13],[R9] )\n\n) AS PivotTable),\n\n\n\n\n\nQ_CARBON\nAS\n(\nSELECT BUSINESS_NUMBER,\nSUM(CAST(\"MATCH\" AS DECIMAL (10,2))) AS MATCH_TOTAL,\nSUM(CASE\nWHEN LEN(tCo2e) > 0\nTHEN CAST(REPLACE(tCo2e,'t','') AS DECIMAL (10,2)) \nELSE CAST('0.00' AS DECIMAL (10,2))\nEND) CO2_TOTAL,\nSUM(CAST(REPLACE(REPLACE(\"Grant\",'\"',''),',','')AS DECIMAL (10,2))) AS  GRANT_TOTAL\nFROM KNE_STG.BUSINESSDATA_CARBON\nGROUP BY BUSINESS_NUMBER)\n\n  \n  \n  SELECT \n      MAIN.Project_Code,\n      MAIN.Business_Number,\n\t  CONCAT(MAIN.Project_Code,'|',MAIN.Business_Number) COMPANY_BK,\n      MAIN.Business_Name,\n      MAIN.Postcode,\n      \n\t  CONVERT(date, MAIN.Enrolment_Date, 103) AS Enrolment_Date,\n\t  \n\t\n      MAIN.FIVE_Digit_SIC_Code,\n      Turnover,\n      CAST(MAIN.No_of_Employees AS NUMERIC) AS No_of_Employees,\n\n\t  CONVERT(date, MAIN.Business_Registration_Date, 103) AS Business_Registration_Date,\n      MAIN.Equality_Policy,\n      MAIN.Environmental_Policy,\n      MAIN.Size,\n      MAIN.Business_No_Type2,\n      MAIN.Partner,\n\t  COALESCE(OUTPUTS.C1,'0') OUTPUT_C1,\n\t  COALESCE(OUTPUTS.C2,'0') OUTPUT_C2,\n\t  COALESCE(OUTPUTS.C4,'0') OUTPUT_C4,\n\t  COALESCE(OUTPUTS.C6,'0') OUTPUT_C6,\n\t  COALESCE(OUTPUTS.C34,'0') OUTPUT_C34,\n      COALESCE(OUTPUTS.C26,'0') OUTPUT_C26,\n\t  COALESCE(OUTPUTS.C28,'0') OUTPUT_C28,\n\t  COALESCE(OUTPUTS.C29,'0') OUTPUT_C29,\n\t  COALESCE(OUTPUTS.C5,'0') OUTPUT_C5,\n      COALESCE(OUTPUTS.C8,'0') OUTPUT_C8,\n\t  COALESCE(OUTPUTS.C023,'0') OUTPUT_C023,\n\t  COALESCE(OUTPUTS.P11,'0') OUTPUT_P11,\n\t  COALESCE(OUTPUTS.P13,'0') OUTPUT_P13,\n\t  COALESCE(OUTPUTS.R9,'0') OUTPUT_R9,\n\t  COALESCE(Q_CARBON.CO2_TOTAL,'0.00') CO2_TOTAL,\n\t  COALESCE(Q_CARBON.GRANT_TOTAL,'0.00') GRANT_TOTAL,\n\t  COALESCE(Q_CARBON.MATCH_TOTAL,'0.00') MATCH_TOTAL\n  FROM KNE_STG.BusinessData_General MAIN\n  LEFT OUTER JOIN Q_OUPUTS OUTPUTS\n  ON MAIN.Project_Code=OUTPUTS.Project_Code\n  AND MAIN.Business_Number=OUTPUTS.Business_Number\n  AND MAIN.PARTNER=OUTPUTS.Partner\n  LEFT OUTER JOIN Q_CARBON\n  ON MAIN.Business_Number=Q_CARBON.Business_Number",
+						"sqlReaderQuery": "WITH\nQ_OUPUTS\nAS\n(\nSELECT project_Code, partner,Business_Number,\nCASE\nWHEN [C1] IS NOT NULL THEN '1'\nELSE '0'\nEND C1,\nCASE\nWHEN [C2] IS NOT NULL THEN '1'\nELSE '0'\nEND C2,\nCASE\nWHEN [C4] IS NOT NULL THEN '1'\nELSE '0'\nEND C4,\nCASE\nWHEN [C6] IS NOT NULL THEN '1'\nELSE '0'\nEND C6,\nCASE\nWHEN [C34] IS NOT NULL THEN '1'\nELSE '0'\nEND C34,\nCASE\nWHEN [C26] IS NOT NULL THEN '1'\nELSE '0'\nEND C26,\nCASE\nWHEN [C28] IS NOT NULL THEN '1'\nELSE '0'\nEND C28,\nCASE\nWHEN [C29] IS NOT NULL THEN '1'\nELSE '0'\nEND C29,\nCASE\nWHEN [C5] IS NOT NULL THEN '1'\nELSE '0'\nEND C5,\nCASE\nWHEN [C8] IS NOT NULL THEN '1'\nELSE '0'\nEND C8,\nCASE\nWHEN [C023] IS NOT NULL THEN '1'\nELSE '0'\nEND C023,\nCASE\nWHEN [P11] IS NOT NULL THEN '1'\nELSE '0'\nEND P11,\nCASE\nWHEN [P13] IS NOT NULL THEN '1'\nELSE '0'\nEND P13,\nCASE\nWHEN [R9] IS NOT NULL THEN '1'\nELSE '0'\nEND R9\nFROM (\n    SELECT Project_Code, partner,Business_Number,Output FROM [KNE_STG].[Outputs]\n) AS SourceTable\nPIVOT (\n    MAX(output)\n    FOR output IN ([C1], [C2], [C4], [C6], [C34], [C26],[C28],[C29],[C5],[C8],[C023],[P11],[P13],[R9] )\n\n) AS PivotTable),\n\n\n\n\n\nQ_CARBON\nAS\n(\nSELECT BUSINESS_NUMBER,\nSUM(CAST(\"MATCH\" AS DECIMAL (10,2))) AS MATCH_TOTAL,\nSUM(CASE\nWHEN LEN(tCo2e) > 0\nTHEN CAST(REPLACE(tCo2e,'t','') AS DECIMAL (10,2)) \nELSE CAST('0.00' AS DECIMAL (10,2))\nEND) CO2_TOTAL,\nSUM(CAST(REPLACE(REPLACE(\"Grant\",'\"',''),',','')AS DECIMAL (10,2))) AS  GRANT_TOTAL\nFROM KNE_STG.BUSINESSDATA_CARBON\nGROUP BY BUSINESS_NUMBER),\n\n  \n\nQ_STATE_AID\nAS\n(SELECT DISTINCT PROJECT_CODE,BUSINESS_NUMBER,STATE_AID_DATE,STATE_AID\nFROM KNE_STG.State_Aid)\n\n\n\n  \n  SELECT \n      MAIN.Project_Code,\n      MAIN.Business_Number,\n\t  CONCAT(MAIN.Project_Code,'|',MAIN.Business_Number) COMPANY_BK,\n      MAIN.Business_Name,\n      MAIN.Postcode,\n      \n\t  CONVERT(date, MAIN.Enrolment_Date, 103) AS Enrolment_Date,\n\t  \n\t\n      MAIN.FIVE_Digit_SIC_Code,\n      Turnover,\n      CAST(MAIN.No_of_Employees AS NUMERIC) AS No_of_Employees,\n\n\t  CONVERT(date, MAIN.Business_Registration_Date, 103) AS Business_Registration_Date,\n      MAIN.Equality_Policy,\n      MAIN.Environmental_Policy,\n      MAIN.Size,\n      MAIN.Business_No_Type2,\n      MAIN.Partner,\n\t  COALESCE(OUTPUTS.C1,'0') OUTPUT_C1,\n\t  COALESCE(OUTPUTS.C2,'0') OUTPUT_C2,\n\t  COALESCE(OUTPUTS.C4,'0') OUTPUT_C4,\n\t  COALESCE(OUTPUTS.C6,'0') OUTPUT_C6,\n\t  COALESCE(OUTPUTS.C34,'0') OUTPUT_C34,\n      COALESCE(OUTPUTS.C26,'0') OUTPUT_C26,\n\t  COALESCE(OUTPUTS.C28,'0') OUTPUT_C28,\n\t  COALESCE(OUTPUTS.C29,'0') OUTPUT_C29,\n\t  COALESCE(OUTPUTS.C5,'0') OUTPUT_C5,\n      COALESCE(OUTPUTS.C8,'0') OUTPUT_C8,\n\t  COALESCE(OUTPUTS.C023,'0') OUTPUT_C023,\n\t  COALESCE(OUTPUTS.P11,'0') OUTPUT_P11,\n\t  COALESCE(OUTPUTS.P13,'0') OUTPUT_P13,\n\t  COALESCE(OUTPUTS.R9,'0') OUTPUT_R9,\n\t  COALESCE(Q_CARBON.CO2_TOTAL,'0.00') CO2_TOTAL,\n\t  COALESCE(Q_CARBON.GRANT_TOTAL,'0.00') GRANT_TOTAL,\n\t  COALESCE(Q_CARBON.MATCH_TOTAL,'0.00') MATCH_TOTAL,\n\t  Q_STATE_AID.State_Aid,\n\t  Q_STATE_AID.State_Aid_Date\n  FROM KNE_STG.BusinessData_General MAIN\n  LEFT OUTER JOIN Q_OUPUTS OUTPUTS\n  ON MAIN.Project_Code=OUTPUTS.Project_Code\n  AND MAIN.Business_Number=OUTPUTS.Business_Number\n  AND MAIN.PARTNER=OUTPUTS.Partner\n  LEFT OUTER JOIN Q_CARBON\n  ON MAIN.Business_Number=Q_CARBON.Business_Number\n  LEFT OUTER JOIN Q_STATE_AID\n  ON MAIN.Project_Code=Q_STATE_AID.Project_Code\n  AND MAIN.Business_Number=Q_STATE_AID.Business_Number",
 						"queryTimeout": "02:00:00",
 						"partitionOption": "None"
 					},
@@ -405,6 +405,32 @@
 									"name": "COMPANY_NUMBER",
 									"type": "String",
 									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "State_Aid",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "COMPANY_STATE_AID",
+									"type": "Decimal",
+									"physicalType": "decimal",
+									"scale": 2,
+									"precision": 10
+								}
+							},
+							{
+								"source": {
+									"name": "State_Aid_Date",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "COMPANY_STATE_AID_DATE",
+									"type": "DateTime",
+									"physicalType": "datetime"
 								}
 							}
 						],
