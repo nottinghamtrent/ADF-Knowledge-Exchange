@@ -672,7 +672,13 @@
 						]
 					},
 					{
-						"activity": "PostCodeLondonCounties",
+						"activity": "PostCodeWardsLondon",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					},
+					{
+						"activity": "PostCodeMetroCounties",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -1675,98 +1681,6 @@
 				"inputs": [
 					{
 						"referenceName": "DS_KNE_POSTCODES",
-						"type": "DatasetReference"
-					}
-				],
-				"outputs": [
-					{
-						"referenceName": "DS_Azure_Destination",
-						"type": "DatasetReference",
-						"parameters": {
-							"TableName": "POSTCODE_COUNTIES",
-							"SchemaName": "KNE_STG"
-						}
-					}
-				]
-			},
-			{
-				"name": "PostCodeLondonCounties",
-				"type": "Copy",
-				"dependsOn": [
-					{
-						"activity": "PostCodeMetroCounties",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					},
-					{
-						"activity": "PostCodeWardsLondon",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					}
-				],
-				"policy": {
-					"timeout": "0.12:00:00",
-					"retry": 0,
-					"retryIntervalInSeconds": 30,
-					"secureOutput": false,
-					"secureInput": false
-				},
-				"userProperties": [],
-				"typeProperties": {
-					"source": {
-						"type": "AzureSqlSource",
-						"sqlReaderQuery": "SELECT 'E13000001' AS CTY,\t'Inner London' AS CTY_NAME\nUNION \nSELECT 'E13000002',\t'Outer London'\n",
-						"queryTimeout": "02:00:00",
-						"partitionOption": "None"
-					},
-					"sink": {
-						"type": "AzureSqlSink",
-						"writeBehavior": "insert",
-						"sqlWriterUseTableLock": false,
-						"tableOption": "autoCreate",
-						"disableMetricsCollection": false
-					},
-					"enableStaging": false,
-					"translator": {
-						"type": "TabularTranslator",
-						"mappings": [
-							{
-								"source": {
-									"name": "CTY",
-									"type": "String",
-									"physicalType": "varchar"
-								},
-								"sink": {
-									"name": "CTY15CD",
-									"type": "String",
-									"physicalType": "nvarchar"
-								}
-							},
-							{
-								"source": {
-									"name": "CTY_NAME",
-									"type": "String",
-									"physicalType": "varchar"
-								},
-								"sink": {
-									"name": "CTY15NM",
-									"type": "String",
-									"physicalType": "nvarchar"
-								}
-							}
-						],
-						"typeConversion": true,
-						"typeConversionSettings": {
-							"allowDataTruncation": true,
-							"treatBooleanAsNumber": false
-						}
-					}
-				},
-				"inputs": [
-					{
-						"referenceName": "DS_AzureDB",
 						"type": "DatasetReference"
 					}
 				],
