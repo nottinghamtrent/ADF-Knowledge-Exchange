@@ -1,0 +1,23 @@
+{
+	"name": "LS_KNE_POSTCODES",
+	"properties": {
+		"annotations": [],
+		"type": "FileServer",
+		"typeProperties": {
+			"host": "\\\\renault\\BISHARE\\Cognos_production\\External Data Sources\\Knowledge Exchange\\ONS_Postcodes",
+			"userId": "ads\\Cognos10_prd",
+			"password": {
+				"type": "AzureKeyVaultSecret",
+				"store": {
+					"referenceName": "LS_KV_NTU_ADF_PRD",
+					"type": "LinkedServiceReference"
+				},
+				"secretName": "KV-Cognos10prd-Pwd"
+			}
+		},
+		"connectVia": {
+			"referenceName": "IR-Esther-PRD",
+			"type": "IntegrationRuntimeReference"
+		}
+	}
+}
