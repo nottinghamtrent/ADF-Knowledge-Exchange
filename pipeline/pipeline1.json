@@ -373,7 +373,7 @@
 				"typeProperties": {
 					"source": {
 						"type": "AzureSqlSource",
-						"sqlReaderQuery": "\n\n WITH\nQ_INT_HEALTH_BOARD\nAS\n( Select DISTINCT SICBL23CD,ICB23NM NHS_INTEGRATED_CARE_BOARD,NHSER23NM NHS_REGION\n from KNE_STG.POSTCODE_INTEGRATED_HEALTH_BOARD),\n\n\nQ_PARL_CONT\nAS\n(  SELECT DISTINCT PC.PCD POSTCODE,\n COALESCE(CONDESC24.PCON24NM,CONDESC.PCON10NM) ACTIVE_CONSTITUENCY\n FROM KNE_STG.POSTCODES PC\n LEFT OUTER JOIN KNE_STG.POSTCODE_CONSTITUENCIES CONDESC\n ON PC.PCON=CONDESC.PCON10CD\n LEFT OUTER JOIN KNE_STG.POSTCODE_PARL_CONSTIT_2024 CON24\n ON REPLACE(PC.pcd,' ','')=REPLACE(CON24.POSTCODE,' ','')\n LEFT OUTER JOIN KNE_STG.POSTCODE_CONSTITUENCIES CONDESC24\n ON CON24.PCON24=CONDESC24.PCON24CD\n AND PC.PCON=CONDESC24.PCON10CD\n )\n\n\n\n\n\nSELECT  DISTINCT \nPC.PCD AS POSTCODE,\nWD.WD21NM AS WARDNAME,\nLA.LAD22NM AS LOCAL_AUTHORITY,\nCS.ACTIVE_CONSTITUENCY AS PARL_CONSTIT,\nCTY.CTY15NM AS COUNTY,\nRG.RGN14NM AS REGION,\nCOUNTRY.CTRY15NM COUNTRY,\nHB.NHS_INTEGRATED_CARE_BOARD,\nHB.NHS_REGION,\nCCG.CCG18NM NHS_CLINICAL_COMM_GROUP,\nCOALESCE(NP.NPARK16NM, 'Not a National Park') AS NATIONAL_PARK,\nPO.PFA15NM POLICE_AUTHORITY,\nREPLACE(TTW.\"Employment rate\",' ','') AS EMPLOYMENT_RATE,\nREPLACE(TTW.\"Male Employment Rate\",' ','')  AS MALE_EMPLOYMENT_RATE,\nREPLACE(TTW.\"Female Employment Rate\",' ','')  AS FEMALE_EMPLOYMENT_RATE,\nREPLACE(TTW.\"Self Employment Rate\",' ','')  AS SELF_EMPLOYMENT_RATE,\nREPLACE(TTW.\"Economically inactive\",' ','')  AS ECON_INACTIVE_RATE,\nCOALESCE(REPLACE(TTW.\"Economically inactive males\",' ',''),0)  AS MALE_ECON_INACTIVE_RATE,\nREPLACE(TTW.\"Economically inactive females\",' ','')  AS FEMALE_ECON_INACTIVE_RATE,\nREPLACE(TTW.\"NVQ Level 4 qualifications\",' ','')  AS NVQ_LVL4_QUALS,\nREPLACE(TTW.\"NVQ no qualifications\",' ','')  AS NVQ_NO_QUALS,\nPC.LAT   AS LATITUDE,\nPC.LONG AS LONGDITUDE\n\n \n FROM KNE_STG.Postcodes PC\n LEFT OUTER JOIN KNE_STG.POSTCODE_COUNTRY COUNTRY\n ON PC.CTRY=COUNTRY.CTRY15CD\nLEFT OUTER JOIN KNE_STG.POSTCODE_LOCAL_AUTHORITY LA\n ON PC.LAUA=LA.LAD22CD\n LEFT OUTER JOIN KNE_STG.POSTCODE_WARDS WD\n ON PC.WARD=WD.WD21CD\n LEFT OUTER JOIN KNE_STG.POSTCODE_REGIONS RG\n  ON PC.RGN=RG.RGN14CD \n LEFT OUTER JOIN KNE_STG.POSTCODE_COUNTIES CTY\n ON PC.CTY=CTY.CTY15CD\n LEFT OUTER JOIN Q_PARL_CONT CS\n ON PC.PCD=CS.POSTCODE\n LEFT OUTER JOIN KNE_STG.POSTCODE_NATIONAL_PARK NP\n ON PC.NPARK=NP.NPARK16CD\n LEFT OUTER JOIN KNE_STG.POSTCODE_POLICE PO\n ON PC.PFA=PO.PFA15CD\n LEFT OUTER JOIN KNE_STG.POSTCODE_TRAVEL_TO_WORK TTW\n ON PC.TTWA=TTW.TTWA11CDN\n LEFT OUTER JOIN Q_INT_HEALTH_BOARD HB\n ON PC.SICBL=HB.SICBL23CD\n LEFT OUTER JOIN KNE_STG.POSTCODE_NHS_CCG CCG\n ON PC.LSOA21=CCG.LSOA11CD",
+						"sqlReaderQuery": "\nWITH\nQ_INT_HEALTH_BOARD\nAS\n( Select DISTINCT SICBL23CD,ICB23NM NHS_INTEGRATED_CARE_BOARD,NHSER23NM NHS_REGION\n from KNE_STG.POSTCODE_INTEGRATED_HEALTH_BOARD),\n\n\nQ_PARL_CONT\nAS\n(  SELECT DISTINCT PC.PCD POSTCODE,\n COALESCE(CONDESC24.PCON24NM,CONDESC.PCON10NM) ACTIVE_CONSTITUENCY\n FROM KNE_STG.POSTCODES PC\n LEFT OUTER JOIN KNE_STG.POSTCODE_CONSTITUENCIES CONDESC\n ON PC.PCON=CONDESC.PCON10CD\n LEFT OUTER JOIN KNE_STG.POSTCODE_PARL_CONSTIT_2024 CON24\n ON REPLACE(PC.pcd,' ','')=REPLACE(CON24.POSTCODE,' ','')\n LEFT OUTER JOIN KNE_STG.POSTCODE_CONSTITUENCIES CONDESC24\n ON CON24.PCON24=CONDESC24.PCON24CD\n AND PC.PCON=CONDESC24.PCON10CD ),\n\n Q_TTW\n AS\n (SELECT \n TTWA11CDN,\n CONVERT(FLOAT,[EMPLOYMENT RATE]) AS EMPLOYMENT_RATE,\n        CONVERT(FLOAT,[MALE EMPLOYMENT RATE]) AS MALE_EMPLOYMENT_RATE,\n\t\tCONVERT(FLOAT,[FEMALE EMPLOYMENT RATE]) AS FEMALE_EMPLOYMENT_RATE,\n\t\tCONVERT(FLOAT,[SELF EMPLOYMENT RATE])  AS SELF_EMPLOYMENT_RATE,\n\t\tCONVERT(FLOAT,[ECONOMICALLY INACTIVE])AS ECONOMICALLY_INACTIVE,\n\t\tCONVERT(FLOAT,[ECONOMICALLY INACTIVE MALES]) AS ECONOMICALLY_INACTIVE_MALES,\n\t\tCONVERT(FLOAT,[ECONOMICALLY INACTIVE FEMALES]) AS ECONOMICALLY_INACTIVE_FEMALES,\n\t\tCONVERT(FLOAT,[NVQ LEVEL 4 QUALIFICATIONS])  AS NVQ_LEVEL_4_QUALIFICATIONS,\n\t\tCONVERT(FLOAT,[NVQ No qualifications])  AS NVQ_No_qualifications\n FROM KNE_STG.POSTCODE_TRAVEL_TO_WORK)\n\n\n\n\n\nSELECT  DISTINCT \nPC.PCD AS POSTCODE,\nWD.WD21NM AS WARDNAME,\nLA.LAD22NM AS LOCAL_AUTHORITY,\nCS.ACTIVE_CONSTITUENCY AS PARL_CONSTIT,\nCTY.CTY15NM AS COUNTY,\nRG.RGN14NM AS REGION,\nCOUNTRY.CTRY15NM COUNTRY,\nHB.NHS_INTEGRATED_CARE_BOARD,\nHB.NHS_REGION,\nCCG.CCG18NM NHS_CLINICAL_COMM_GROUP,\nCOALESCE(NP.NPARK16NM, 'Not a National Park') AS NATIONAL_PARK,\nPO.PFA15NM POLICE_AUTHORITY,\nEMPLOYMENT_RATE,\nMALE_EMPLOYMENT_RATE,\nFEMALE_EMPLOYMENT_RATE,\nSELF_EMPLOYMENT_RATE,\nECONOMICALLY_INACTIVE,\nECONOMICALLY_INACTIVE_MALES,\nECONOMICALLY_INACTIVE_FEMALES,\nNVQ_LEVEL_4_QUALIFICATIONS,\nNVQ_No_qualifications,\nPC.LAT   AS LATITUDE,\nPC.LONG AS LONGDITUDE\n\n \n FROM KNE_STG.Postcodes PC\n LEFT OUTER JOIN KNE_STG.POSTCODE_COUNTRY COUNTRY\n ON PC.CTRY=COUNTRY.CTRY15CD\nLEFT OUTER JOIN KNE_STG.POSTCODE_LOCAL_AUTHORITY LA\n ON PC.LAUA=LA.LAD22CD\n LEFT OUTER JOIN KNE_STG.POSTCODE_WARDS WD\n ON PC.WARD=WD.WD21CD\n LEFT OUTER JOIN KNE_STG.POSTCODE_REGIONS RG\n  ON PC.RGN=RG.RGN14CD \n LEFT OUTER JOIN KNE_STG.POSTCODE_COUNTIES CTY\n ON PC.CTY=CTY.CTY15CD\n LEFT OUTER JOIN Q_PARL_CONT CS\n ON PC.PCD=CS.POSTCODE\n LEFT OUTER JOIN KNE_STG.POSTCODE_NATIONAL_PARK NP\n ON PC.NPARK=NP.NPARK16CD\n LEFT OUTER JOIN KNE_STG.POSTCODE_POLICE PO\n ON PC.PFA=PO.PFA15CD\n LEFT OUTER JOIN Q_TTW TTW\n ON PC.TTWA=TTW.TTWA11CDN\n LEFT OUTER JOIN Q_INT_HEALTH_BOARD HB\n ON PC.SICBL=HB.SICBL23CD\n LEFT OUTER JOIN KNE_STG.POSTCODE_NHS_CCG CCG\n ON PC.LSOA21=CCG.LSOA11CD\n\n\n\n SELECT CONVERT(FLOAT,[EMPLOYMENT RATE]) AS EMPLOYMENT_RATE,\n        CONVERT(FLOAT,[MALE EMPLOYMENT RATE]) AS MALE_EMPLOYMENT_RATE,\n\t\tCONVERT(FLOAT,[FEMALE EMPLOYMENT RATE]) AS FEMALE_EMPLOYMENT_RATE,\n\t\tCONVERT(FLOAT,[SELF EMPLOYMENT RATE])  AS SELF_EMPLOYMENT_RATE,\n\t\tCONVERT(FLOAT,[ECONOMICALLY INACTIVE])AS ECONOMICALLY_INACTIVE,\n\t\tCONVERT(FLOAT,[ECONOMICALLY INACTIVE MALES]) AS ECONOMICALLY_INACTIVE_MALES,\n\t\tCONVERT(FLOAT,[ECONOMICALLY INACTIVE FEMALES]) AS ECONOMICALLY_INACTIVE_FEMALES,\n\t\tCONVERT(FLOAT,[NVQ LEVEL 4 QUALIFICATIONS])  AS NVQ_LEVEL_4_QUALIFICATIONS,\n\t\tCONVERT(FLOAT,[NVQ No qualifications])  AS NVQ_No_qualifications\n FROM KNE_STG.POSTCODE_TRAVEL_TO_WORK A",
 						"queryTimeout": "02:00:00",
 						"partitionOption": "None"
 					},
@@ -387,6 +387,306 @@
 					"enableStaging": false,
 					"translator": {
 						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"name": "POSTCODE",
+									"type": "String",
+									"physicalType": "nvarchar"
+								},
+								"sink": {
+									"name": "POSTCODE",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "WARDNAME",
+									"type": "String",
+									"physicalType": "nvarchar"
+								},
+								"sink": {
+									"name": "WARDNAME",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "LOCAL_AUTHORITY",
+									"type": "String",
+									"physicalType": "nvarchar"
+								},
+								"sink": {
+									"name": "LOCAL_AUTHORITY",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "PARL_CONSTIT",
+									"type": "String",
+									"physicalType": "nvarchar"
+								},
+								"sink": {
+									"name": "PARL_CONSTIT",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "COUNTY",
+									"type": "String",
+									"physicalType": "nvarchar"
+								},
+								"sink": {
+									"name": "COUNTY",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "REGION",
+									"type": "String",
+									"physicalType": "nvarchar"
+								},
+								"sink": {
+									"name": "REGION",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "COUNTRY",
+									"type": "String",
+									"physicalType": "nvarchar"
+								},
+								"sink": {
+									"name": "COUNTRY",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "NHS_INTEGRATED_CARE_BOARD",
+									"type": "String",
+									"physicalType": "nvarchar"
+								},
+								"sink": {
+									"name": "NHS_INTEGRATED_CARE_BOARD",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "NHS_REGION",
+									"type": "String",
+									"physicalType": "nvarchar"
+								},
+								"sink": {
+									"name": "NHS_REGION",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "NHS_CLINICAL_COMM_GROUP",
+									"type": "String",
+									"physicalType": "nvarchar"
+								},
+								"sink": {
+									"name": "NHS_CLINICAL_COMM_GROUP",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "NATIONAL_PARK",
+									"type": "String",
+									"physicalType": "nvarchar"
+								},
+								"sink": {
+									"name": "NATIONAL_PARK",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "POLICE_AUTHORITY",
+									"type": "String",
+									"physicalType": "nvarchar"
+								},
+								"sink": {
+									"name": "POLICE_AUTHORITY",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "EMPLOYMENT_RATE",
+									"type": "Double",
+									"physicalType": "float"
+								},
+								"sink": {
+									"name": "EMPLOYMENT_RATE",
+									"type": "Decimal",
+									"physicalType": "decimal",
+									"scale": 1,
+									"precision": 4
+								}
+							},
+							{
+								"source": {
+									"name": "MALE_EMPLOYMENT_RATE",
+									"type": "Double",
+									"physicalType": "float"
+								},
+								"sink": {
+									"name": "MALE_EMPLOYMENT_RATE",
+									"type": "Decimal",
+									"physicalType": "decimal",
+									"scale": 1,
+									"precision": 4
+								}
+							},
+							{
+								"source": {
+									"name": "FEMALE_EMPLOYMENT_RATE",
+									"type": "Double",
+									"physicalType": "float"
+								},
+								"sink": {
+									"name": "FEMALE_EMPLOYMENT_RATE",
+									"type": "Decimal",
+									"physicalType": "decimal",
+									"scale": 1,
+									"precision": 4
+								}
+							},
+							{
+								"source": {
+									"name": "SELF_EMPLOYMENT_RATE",
+									"type": "Double",
+									"physicalType": "float"
+								},
+								"sink": {
+									"name": "SELF_EMPLOYMENT_RATE",
+									"type": "Decimal",
+									"physicalType": "decimal",
+									"scale": 1,
+									"precision": 4
+								}
+							},
+							{
+								"source": {
+									"name": "ECONOMICALLY_INACTIVE",
+									"type": "Double",
+									"physicalType": "float"
+								},
+								"sink": {
+									"name": "ECON_INACTIVE_RATE",
+									"type": "Decimal",
+									"physicalType": "decimal",
+									"scale": 1,
+									"precision": 4
+								}
+							},
+							{
+								"source": {
+									"name": "ECONOMICALLY_INACTIVE_MALES",
+									"type": "Double",
+									"physicalType": "float"
+								},
+								"sink": {
+									"name": "MALE_ECON_INACTIVE_RATE",
+									"type": "Decimal",
+									"physicalType": "decimal",
+									"scale": 1,
+									"precision": 4
+								}
+							},
+							{
+								"source": {
+									"name": "ECONOMICALLY_INACTIVE_FEMALES",
+									"type": "Double",
+									"physicalType": "float"
+								},
+								"sink": {
+									"name": "FEMALE_ECON_INACTIVE_RATE",
+									"type": "Decimal",
+									"physicalType": "decimal",
+									"scale": 1,
+									"precision": 4
+								}
+							},
+							{
+								"source": {
+									"name": "NVQ_LEVEL_4_QUALIFICATIONS",
+									"type": "Double",
+									"physicalType": "float"
+								},
+								"sink": {
+									"name": "NVQ_LVL4_QUALS",
+									"type": "Decimal",
+									"physicalType": "decimal",
+									"scale": 1,
+									"precision": 4
+								}
+							},
+							{
+								"source": {
+									"name": "NVQ_No_qualifications",
+									"type": "Double",
+									"physicalType": "float"
+								},
+								"sink": {
+									"name": "NVQ_NO_QUALS",
+									"type": "Decimal",
+									"physicalType": "decimal",
+									"scale": 1,
+									"precision": 4
+								}
+							},
+							{
+								"source": {
+									"name": "LATITUDE",
+									"type": "String",
+									"physicalType": "nvarchar"
+								},
+								"sink": {
+									"name": "LATITUDE",
+									"type": "Decimal",
+									"physicalType": "decimal",
+									"scale": 6,
+									"precision": 9
+								}
+							},
+							{
+								"source": {
+									"name": "LONGDITUDE",
+									"type": "String",
+									"physicalType": "nvarchar"
+								},
+								"sink": {
+									"name": "LONGDITUDE",
+									"type": "Decimal",
+									"physicalType": "decimal",
+									"scale": 6,
+									"precision": 9
+								}
+							}
+						],
 						"typeConversion": true,
 						"typeConversionSettings": {
 							"allowDataTruncation": true,
@@ -409,8 +709,8 @@
 						"referenceName": "DS_Azure_Destination",
 						"type": "DatasetReference",
 						"parameters": {
-							"TableName": "KNE_STG",
-							"SchemaName": "POSTCODE_DETAILS"
+							"TableName": "POSTCODE_DETAILS",
+							"SchemaName": "KNE_STG"
 						}
 					}
 				]
