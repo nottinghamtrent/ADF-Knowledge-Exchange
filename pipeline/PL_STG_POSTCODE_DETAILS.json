@@ -62,66 +62,6 @@
 				]
 			},
 			{
-				"name": "PostCodeWards",
-				"type": "Copy",
-				"dependsOn": [],
-				"policy": {
-					"timeout": "0.12:00:00",
-					"retry": 0,
-					"retryIntervalInSeconds": 30,
-					"secureOutput": false,
-					"secureInput": false
-				},
-				"userProperties": [],
-				"typeProperties": {
-					"source": {
-						"type": "DelimitedTextSource",
-						"storeSettings": {
-							"type": "FileServerReadSettings",
-							"recursive": true,
-							"enablePartitionDiscovery": false,
-							"fileFilter": "POSTCODEWARD.csv"
-						},
-						"formatSettings": {
-							"type": "DelimitedTextReadSettings"
-						}
-					},
-					"sink": {
-						"type": "AzureSqlSink",
-						"preCopyScript": "TRUNCATE TABLE KNE_STG.POSTCODE_WARDS",
-						"writeBehavior": "insert",
-						"sqlWriterUseTableLock": false,
-						"tableOption": "autoCreate",
-						"disableMetricsCollection": false
-					},
-					"enableStaging": false,
-					"translator": {
-						"type": "TabularTranslator",
-						"typeConversion": true,
-						"typeConversionSettings": {
-							"allowDataTruncation": true,
-							"treatBooleanAsNumber": false
-						}
-					}
-				},
-				"inputs": [
-					{
-						"referenceName": "DS_KNE_POSTCODES",
-						"type": "DatasetReference"
-					}
-				],
-				"outputs": [
-					{
-						"referenceName": "DS_Azure_Destination",
-						"type": "DatasetReference",
-						"parameters": {
-							"TableName": "POSTCODE_WARDS",
-							"SchemaName": "KNE_STG"
-						}
-					}
-				]
-			},
-			{
 				"name": "PostCodeRegions",
 				"type": "Copy",
 				"dependsOn": [],
@@ -672,13 +612,13 @@
 						]
 					},
 					{
-						"activity": "PostCodeWardsLondon",
+						"activity": "PostCodeMetroCounties",
 						"dependencyConditions": [
 							"Succeeded"
 						]
 					},
 					{
-						"activity": "PostCodeMetroCounties",
+						"activity": "PostCodeWardsComplete",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -1719,6 +1659,66 @@
 				]
 			},
 			{
+				"name": "PostCodeWards",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "DelimitedTextSource",
+						"storeSettings": {
+							"type": "FileServerReadSettings",
+							"recursive": true,
+							"enablePartitionDiscovery": false,
+							"fileFilter": "POSTCODEWARD.csv"
+						},
+						"formatSettings": {
+							"type": "DelimitedTextReadSettings"
+						}
+					},
+					"sink": {
+						"type": "AzureSqlSink",
+						"preCopyScript": "TRUNCATE TABLE KNE_STG.POSTCODE_WARDS_NOT_LONDON",
+						"writeBehavior": "insert",
+						"sqlWriterUseTableLock": false,
+						"tableOption": "autoCreate",
+						"disableMetricsCollection": false
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"typeConversion": true,
+						"typeConversionSettings": {
+							"allowDataTruncation": true,
+							"treatBooleanAsNumber": false
+						}
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "DS_KNE_POSTCODES",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "DS_Azure_Destination",
+						"type": "DatasetReference",
+						"parameters": {
+							"TableName": "POSTCODE_WARDS_NOT_LONDON",
+							"SchemaName": "KNE_STG"
+						}
+					}
+				]
+			},
+			{
 				"name": "PostCodeWardsLondon",
 				"type": "Copy",
 				"dependsOn": [
@@ -1752,6 +1752,7 @@
 					},
 					"sink": {
 						"type": "AzureSqlSink",
+						"preCopyScript": "TRUNCATE TABLE KNE_STG.POSTCODE_WARDS_LONDON",
 						"writeBehavior": "insert",
 						"sqlWriterUseTableLock": false,
 						"tableOption": "autoCreate",
@@ -1797,6 +1798,96 @@
 					{
 						"referenceName": "DS_KNE_POSTCODES",
 						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "DS_Azure_Destination",
+						"type": "DatasetReference",
+						"parameters": {
+							"TableName": "POSTCODE_WARDS_LONDON",
+							"SchemaName": "KNE_STG"
+						}
+					}
+				]
+			},
+			{
+				"name": "PostCodeWardsComplete",
+				"type": "Copy",
+				"dependsOn": [
+					{
+						"activity": "PostCodeWardsLondon",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "AzureSqlSource",
+						"sqlReaderQuery": "\n  Select NL.WD21CD,NL.WD21NM\n  FROM KNE_STG.POSTCODE_WARDS_NOT_LONDON NL\n  WHERE NL.WD21CD NOT IN \n  (Select L.WD21CD\n  FROM KNE_STG.POSTCODE_WARDS_LONDON L)\n  UNION\n  Select L.WD21CD,L.WD21NM\n  FROM KNE_STG.POSTCODE_WARDS_LONDON L\n  WHERE L.WD21CD NOT IN \n  (Select NL.WD21CD\n  FROM KNE_STG.POSTCODE_WARDS_NOT_LONDON NL)",
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
+					},
+					"sink": {
+						"type": "AzureSqlSink",
+						"preCopyScript": "TRUNCATE TABLE KNE_STG.POSTCODE_WARDS",
+						"writeBehavior": "insert",
+						"sqlWriterUseTableLock": false,
+						"disableMetricsCollection": false
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"name": "WD21CD",
+									"type": "String",
+									"physicalType": "nvarchar"
+								},
+								"sink": {
+									"name": "WD21CD",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "WD21NM",
+									"type": "String",
+									"physicalType": "nvarchar"
+								},
+								"sink": {
+									"name": "WD21NM",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							}
+						],
+						"typeConversion": true,
+						"typeConversionSettings": {
+							"allowDataTruncation": true,
+							"treatBooleanAsNumber": false
+						}
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "DS_Azure_Destination",
+						"type": "DatasetReference",
+						"parameters": {
+							"TableName": "POSTCODE_WARDS_LONDON",
+							"SchemaName": "KNE_STG"
+						}
 					}
 				],
 				"outputs": [
