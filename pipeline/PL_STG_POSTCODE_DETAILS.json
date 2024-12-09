@@ -1176,6 +1176,7 @@
 				"typeProperties": {
 					"source": {
 						"type": "AzureSqlSource",
+						"sqlReaderQuery": "SELECT DISTINCT \n       [POSTCODE]\n      ,[WARDNAME]\n      ,[LOCAL_AUTHORITY]\n      ,[PARL_CONSTIT]\n      ,[COUNTY]\n      ,[REGION]\n      ,[COUNTRY]\n      ,[NHS_INTEGRATED_CARE_BOARD]\n      ,[NHS_REGION]\n      ,[NHS_CLINICAL_COMM_GROUP]\n      ,[NATIONAL_PARK]\n      ,[POLICE_AUTHORITY]\n      ,[EMPLOYMENT_RATE]\n      ,[MALE_EMPLOYMENT_RATE]\n      ,[FEMALE_EMPLOYMENT_RATE]\n      ,[SELF_EMPLOYMENT_RATE]\n      ,[ECON_INACTIVE_RATE]\n      ,[MALE_ECON_INACTIVE_RATE]\n      ,[FEMALE_ECON_INACTIVE_RATE]\n      ,[NVQ_LVL4_QUALS]\n      ,[NVQ_NO_QUALS]\n      ,[LATITUDE]\n      ,[LONGDITUDE]\n  FROM [KNE_STG].[POSTCODE_DETAILS]",
 						"queryTimeout": "02:00:00",
 						"partitionOption": "None"
 					},
