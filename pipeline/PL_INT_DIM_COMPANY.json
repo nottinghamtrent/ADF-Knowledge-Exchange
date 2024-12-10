@@ -365,7 +365,7 @@
 							},
 							{
 								"source": {
-									"name": "MATCH_TOTAL",
+									"name": "GRANT_TOTAL",
 									"type": "Decimal",
 									"physicalType": "decimal",
 									"scale": 2,
