@@ -487,10 +487,8 @@
 								},
 								"sink": {
 									"name": "Occurrence",
-									"type": "Decimal",
-									"physicalType": "decimal",
-									"scale": 0,
-									"precision": 5
+									"type": "String",
+									"physicalType": "varchar"
 								}
 							}
 						],
