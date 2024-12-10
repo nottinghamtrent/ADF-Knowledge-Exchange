@@ -365,7 +365,7 @@
 							},
 							{
 								"source": {
-									"name": "GRANT_TOTAL",
+									"name": "MATCH_TOTAL",
 									"type": "Decimal",
 									"physicalType": "decimal",
 									"scale": 2,
@@ -397,18 +397,6 @@
 							},
 							{
 								"source": {
-									"name": "Business_Number",
-									"type": "String",
-									"physicalType": "varchar"
-								},
-								"sink": {
-									"name": "COMPANY_NUMBER",
-									"type": "String",
-									"physicalType": "varchar"
-								}
-							},
-							{
-								"source": {
 									"name": "State_Aid",
 									"type": "String",
 									"physicalType": "varchar"
@@ -424,8 +412,8 @@
 							{
 								"source": {
 									"name": "State_Aid_Date",
-									"type": "String",
-									"physicalType": "varchar"
+									"type": "DateTime",
+									"physicalType": "date"
 								},
 								"sink": {
 									"name": "COMPANY_STATE_AID_DATE",
