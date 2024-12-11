@@ -3,7 +3,7 @@
 	"properties": {
 		"activities": [
 			{
-				"name": "PL_PRS_DIM_COMPANY",
+				"name": "PL_INT_DIM_COMPANY",
 				"type": "ExecutePipeline",
 				"dependsOn": [],
 				"policy": {
@@ -61,7 +61,7 @@
 						]
 					},
 					{
-						"activity": "PL_PRS_DIM_COMPANY",
+						"activity": "PL_INT_DIM_COMPANY",
 						"dependencyConditions": [
 							"Succeeded"
 						]

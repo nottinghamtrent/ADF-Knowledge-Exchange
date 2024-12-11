@@ -478,20 +478,6 @@
 									"type": "String",
 									"physicalType": "varchar"
 								}
-							},
-							{
-								"source": {
-									"name": "Occurrence",
-									"type": "String",
-									"physicalType": "String"
-								},
-								"sink": {
-									"name": "Occurrence",
-									"type": "Decimal",
-									"physicalType": "decimal",
-									"scale": 0,
-									"precision": 5
-								}
 							}
 						],
 						"typeConversion": true,
