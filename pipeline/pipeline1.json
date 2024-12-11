@@ -23,6 +23,7 @@
 					},
 					"sink": {
 						"type": "AzureSqlSink",
+						"preCopyScript": "TRUNCATE TABLE KNE_INT.DIM_COMPANY",
 						"writeBehavior": "insert",
 						"sqlWriterUseTableLock": false,
 						"tableOption": "autoCreate",
@@ -345,20 +346,6 @@
 									"type": "Decimal",
 									"physicalType": "decimal",
 									"scale": 0,
-									"precision": 10
-								}
-							},
-							{
-								"source": {
-									"name": "State_Aid",
-									"type": "String",
-									"physicalType": "varchar"
-								},
-								"sink": {
-									"name": "COMPANY_STATE_AID",
-									"type": "Decimal",
-									"physicalType": "decimal",
-									"scale": 2,
 									"precision": 10
 								}
 							},
