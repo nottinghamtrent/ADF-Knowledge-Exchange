@@ -360,6 +360,20 @@
 									"type": "DateTime",
 									"physicalType": "datetime"
 								}
+							},
+							{
+								"source": {
+									"name": "State_Aid",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "COMPANY_STATE_AID",
+									"type": "Decimal",
+									"physicalType": "decimal",
+									"scale": 2,
+									"precision": 10
+								}
 							}
 						],
 						"typeConversion": true,
