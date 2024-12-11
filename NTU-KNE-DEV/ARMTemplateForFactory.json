@@ -210,7 +210,7 @@
 						"typeProperties": {
 							"source": {
 								"type": "AzureSqlSource",
-								"sqlReaderQuery": "  Select \nCOMPANY_NUMBER COMPANY_HOUSE_BK,\nCOMPANY_NAME   ,\nADDRESS_LINE_1,\nADDRESS_LINE_2,\nCOUNTRY,\nTOWN,\nPOSTCODE,\nSICCODE_SIC_TEXT_1,\nSICCODE_SIC_TEXT_2,\nSICCODE_SIC_TEXT_3,\nSICCODE_SIC_TEXT_4,\nACCOUNTS_REFDAY,\nACCOUNTS_REFMONTH,\nACCOUNTS_NEXTDUEDATE,\nACCOUNTS_OVERDUE,\n  CONVERT (BIGINT, HASHBYTES('SHA1', CONCAT(COMPANY_NUMBER,COMPANY_NAME,ADDRESS_LINE_1,ADDRESS_LINE_2,COUNTRY,TOWN,POSTCODE,SICCODE_SIC_TEXT_1,SICCODE_SIC_TEXT_2,\n                                            SICCODE_SIC_TEXT_3,SICCODE_SIC_TEXT_4,ACCOUNTS_REFDAY,ACCOUNTS_REFMONTH,ACCOUNTS_NEXTDUEDATE,ACCOUNTS_OVERDUE))) AS HashId,\nGETDATE() COMPANY_HOUSE_START_DATE,\n'Y' COMPANY_HOUSE_ACTIVE_IND\nfrom KNE_INT.COMPANY_HOUSE_ADDITIONS\nWHERE COMPANY_NUMBER\nNOT IN\n(SELECT \nCOMPANY_HOUSE_BK\nFROM KNE_INT.DIM_COMPANY_HOUSE)",
+								"sqlReaderQuery": "  Select \nCOMPANY_NUMBER COMPANY_HOUSE_BK,\nCOMPANY_NAME   ,\nADDRESS_LINE_1,\nADDRESS_LINE_2,\nCOUNTRY,\nTOWN,\nPOSTCODE,\nSICCODE_SIC_TEXT_1,\nSICCODE_SIC_TEXT_2,\nSICCODE_SIC_TEXT_3,\nSICCODE_SIC_TEXT_4,\nACCOUNTS_REFDAY,\nACCOUNTS_REFMONTH,\nACCOUNTS_NEXTDUEDATE,\nACCOUNTS_OVERDUE,\n  CONVERT (BIGINT, HASHBYTES('SHA1', CONCAT(COMPANY_NUMBER,COMPANY_NAME,ADDRESS_LINE_1,ADDRESS_LINE_2,COUNTRY,TOWN,POSTCODE,SICCODE_SIC_TEXT_1,SICCODE_SIC_TEXT_2,\n                                            SICCODE_SIC_TEXT_3,SICCODE_SIC_TEXT_4,ACCOUNTS_REFDAY,ACCOUNTS_REFMONTH,ACCOUNTS_NEXTDUEDATE,ACCOUNTS_OVERDUE))) AS HashId,\nGETDATE() COMPANY_HOUSE_START_DATE,\n'Y' COMPANY_HOUSE_ACTIVE_IND\nfrom CHD_INT.COMPANY_HOUSE_ADDITIONS\nWHERE COMPANY_NUMBER\nNOT IN\n(SELECT \nCOMPANY_HOUSE_BK\nFROM CHD_INT.DIM_COMPANY_HOUSE)",
 								"queryTimeout": "02:00:00",
 								"partitionOption": "None"
 							},
@@ -441,7 +441,7 @@
 								"type": "DatasetReference",
 								"parameters": {
 									"TableName": "COMPANY_HOUSE_ADDITIONS",
-									"SchemaName": "KNE_INT"
+									"SchemaName": "CHD_INT"
 								}
 							}
 						],
@@ -451,7 +451,7 @@
 								"type": "DatasetReference",
 								"parameters": {
 									"TableName": "DIM_COMPANY_HOUSE",
-									"SchemaName": "KNE_INT"
+									"SchemaName": "CHD_INT"
 								}
 							}
 						]
@@ -592,7 +592,7 @@
 			"properties": {
 				"activities": [
 					{
-						"name": "PL_PRS_DIM_COMPANY",
+						"name": "PL_INT_DIM_COMPANY",
 						"type": "ExecutePipeline",
 						"dependsOn": [],
 						"policy": {
@@ -653,7 +653,7 @@
 								]
 							},
 							{
-								"activity": "PL_PRS_DIM_COMPANY",
+								"activity": "PL_INT_DIM_COMPANY",
 								"dependencyConditions": [
 									"Succeeded"
 								]
@@ -1088,13 +1088,13 @@
 						"typeProperties": {
 							"source": {
 								"type": "AzureSqlSource",
-								"sqlReaderQuery": "WITH\nQ_SIC_CODES\nAS\n(Select COMPANY_NUMBER,\n replace(replace(replace(replace(sic_codes,'[',''),']',''),char(39),''),' ','')  LIST_OF_SIC_CODES,\n CHARINDEX(',', replace(replace(replace(replace(sic_codes,'[',''),']',''),char(39),''),' ',''))  FIRST_SEPERATOR,\nCHARINDEX(',', replace(replace(replace(replace(sic_codes,'[',''),']',''),char(39),''),' ',''),CHARINDEX(',', replace(replace(replace(replace(sic_codes,'[',''),']',''),char(39),''),' ',''))+1)   SECOND_SEPERATOR,\n\nCHARINDEX(',', replace(replace(replace(replace(sic_codes,'[',''),']',''),char(39),''),' ',''),CHARINDEX(',', replace(replace(replace(replace(sic_codes,'[',''),']',''),char(39),''),' ',''),CHARINDEX(',',replace(replace(replace(replace(sic_codes,'[',''),']',''),char(39),''),' ',''))+1)+1) THIRD_SEPERATOR\n from [KNE_STG].[COMPANY_HOUSE_ADDITIONS]),\n\nQ_ACCOUNTS\nAS\n(SELECT  \ncompany_name,\ncompany_number,\nsubstring(accounts,(CHARINDEX(concat(char(39),'day',char(39),':'),accounts) +8 ),2) AS ACCOUNTS_REF_DAY,\nsubstring(accounts,(CHARINDEX(concat(char(39),'month',char(39),':'),accounts) +10 ),2) AS ACCOUNTS_REF_MONTH,\nsubstring(accounts,(CHARINDEX(concat(char(39),'due_on',char(39),':'),accounts) +11 ),10) AS ACCOUNTS_NEXTDUEDATE,\nsubstring(accounts,(CHARINDEX(concat(char(39),'overdue',char(39),':'),accounts) +11 ),5) AS ACCOUNTS_OVERDUE\n  FROM [KNE_STG].[COMPANY_HOUSE_ADDITIONS]),\n\nQ_ADDRESS_LIST\nAS\n( SELECT COMPANY_NUMBER, COMPANY_NAME,registered_office_Address, \n         replace(replace(replace(replace(registered_office_Address,'{',''),'}',''),char(39),''),': ','')  Address_List,\n   CASE\n WHEN CHARINDEX('address_line_1',(replace(replace(replace(replace(registered_office_Address,'{',''),'}',''),char(39),''),': ',''))) > 0\n THEN CHARINDEX('address_line_1',(replace(replace(replace(replace(registered_office_Address,'{',''),'}',''),char(39),''),': ',''))) +14\n END START_OF_ADDRESS_1,\n \n\n CASE\n WHEN CHARINDEX('address_line_1',(replace(replace(replace(replace(registered_office_Address,'{',''),'}',''),char(39),''),': ',''))) > 0\n THEN (CHARINDEX(',',replace(replace(replace(replace(registered_office_Address,'{',''),'}',''),char(39),''),': ',''),CHARINDEX('address_line_1',(replace(replace(replace(replace(registered_office_Address,'{',''),'}',''),char(39),''),': ',''))) +14)) - (CHARINDEX('address_line_1',(replace(replace(replace(replace(registered_office_Address,'{',''),'}',''),char(39),''),': ',''))) +14)\n END LENGTH_OF_ADDRESS_1,\n \n CASE\n WHEN CHARINDEX('address_line_2',(replace(replace(replace(replace(registered_office_Address,'{',''),'}',''),char(39),''),': ',''))) > 0 \n THEN CHARINDEX('address_line_2',(replace(replace(replace(replace(registered_office_Address,'{',''),'}',''),char(39),''),': ',''))) +14 \n END START_OF_ADDRESS_2, \n \n CASE\n WHEN CHARINDEX('address_line_2',(replace(replace(replace(replace(registered_office_Address,'{',''),'}',''),char(39),''),': ',''))) > 0 \n THEN (CHARINDEX(',',replace(replace(replace(replace(registered_office_Address,'{',''),'}',''),char(39),''),': ',''),CHARINDEX('address_line_2',(replace(replace(replace(replace(registered_office_Address,'{',''),'}',''),char(39),''),': ',''))) +14)) - (CHARINDEX('address_line_2',(replace(replace(replace(replace(registered_office_Address,'{',''),'}',''),char(39),''),': ',''))) +14) \n END LENGTH_OF_ADDRESS_2,\n \n\n CASE\n WHEN CHARINDEX('country',(replace(replace(replace(replace(registered_office_Address,'{',''),'}',''),char(39),''),': ',''))) > 0 \n THEN CHARINDEX('country',(replace(replace(replace(replace(registered_office_Address,'{',''),'}',''),char(39),''),': ',''))) +7\n END START_OF_COUNTRY, \n\n CASE\n WHEN CHARINDEX('country',(replace(replace(replace(replace(registered_office_Address,'{',''),'}',''),char(39),''),': ',''))) > 0 \n THEN (CHARINDEX(',',replace(replace(replace(replace(registered_office_Address,'{',''),'}',''),char(39),''),': ',''),CHARINDEX('country',(replace(replace(replace(replace(registered_office_Address,'{',''),'}',''),char(39),''),': ',''))) +7)) - (CHARINDEX('country',(replace(replace(replace(replace(registered_office_Address,'{',''),'}',''),char(39),''),': ',''))) +7) \n END LENGTH_OF_COUNTRY,\n \n \n CASE\n WHEN CHARINDEX('locality',(replace(replace(replace(replace(registered_office_Address,'{',''),'}',''),char(39),''),': ',''))) > 0 \n THEN CHARINDEX('locality',(replace(replace(replace(replace(registered_office_Address,'{',''),'}',''),char(39),''),': ',''))) +8\n END START_OF_LOCALITY, \n \n CASE\n WHEN CHARINDEX('locality',(replace(replace(replace(replace(registered_office_Address,'{',''),'}',''),char(39),''),': ',''))) > 0 \n THEN (CHARINDEX(',',replace(replace(replace(replace(registered_office_Address,'{',''),'}',''),char(39),''),': ',''),CHARINDEX('locality',(replace(replace(replace(replace(registered_office_Address,'{',''),'}',''),char(39),''),': ',''))) +7)) - (CHARINDEX('locality',(replace(replace(replace(replace(registered_office_Address,'{',''),'}',''),char(39),''),': ',''))) +7) \n END LENGTH_OF_LOCALITY,\n \n CASE\n WHEN CHARINDEX('postal_code',(replace(replace(replace(replace(registered_office_Address,'{',''),'}',''),char(39),''),': ',''))) > 0 \n THEN CHARINDEX('postal_code',(replace(replace(replace(replace(registered_office_Address,'{',''),'}',''),char(39),''),': ',''))) +11\n END START_OF_POSTCODE, \n\n CASE\n WHEN CHARINDEX('postal_code',(replace(replace(replace(replace(registered_office_Address,'{',''),'}',''),char(39),''),': ',''))) > 0 \n THEN 20\n END LENGTH_OF_POSTCODE\n\n\n FROM [KNE_STG].[COMPANY_HOUSE_ADDITIONS])\n\n\n\n SELECT  \n Q_ADDRESS_LIST.COMPANY_NUMBER,Q_ADDRESS_LIST.COMPANY_NAME,\n Q_ADDRESS_LIST.Address_List,\n SUBSTRING(Q_ADDRESS_LIST.Address_List,START_OF_ADDRESS_1,LENGTH_OF_ADDRESS_1) ADDRESS_LINE_1,\n SUBSTRING(Q_ADDRESS_LIST.Address_List,START_OF_ADDRESS_2,LENGTH_OF_ADDRESS_2) ADDRESS_LINE_2,\n SUBSTRING(Q_ADDRESS_LIST.Address_List,START_OF_COUNTRY,LENGTH_OF_COUNTRY) COUNTRY,\n SUBSTRING(Q_ADDRESS_LIST.Address_List,START_OF_LOCALITY,LENGTH_OF_LOCALITY) TOWN,\n SUBSTRING(Q_ADDRESS_LIST.Address_List,START_OF_POSTCODE,LENGTH_OF_POSTCODE) POSTCODE,\n SUBSTRING(LIST_OF_SIC_CODES,1,5) SIC_CODE_1,\n CASE\n WHEN FIRST_SEPERATOR > 0\n THEN SUBSTRING(LIST_OF_SIC_CODES,(FIRST_SEPERATOR+1),5)\n END SIC_CODE_2,\n CASE\n WHEN SECOND_SEPERATOR > 0\n THEN SUBSTRING(LIST_OF_SIC_CODES,(SECOND_SEPERATOR+1),5)\n END SIC_CODE_3,\n CASE\n WHEN THIRD_SEPERATOR > 0\n THEN SUBSTRING(LIST_OF_SIC_CODES,(THIRD_SEPERATOR+1),5)\n END SIC_CODE_4,\n ACCOUNTS_REF_DAY,\n ACCOUNTS_REF_MONTH,\n ACCOUNTS_NEXTDUEDATE,\n ACCOUNTS_OVERDUE\n\n FROM Q_ADDRESS_LIST\n INNER JOIN Q_SIC_CODES\n ON Q_ADDRESS_LIST.COMPANY_NUMBER=Q_SIC_CODES.COMPANY_NUMBER\n INNER JOIN Q_ACCOUNTS\n ON Q_ADDRESS_LIST.COMPANY_NUMBER=Q_ACCOUNTS.COMPANY_NUMBER",
+								"sqlReaderQuery": "WITH\nQ_SIC_CODES\nAS\n(Select COMPANY_NUMBER,\n replace(replace(replace(replace(sic_codes,'[',''),']',''),char(39),''),' ','')  LIST_OF_SIC_CODES,\n CHARINDEX(',', replace(replace(replace(replace(sic_codes,'[',''),']',''),char(39),''),' ',''))  FIRST_SEPERATOR,\nCHARINDEX(',', replace(replace(replace(replace(sic_codes,'[',''),']',''),char(39),''),' ',''),CHARINDEX(',', replace(replace(replace(replace(sic_codes,'[',''),']',''),char(39),''),' ',''))+1)   SECOND_SEPERATOR,\n\nCHARINDEX(',', replace(replace(replace(replace(sic_codes,'[',''),']',''),char(39),''),' ',''),CHARINDEX(',', replace(replace(replace(replace(sic_codes,'[',''),']',''),char(39),''),' ',''),CHARINDEX(',',replace(replace(replace(replace(sic_codes,'[',''),']',''),char(39),''),' ',''))+1)+1) THIRD_SEPERATOR\n from [CHD_STG].[COMPANY_HOUSE_ADDITIONS]),\n\nQ_ACCOUNTS\nAS\n(SELECT  \ncompany_name,\ncompany_number,\nsubstring(accounts,(CHARINDEX(concat(char(39),'day',char(39),':'),accounts) +8 ),2) AS ACCOUNTS_REF_DAY,\nsubstring(accounts,(CHARINDEX(concat(char(39),'month',char(39),':'),accounts) +10 ),2) AS ACCOUNTS_REF_MONTH,\nsubstring(accounts,(CHARINDEX(concat(char(39),'due_on',char(39),':'),accounts) +11 ),10) AS ACCOUNTS_NEXTDUEDATE,\nsubstring(accounts,(CHARINDEX(concat(char(39),'overdue',char(39),':'),accounts) +11 ),5) AS ACCOUNTS_OVERDUE\n  FROM [CHD_STG].[COMPANY_HOUSE_ADDITIONS]),\n\nQ_ADDRESS_LIST\nAS\n( SELECT COMPANY_NUMBER, COMPANY_NAME,registered_office_Address, \n         replace(replace(replace(replace(registered_office_Address,'{',''),'}',''),char(39),''),': ','')  Address_List,\n   CASE\n WHEN CHARINDEX('address_line_1',(replace(replace(replace(replace(registered_office_Address,'{',''),'}',''),char(39),''),': ',''))) > 0\n THEN CHARINDEX('address_line_1',(replace(replace(replace(replace(registered_office_Address,'{',''),'}',''),char(39),''),': ',''))) +14\n END START_OF_ADDRESS_1,\n \n\n CASE\n WHEN CHARINDEX('address_line_1',(replace(replace(replace(replace(registered_office_Address,'{',''),'}',''),char(39),''),': ',''))) > 0\n THEN (CHARINDEX(',',replace(replace(replace(replace(registered_office_Address,'{',''),'}',''),char(39),''),': ',''),CHARINDEX('address_line_1',(replace(replace(replace(replace(registered_office_Address,'{',''),'}',''),char(39),''),': ',''))) +14)) - (CHARINDEX('address_line_1',(replace(replace(replace(replace(registered_office_Address,'{',''),'}',''),char(39),''),': ',''))) +14)\n END LENGTH_OF_ADDRESS_1,\n \n CASE\n WHEN CHARINDEX('address_line_2',(replace(replace(replace(replace(registered_office_Address,'{',''),'}',''),char(39),''),': ',''))) > 0 \n THEN CHARINDEX('address_line_2',(replace(replace(replace(replace(registered_office_Address,'{',''),'}',''),char(39),''),': ',''))) +14 \n END START_OF_ADDRESS_2, \n \n CASE\n WHEN CHARINDEX('address_line_2',(replace(replace(replace(replace(registered_office_Address,'{',''),'}',''),char(39),''),': ',''))) > 0 \n THEN (CHARINDEX(',',replace(replace(replace(replace(registered_office_Address,'{',''),'}',''),char(39),''),': ',''),CHARINDEX('address_line_2',(replace(replace(replace(replace(registered_office_Address,'{',''),'}',''),char(39),''),': ',''))) +14)) - (CHARINDEX('address_line_2',(replace(replace(replace(replace(registered_office_Address,'{',''),'}',''),char(39),''),': ',''))) +14) \n END LENGTH_OF_ADDRESS_2,\n \n\n CASE\n WHEN CHARINDEX('country',(replace(replace(replace(replace(registered_office_Address,'{',''),'}',''),char(39),''),': ',''))) > 0 \n THEN CHARINDEX('country',(replace(replace(replace(replace(registered_office_Address,'{',''),'}',''),char(39),''),': ',''))) +7\n END START_OF_COUNTRY, \n\n CASE\n WHEN CHARINDEX('country',(replace(replace(replace(replace(registered_office_Address,'{',''),'}',''),char(39),''),': ',''))) > 0 \n THEN (CHARINDEX(',',replace(replace(replace(replace(registered_office_Address,'{',''),'}',''),char(39),''),': ',''),CHARINDEX('country',(replace(replace(replace(replace(registered_office_Address,'{',''),'}',''),char(39),''),': ',''))) +7)) - (CHARINDEX('country',(replace(replace(replace(replace(registered_office_Address,'{',''),'}',''),char(39),''),': ',''))) +7) \n END LENGTH_OF_COUNTRY,\n \n \n CASE\n WHEN CHARINDEX('locality',(replace(replace(replace(replace(registered_office_Address,'{',''),'}',''),char(39),''),': ',''))) > 0 \n THEN CHARINDEX('locality',(replace(replace(replace(replace(registered_office_Address,'{',''),'}',''),char(39),''),': ',''))) +8\n END START_OF_LOCALITY, \n \n CASE\n WHEN CHARINDEX('locality',(replace(replace(replace(replace(registered_office_Address,'{',''),'}',''),char(39),''),': ',''))) > 0 \n THEN (CHARINDEX(',',replace(replace(replace(replace(registered_office_Address,'{',''),'}',''),char(39),''),': ',''),CHARINDEX('locality',(replace(replace(replace(replace(registered_office_Address,'{',''),'}',''),char(39),''),': ',''))) +7)) - (CHARINDEX('locality',(replace(replace(replace(replace(registered_office_Address,'{',''),'}',''),char(39),''),': ',''))) +7) \n END LENGTH_OF_LOCALITY,\n \n CASE\n WHEN CHARINDEX('postal_code',(replace(replace(replace(replace(registered_office_Address,'{',''),'}',''),char(39),''),': ',''))) > 0 \n THEN CHARINDEX('postal_code',(replace(replace(replace(replace(registered_office_Address,'{',''),'}',''),char(39),''),': ',''))) +11\n END START_OF_POSTCODE, \n\n CASE\n WHEN CHARINDEX('postal_code',(replace(replace(replace(replace(registered_office_Address,'{',''),'}',''),char(39),''),': ',''))) > 0 \n THEN 20\n END LENGTH_OF_POSTCODE\n\n\n FROM [CHD_STG].[COMPANY_HOUSE_ADDITIONS])\n\n\n\n SELECT  \n Q_ADDRESS_LIST.COMPANY_NUMBER,Q_ADDRESS_LIST.COMPANY_NAME,\n Q_ADDRESS_LIST.Address_List,\n SUBSTRING(Q_ADDRESS_LIST.Address_List,START_OF_ADDRESS_1,LENGTH_OF_ADDRESS_1) ADDRESS_LINE_1,\n SUBSTRING(Q_ADDRESS_LIST.Address_List,START_OF_ADDRESS_2,LENGTH_OF_ADDRESS_2) ADDRESS_LINE_2,\n SUBSTRING(Q_ADDRESS_LIST.Address_List,START_OF_COUNTRY,LENGTH_OF_COUNTRY) COUNTRY,\n SUBSTRING(Q_ADDRESS_LIST.Address_List,START_OF_LOCALITY,LENGTH_OF_LOCALITY) TOWN,\n SUBSTRING(Q_ADDRESS_LIST.Address_List,START_OF_POSTCODE,LENGTH_OF_POSTCODE) POSTCODE,\n SUBSTRING(LIST_OF_SIC_CODES,1,5) SIC_CODE_1,\n CASE\n WHEN FIRST_SEPERATOR > 0\n THEN SUBSTRING(LIST_OF_SIC_CODES,(FIRST_SEPERATOR+1),5)\n END SIC_CODE_2,\n CASE\n WHEN SECOND_SEPERATOR > 0\n THEN SUBSTRING(LIST_OF_SIC_CODES,(SECOND_SEPERATOR+1),5)\n END SIC_CODE_3,\n CASE\n WHEN THIRD_SEPERATOR > 0\n THEN SUBSTRING(LIST_OF_SIC_CODES,(THIRD_SEPERATOR+1),5)\n END SIC_CODE_4,\n ACCOUNTS_REF_DAY,\n ACCOUNTS_REF_MONTH,\n ACCOUNTS_NEXTDUEDATE,\n ACCOUNTS_OVERDUE\n\n FROM Q_ADDRESS_LIST\n INNER JOIN Q_SIC_CODES\n ON Q_ADDRESS_LIST.COMPANY_NUMBER=Q_SIC_CODES.COMPANY_NUMBER\n INNER JOIN Q_ACCOUNTS\n ON Q_ADDRESS_LIST.COMPANY_NUMBER=Q_ACCOUNTS.COMPANY_NUMBER",
 								"queryTimeout": "02:00:00",
 								"partitionOption": "None"
 							},
 							"sink": {
 								"type": "AzureSqlSink",
-								"preCopyScript": "TRUNCATE TABLE KNE_INT.COMPANY_HOUSE_ADDITIONS",
+								"preCopyScript": "TRUNCATE TABLE CHD_INT.COMPANY_HOUSE_ADDITIONS",
 								"writeBehavior": "insert",
 								"sqlWriterUseTableLock": false,
 								"tableOption": "autoCreate",
@@ -1310,7 +1310,7 @@
 								"type": "DatasetReference",
 								"parameters": {
 									"TableName": "COMPANY_HOUSE_ADDITIONS",
-									"SchemaName": "KNE_STG"
+									"SchemaName": "CHD_STG"
 								}
 							}
 						],
@@ -1320,7 +1320,7 @@
 								"type": "DatasetReference",
 								"parameters": {
 									"TableName": "COMPANY_HOUSE_ADDITIONS",
-									"SchemaName": "KNE_INT"
+									"SchemaName": "CHD_INT"
 								}
 							}
 						]
@@ -1359,20 +1359,7 @@
 						"typeProperties": {
 							"source": {
 								"type": "AzureSqlSource",
-								"additionalColumns": [
-									{
-										"name": "CURRENT_DATE",
-										"value": {
-											"value": "@formatDateTime(utcnow())",
-											"type": "Expression"
-										}
-									},
-									{
-										"name": "ACTIVE_IND",
-										"value": "Y"
-									}
-								],
-								"sqlReaderQuery": "WITH\nQ_OUPUTS\nAS\n(\nSELECT project_Code, partner,Business_Number,\nCASE\nWHEN [C1] IS NOT NULL THEN '1'\nELSE '0'\nEND C1,\nCASE\nWHEN [C2] IS NOT NULL THEN '1'\nELSE '0'\nEND C2,\nCASE\nWHEN [C4] IS NOT NULL THEN '1'\nELSE '0'\nEND C4,\nCASE\nWHEN [C6] IS NOT NULL THEN '1'\nELSE '0'\nEND C6,\nCASE\nWHEN [C34] IS NOT NULL THEN '1'\nELSE '0'\nEND C34,\nCASE\nWHEN [C26] IS NOT NULL THEN '1'\nELSE '0'\nEND C26,\nCASE\nWHEN [C28] IS NOT NULL THEN '1'\nELSE '0'\nEND C28,\nCASE\nWHEN [C29] IS NOT NULL THEN '1'\nELSE '0'\nEND C29,\nCASE\nWHEN [C5] IS NOT NULL THEN '1'\nELSE '0'\nEND C5,\nCASE\nWHEN [C8] IS NOT NULL THEN '1'\nELSE '0'\nEND C8,\nCASE\nWHEN [C023] IS NOT NULL THEN '1'\nELSE '0'\nEND C023,\nCASE\nWHEN [P11] IS NOT NULL THEN '1'\nELSE '0'\nEND P11,\nCASE\nWHEN [P13] IS NOT NULL THEN '1'\nELSE '0'\nEND P13,\nCASE\nWHEN [R9] IS NOT NULL THEN '1'\nELSE '0'\nEND R9\nFROM (\n    SELECT Project_Code, partner,Business_Number,Output FROM [KNE_STG].[Outputs]\n) AS SourceTable\nPIVOT (\n    MAX(output)\n    FOR output IN ([C1], [C2], [C4], [C6], [C34], [C26],[C28],[C29],[C5],[C8],[C023],[P11],[P13],[R9] )\n\n) AS PivotTable),\n\n\n\n\n\nQ_CARBON\nAS\n(\nSELECT BUSINESS_NUMBER,\nSUM(CAST(\"MATCH\" AS DECIMAL (10,2))) AS MATCH_TOTAL,\nSUM(CASE\nWHEN LEN(tCo2e) > 0\nTHEN CAST(REPLACE(tCo2e,'t','') AS DECIMAL (10,2)) \nELSE CAST('0.00' AS DECIMAL (10,2))\nEND) CO2_TOTAL,\nSUM(CAST(REPLACE(REPLACE(\"Grant\",'\"',''),',','')AS DECIMAL (10,2))) AS  GRANT_TOTAL\nFROM KNE_STG.BUSINESSDATA_CARBON\nGROUP BY BUSINESS_NUMBER)\n\n  \n  \n  SELECT \n      MAIN.Project_Code,\n      MAIN.Business_Number,\n\t  CONCAT(MAIN.Project_Code,'|',MAIN.Business_Number) COMPANY_BK,\n      MAIN.Business_Name,\n      MAIN.Postcode,\n      \n\t  CONVERT(date, MAIN.Enrolment_Date, 103) AS Enrolment_Date,\n\t  \n\t\n      MAIN.FIVE_Digit_SIC_Code,\n      Turnover,\n      CAST(MAIN.No_of_Employees AS NUMERIC) AS No_of_Employees,\n\n\t  CONVERT(date, MAIN.Business_Registration_Date, 103) AS Business_Registration_Date,\n      MAIN.Equality_Policy,\n      MAIN.Environmental_Policy,\n      MAIN.Size,\n      MAIN.Business_No_Type2,\n      MAIN.Partner,\n\t  COALESCE(OUTPUTS.C1,'0') OUTPUT_C1,\n\t  COALESCE(OUTPUTS.C2,'0') OUTPUT_C2,\n\t  COALESCE(OUTPUTS.C4,'0') OUTPUT_C4,\n\t  COALESCE(OUTPUTS.C6,'0') OUTPUT_C6,\n\t  COALESCE(OUTPUTS.C34,'0') OUTPUT_C34,\n      COALESCE(OUTPUTS.C26,'0') OUTPUT_C26,\n\t  COALESCE(OUTPUTS.C28,'0') OUTPUT_C28,\n\t  COALESCE(OUTPUTS.C29,'0') OUTPUT_C29,\n\t  COALESCE(OUTPUTS.C5,'0') OUTPUT_C5,\n      COALESCE(OUTPUTS.C8,'0') OUTPUT_C8,\n\t  COALESCE(OUTPUTS.C023,'0') OUTPUT_C023,\n\t  COALESCE(OUTPUTS.P11,'0') OUTPUT_P11,\n\t  COALESCE(OUTPUTS.P13,'0') OUTPUT_P13,\n\t  COALESCE(OUTPUTS.R9,'0') OUTPUT_R9,\n\t  COALESCE(Q_CARBON.CO2_TOTAL,'0.00') CO2_TOTAL,\n\t  COALESCE(Q_CARBON.GRANT_TOTAL,'0.00') GRANT_TOTAL,\n\t  COALESCE(Q_CARBON.MATCH_TOTAL,'0.00') MATCH_TOTAL\n  FROM KNE_STG.BusinessData_General MAIN\n  LEFT OUTER JOIN Q_OUPUTS OUTPUTS\n  ON MAIN.Project_Code=OUTPUTS.Project_Code\n  AND MAIN.Business_Number=OUTPUTS.Business_Number\n  AND MAIN.PARTNER=OUTPUTS.Partner\n  LEFT OUTER JOIN Q_CARBON\n  ON MAIN.Business_Number=Q_CARBON.Business_Number",
+								"sqlReaderQuery": "WITH\nQ_OUPUTS\nAS\n(\nSELECT project_Code, partner,Business_Number,\nCASE\nWHEN [C1] IS NOT NULL THEN '1'\nELSE '0'\nEND C1,\nCASE\nWHEN [C2] IS NOT NULL THEN '1'\nELSE '0'\nEND C2,\nCASE\nWHEN [C4] IS NOT NULL THEN '1'\nELSE '0'\nEND C4,\nCASE\nWHEN [C6] IS NOT NULL THEN '1'\nELSE '0'\nEND C6,\nCASE\nWHEN [C34] IS NOT NULL THEN '1'\nELSE '0'\nEND C34,\nCASE\nWHEN [C26] IS NOT NULL THEN '1'\nELSE '0'\nEND C26,\nCASE\nWHEN [C28] IS NOT NULL THEN '1'\nELSE '0'\nEND C28,\nCASE\nWHEN [C29] IS NOT NULL THEN '1'\nELSE '0'\nEND C29,\nCASE\nWHEN [C5] IS NOT NULL THEN '1'\nELSE '0'\nEND C5,\nCASE\nWHEN [C8] IS NOT NULL THEN '1'\nELSE '0'\nEND C8,\nCASE\nWHEN [C023] IS NOT NULL THEN '1'\nELSE '0'\nEND C023,\nCASE\nWHEN [P11] IS NOT NULL THEN '1'\nELSE '0'\nEND P11,\nCASE\nWHEN [P13] IS NOT NULL THEN '1'\nELSE '0'\nEND P13,\nCASE\nWHEN [R9] IS NOT NULL THEN '1'\nELSE '0'\nEND R9\nFROM (\n    SELECT Project_Code, partner,Business_Number,Output FROM [KNE_STG].[Outputs]\n) AS SourceTable\nPIVOT (\n    MAX(output)\n    FOR output IN ([C1], [C2], [C4], [C6], [C34], [C26],[C28],[C29],[C5],[C8],[C023],[P11],[P13],[R9] )\n\n) AS PivotTable),\n\n\n\n\n\nQ_CARBON\nAS\n(\nSELECT BUSINESS_NUMBER,\nSUM(CAST(\"MATCH\" AS DECIMAL (10,2))) AS MATCH_TOTAL,\nSUM(CASE\nWHEN LEN(tCo2e) > 0\nTHEN CAST(REPLACE(tCo2e,'t','') AS DECIMAL (10,2)) \nELSE CAST('0.00' AS DECIMAL (10,2))\nEND) CO2_TOTAL,\nSUM(CAST(REPLACE(REPLACE(\"Grant\",'\"',''),',','')AS DECIMAL (10,2))) AS  GRANT_TOTAL\nFROM KNE_STG.BUSINESSDATA_CARBON\nGROUP BY BUSINESS_NUMBER),\n\n  \n\n\nQ_STATE_AID\nAS\n(SELECT DISTINCT PROJECT_CODE,BUSINESS_NUMBER,\nCASE\nWHEN LEN(STATE_AID_DATE) <> 0\nTHEN convert(date, state_aid_date, 103)\nEND STATE_AID_DATE,STATE_AID\nFROM KNE_STG.State_Aid)\n\n\n\n\n  SELECT \n      CONCAT(MAIN.Project_Code,'|',MAIN.Business_Number) COMPANY_BK,\n      MAIN.Business_Name,\n      MAIN.Postcode,\n      \n\t  CONVERT(date, MAIN.Enrolment_Date, 103) AS Enrolment_Date,\n\t  \n\t\n      COALESCE(MAIN.FIVE_Digit_SIC_Code,0) AS FIVE_Digit_SIC_Code,\n      \n\t  CASE\n\t  WHEN LEN(Turnover) =0 \n\t  THEN '0'\n\t  ELSE Turnover\n\t  END Turnover,\n\t  \n\t\n      CAST(MAIN.No_of_Employees AS NUMERIC) AS No_of_Employees,\n\n\t  CONVERT(date, MAIN.Business_Registration_Date, 103) AS Business_Registration_Date,\n     \n\t  \n\t  COALESCE(Equality_Policy,'Not Entered')  Equality_Policy,\n\t  \n\t  COALESCE(Environmental_Policy,'Not Entered')  Environmental_Policy,\n\t \t  \n\t  CASE\n      WHEN LEN(SIZE)=0\n      THEN 'Not Entered'\n      ELSE SIZE\n      END  Size,\n\n      MAIN.Business_No_Type2,\n      MAIN.Partner,\n\t  COALESCE(OUTPUTS.C1,'0') OUTPUT_C1,\n\t  COALESCE(OUTPUTS.C2,'0') OUTPUT_C2,\n\t  COALESCE(OUTPUTS.C4,'0') OUTPUT_C4,\n\t  COALESCE(OUTPUTS.C6,'0') OUTPUT_C6,\n\t  COALESCE(OUTPUTS.C34,'0') OUTPUT_C34,\n      COALESCE(OUTPUTS.C26,'0') OUTPUT_C26,\n\t  COALESCE(OUTPUTS.C28,'0') OUTPUT_C28,\n\t  COALESCE(OUTPUTS.C29,'0') OUTPUT_C29,\n\t  COALESCE(OUTPUTS.C5,'0') OUTPUT_C5,\n      COALESCE(OUTPUTS.C8,'0') OUTPUT_C8,\n\t  COALESCE(OUTPUTS.C023,'0') OUTPUT_C023,\n\t  COALESCE(OUTPUTS.P11,'0') OUTPUT_P11,\n\t  COALESCE(OUTPUTS.P13,'0') OUTPUT_P13,\n\t  COALESCE(OUTPUTS.R9,'0') OUTPUT_R9,\n\t  COALESCE(Q_CARBON.CO2_TOTAL,'0.00') CO2_TOTAL,\n\t  COALESCE(Q_CARBON.GRANT_TOTAL,'0.00') GRANT_TOTAL,\n\t  COALESCE(Q_CARBON.MATCH_TOTAL,'0.00') MATCH_TOTAL,\n\t  \n\n\t  CASE\n\t  WHEN LEN(Q_STATE_AID.State_Aid)=0\n\t  THEN 0.00\n\t  WHEN Q_STATE_AID.State_Aid IS NULL\n\t  THEN 0.00\n\t  ELSE  \n\t  CONVERT(DECIMAL(12,4), Q_STATE_AID.State_Aid)\n\t  END State_Aid,\n\t  Q_STATE_AID.State_Aid_Date\n  FROM KNE_STG.BusinessData_General MAIN\n  LEFT OUTER JOIN Q_OUPUTS OUTPUTS\n  ON MAIN.Project_Code=OUTPUTS.Project_Code\n  AND MAIN.Business_Number=OUTPUTS.Business_Number\n  AND MAIN.PARTNER=OUTPUTS.Partner\n  LEFT OUTER JOIN Q_CARBON\n  ON MAIN.Business_Number=Q_CARBON.Business_Number\n  LEFT OUTER JOIN Q_STATE_AID\n  ON MAIN.Project_Code=Q_STATE_AID.Project_Code\n  AND MAIN.Business_Number=Q_STATE_AID.Business_Number",
 								"queryTimeout": "02:00:00",
 								"partitionOption": "None"
 							},
@@ -1483,18 +1470,6 @@
 										},
 										"sink": {
 											"name": "COMPANY_SIZE",
-											"type": "String",
-											"physicalType": "varchar"
-										}
-									},
-									{
-										"source": {
-											"name": "Business_No_Type2",
-											"type": "String",
-											"physicalType": "varchar"
-										},
-										"sink": {
-											"name": "COMPANY_NO_TYPE2",
 											"type": "String",
 											"physicalType": "varchar"
 										}
@@ -1669,28 +1644,6 @@
 									},
 									{
 										"source": {
-											"name": "CURRENT_DATE",
-											"type": "String"
-										},
-										"sink": {
-											"name": "COMPANY_START_DATE",
-											"type": "DateTime",
-											"physicalType": "datetime"
-										}
-									},
-									{
-										"source": {
-											"name": "ACTIVE_IND",
-											"type": "String"
-										},
-										"sink": {
-											"name": "COMPANY_ACTIVE_IND",
-											"type": "String",
-											"physicalType": "char"
-										}
-									},
-									{
-										"source": {
 											"name": "CO2_TOTAL",
 											"type": "Decimal",
 											"physicalType": "decimal",
@@ -1739,14 +1692,28 @@
 									},
 									{
 										"source": {
-											"name": "Business_Number",
+											"name": "State_Aid_Date",
+											"type": "DateTime",
+											"physicalType": "date"
+										},
+										"sink": {
+											"name": "COMPANY_STATE_AID_DATE",
+											"type": "DateTime",
+											"physicalType": "datetime"
+										}
+									},
+									{
+										"source": {
+											"name": "State_Aid",
 											"type": "String",
 											"physicalType": "varchar"
 										},
 										"sink": {
-											"name": "COMPANY_NUMBER",
-											"type": "String",
-											"physicalType": "varchar"
+											"name": "COMPANY_STATE_AID",
+											"type": "Decimal",
+											"physicalType": "decimal",
+											"scale": 2,
+											"precision": 10
 										}
 									}
 								],
@@ -1759,12 +1726,9 @@
 						},
 						"inputs": [
 							{
-								"referenceName": "DS_Azure_Destination",
+								"referenceName": "DS_AzureDB",
 								"type": "DatasetReference",
-								"parameters": {
-									"TableName": "STG.BusinessData_Genera",
-									"SchemaName": "KNE_STG"
-								}
+								"parameters": {}
 							}
 						],
 						"outputs": [
@@ -1788,6 +1752,7 @@
 				"annotations": []
 			},
 			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/DS_AzureDB')]",
 				"[concat(variables('factoryId'), '/datasets/DS_Azure_Destination')]"
 			]
 		},
@@ -2887,7 +2852,7 @@
 						"typeProperties": {
 							"source": {
 								"type": "AzureSqlSource",
-								"sqlReaderQuery": "WITH\nQ_DIM_COMPANY\nAS\n(SELECT COMPANY_SK,COMPANY_BK\nFROM KNE_INT.DIM_COMPANY),\n\nQ_DIM_DATES\nAS\n(SELECT REP_DATES_SK,REP_DATES_BK\n FROM KNE_INT.DIM_REPORTING_DATES\n WHERE REP_DATES_ACTIVE_IND='Y'),\n\nQ_REPORTING_STRUCUTURE\nAS\n(SELECT BI_REP_STRUCT_SK, BI_REP_STRUCT_DEPT\n FROM KNE_INT.DIM_REPORTING_STRUCTURE\n WHERE BI_REP_STRUCT_ACTIVE_IND='Y')\n\n\n\n\n\nSELECT \nRIGHT('000' + FCT.BUSINESS_NUMBER, 8),\nQ_DIM_COMPANY.COMPANY_SK FACT_KE_INT_COMP_SK,\nQ_DIM_DATES.REP_DATES_SK  FACT_KE_INT_DATE_SK,\nQ_REPORTING_STRUCUTURE.BI_REP_STRUCT_SK FACT_KE_INT_REP_STRUCT_SK,\nFCT.PROJECT AS FACT_KE_INT_PROJECT,\nCASE \nWHEN FCT.PROJECT='EI'\nTHEN 'Enabling Innovation'\nWHEN FCT.PROJECT='EIC'\nTHEN 'Enterprise and Innovation Centre (DEC)'\nWHEN FCT.PROJECT='GRADS'\nTHEN 'Grads for D2N2 Small to Medium sized businesses'\nWHEN FCT.PROJECT='PTI' \nTHEN 'Productivity through Innovation'\nWHEN FCT.PROJECT='SiE'\nTHEN 'Sustainability in Enterprise'\nWHEN FCT.PROJECT='UPS'\nTHEN 'Upscaler'\nEND FACT_KE_INT_PROJECT_DESC,\n\n\nFCT.PARTNER AS FACT_KE_INT_PARTNER,\nFCT.INTERVENTION AS FACT_KE_INT_INTERVENTION,\nFCT.INTERVENTION_TYPE AS FACT_KE_INT_INTERVENTION_TYP,\nFCT.INTERVENTION_HOURS AS FACT_KE_INT_INTERVENTION_HOURS,\n\nCASE\nWHEN LEN(FCT.INTERVENTION_tCO2e)=0\nTHEN '0'\nELSE FCT.INTERVENTION_tCO2e \nEND FACT_KE_INT_INTERVENTION_CO2\n\n\nFROM KNE_STG.Interventions FCT\nINNER JOIN Q_DIM_COMPANY\nON CONCAT(FCT.Project ,'|',RIGHT('000' + FCT.BUSINESS_NUMBER, 8))=Q_DIM_COMPANY.COMPANY_BK\nINNER JOIN Q_DIM_DATES\nON CASE\nWHEN FCT.INTERVENTION_DATE = '0' THEN 'N/A'\nWHEN FCT.INTERVENTION_DATE IS NULL THEN 'N/A'\nELSE CONVERT(VARCHAR, CAST(FCT.INTERVENTION_DATE AS DATE), 103)\nEND=Q_DIM_DATES.REP_DATES_BK\nINNER JOIN Q_REPORTING_STRUCUTURE\nON CASE\nWHEN FCT.SCHOOL_DEBT = 'ADBE' THEN 'ENV'\nWHEN FCT.SCHOOL_DEBT = 'Art & Design' THEN 'ART'\nWHEN FCT.SCHOOL_DEBT = 'Employability' THEN 'EMP'\nWHEN FCT.SCHOOL_DEBT LIKE '%EMP%' THEN 'EMP'\nWHEN FCT.SCHOOL_DEBT LIKE '%APP%' THEN 'APP'\nWHEN FCT.SCHOOL_DEBT LIKE '%SST%' THEN 'SST'\nWHEN FCT.SCHOOL_DEBT = 'SS' THEN 'SOC'\nWHEN FCT.SCHOOL_DEBT = 'Estates' THEN 'EST'\nWHEN FCT.SCHOOL_DEBT = 'NBS' THEN 'NBS'\nWHEN FCT.SCHOOL_DEBT = '0' THEN 'DEPT N/A'\nWHEN FCT.SCHOOL_DEBT = 'DEC' THEN 'DEPT N/A'\nWHEN LEN(FCT.SCHOOL_DEBT) =0 THEN 'DEPT N/A'\nEND=Q_REPORTING_STRUCUTURE.BI_REP_STRUCT_DEPT\n",
+								"sqlReaderQuery": "WITH\nQ_DIM_COMPANY\nAS\n(SELECT COMPANY_SK,COMPANY_BK\nFROM KNE_INT.DIM_COMPANY),\n\nQ_DIM_DATES\nAS\n(SELECT REP_DATES_SK,REP_DATES_BK\n FROM KNE_INT.DIM_REPORTING_DATES\n WHERE REP_DATES_ACTIVE_IND='Y'),\n\nQ_REPORTING_STRUCUTURE\nAS\n(SELECT BI_REP_STRUCT_SK, BI_REP_STRUCT_DEPT\n FROM KNE_INT.DIM_REPORTING_STRUCTURE\n WHERE BI_REP_STRUCT_ACTIVE_IND='Y')\n\n\n\n\n\nSELECT \nRIGHT('000' + FCT.BUSINESS_NUMBER, 8),\nQ_DIM_COMPANY.COMPANY_SK FACT_KE_INT_COMP_SK,\nQ_DIM_DATES.REP_DATES_SK  FACT_KE_INT_DATE_SK,\nQ_REPORTING_STRUCUTURE.BI_REP_STRUCT_SK FACT_KE_INT_REP_STRUCT_SK,\nFCT.PROJECT AS FACT_KE_INT_PROJECT,\nCASE \nWHEN FCT.PROJECT='EI'\nTHEN 'Enabling Innovation'\nWHEN FCT.PROJECT='EIC'\nTHEN 'Enterprise and Innovation Centre (DEC)'\nWHEN FCT.PROJECT='GRADS'\nTHEN 'Grads for D2N2 Small to Medium sized businesses'\nWHEN FCT.PROJECT='PTI' \nTHEN 'Productivity through Innovation'\nWHEN FCT.PROJECT='SiE'\nTHEN 'Sustainability in Enterprise'\nWHEN FCT.PROJECT='UPS'\nTHEN 'Upscaler'\nEND FACT_KE_INT_PROJECT_DESC,\n\n\nFCT.PARTNER AS FACT_KE_INT_PARTNER,\nFCT.INTERVENTION AS FACT_KE_INT_INTERVENTION,\nFCT.INTERVENTION_TYPE AS FACT_KE_INT_INTERVENTION_TYP,\nFCT.INTERVENTION_HOURS AS FACT_KE_INT_INTERVENTION_HOURS,\n\nCASE\nWHEN LEN(FCT.INTERVENTION_tCO2e)=0\nTHEN '0'\nELSE FCT.INTERVENTION_tCO2e \nEND FACT_KE_INT_INTERVENTION_CO2\n\n\nFROM KNE_STG.Interventions FCT\nINNER JOIN Q_DIM_COMPANY\nON CONCAT(FCT.Project ,'|',RIGHT('000' + FCT.BUSINESS_NUMBER, 8))=Q_DIM_COMPANY.COMPANY_BK\nINNER JOIN Q_DIM_DATES\nON CASE\nWHEN FCT.INTERVENTION_DATE = '0' THEN 'N/A'\nWHEN FCT.INTERVENTION_DATE IS NULL THEN 'N/A'\nELSE FCT.INTERVENTION_DATE\nEND=Q_DIM_DATES.REP_DATES_BK\nINNER JOIN Q_REPORTING_STRUCUTURE\nON CASE\nWHEN FCT.SCHOOL_DEBT = 'ADBE' THEN 'ENV'\nWHEN FCT.SCHOOL_DEBT = 'Art & Design' THEN 'ART'\nWHEN FCT.SCHOOL_DEBT = 'Employability' THEN 'EMP'\nWHEN FCT.SCHOOL_DEBT LIKE '%EMP%' THEN 'EMP'\nWHEN FCT.SCHOOL_DEBT LIKE '%APP%' THEN 'APP'\nWHEN FCT.SCHOOL_DEBT LIKE '%SST%' THEN 'SST'\nWHEN FCT.SCHOOL_DEBT = 'SS' THEN 'SOC'\nWHEN FCT.SCHOOL_DEBT = 'Estates' THEN 'EST'\nWHEN FCT.SCHOOL_DEBT = 'NBS' THEN 'NBS'\nWHEN FCT.SCHOOL_DEBT = '0' THEN 'DEPT N/A'\nWHEN FCT.SCHOOL_DEBT = 'DEC' THEN 'DEPT N/A'\nWHEN LEN(FCT.SCHOOL_DEBT) =0 THEN 'DEPT N/A'\nEND=Q_REPORTING_STRUCUTURE.BI_REP_STRUCT_DEPT\n",
 								"queryTimeout": "02:00:00",
 								"partitionOption": "None"
 							},
@@ -3097,7 +3062,7 @@
 						"typeProperties": {
 							"source": {
 								"type": "AzureSqlSource",
-								"sqlReaderQuery": "WITH\nQ_DIM_COMPANY\nAS\n(SELECT COMPANY_SK,COMPANY_BK\nFROM KNE_INT.DIM_COMPANY),\n\nQ_DIM_DATES\nAS\n(SELECT REP_DATES_SK,REP_DATES_BK\n FROM KNE_INT.DIM_REPORTING_DATES\n WHERE REP_DATES_ACTIVE_IND='Y'),\n\nQ_DIM_PARTNER\nAS\n(SELECT PARTNER_SK,PARTNER_BK\n FROM KNE_INT.DIM_PARTNER),\n\nQ_DIM_PROJECT\nAS\n(SELECT PROJECT_SK,PROJECT_BK\n FROM KNE_INT.DIM_PROJECT)\n\nSELECT \nQ_DIM_COMPANY.COMPANY_SK FACT_KE_PLACE_COMP_SK, \nQ_DIM_DATES.REP_DATES_SK  FACT_KE_PLACE_DATE_SK,\nQ_DIM_PARTNER.PARTNER_SK  FACT_KE_PLACE_PARTNER_SK,\nQ_DIM_PROJECT.PROJECT_SK  FACT_KE_PLACE_PROJECT_SK,\nFCT.PROJECT_CODE AS FACT_KE_PLACE_PROJECT,\n\n\nCASE \nWHEN FCT.PROJECT_CODE='EI'\nTHEN 'Enabling Innovation'\nWHEN FCT.PROJECT_CODE='EIC'\nTHEN 'Enterprise and Innovation Centre (DEC)'\nWHEN FCT.PROJECT_CODE='GRADS'\nTHEN 'Grads for D2N2 Small to Medium sized businesses'\nWHEN FCT.PROJECT_CODE='PTI' \nTHEN 'Productivity through Innovation'\nWHEN FCT.PROJECT_CODE='SiE'\nTHEN 'Sustainability in Enterprise'\nWHEN FCT.PROJECT_CODE='UPS'\nTHEN 'Upscaler'\nEND FACT_KE_PLACE_PROJECT_DESC,\n\n\nFCT.Partner AS FACT_KE_PLACE_PARTNER,\nFCT.University AS FACT_KE_PLACE_UNIVERSITY,\nFCT.INTERVENTION AS FACT_KE_PLACE_INTERVENTION,\nFCT.ROLE AS FACT_KE_PLACE_ROLE,\nFCT.Degree AS FACT_KE_PLACE_DEGREE,\nFCT.Year_Graduated AS FACT_KE_PLACE_GRAD_YEAR,\nCASE\nWHEN LEN(FCT.No_of_Placements)=0\nTHEN '0.00'\nELSE CAST(FCT.No_of_Placements AS DECIMAL(6)) \nEND FACT_KE_PLACE_NO_OF_PLACE,\n\nCASE\nWHEN LEN(FCT.Length_Weeks)=0\nTHEN '0.00'\nELSE CAST(FCT.Length_Weeks AS DECIMAL(6)) \nEND FACT_KE_PLACE_NO_OF_WEEKS,\n\nCASE\nWHEN LEN(FCT.\"GRANT\")=0\nTHEN '0.00'\nELSE CAST(FCT.\"GRANT\" AS NUMERIC(10,2)) \nEND FACT_KE_PLACE_GRANT,\n\n\nCASE\nWHEN LEN(FCT.Salary)=0\nTHEN '0.00'\nELSE CAST(FCT.Salary AS NUMERIC(10,2))\nEND FACT_KE_PLACE_SALARY,\n\nCAST(\nCASE\nWHEN LEN(\"Match\")=0\nTHEN '0.00'\nELSE\nFCT.\"Match\" \nEND\nAS NUMERIC(10,2))  AS FACT_KE_PLACE_MATCH\nFROM KNE_STG.PLACEMENTS FCT\nINNER JOIN Q_DIM_COMPANY\nON CONCAT(FCT.Project_Code,'|',FCT.BUSINESS_NUMBER)=Q_DIM_COMPANY.COMPANY_BK\nINNER JOIN Q_DIM_PARTNER\nON FCT.Partner=Q_DIM_PARTNER.PARTNER_BK\nINNER JOIN Q_DIM_PROJECT\nON \nCASE \nWHEN LEN(FCT.Project_Code)= 0\nTHEN 'N/A'\nELSE FCT.Project_Code\nEND =Q_DIM_PROJECT.PROJECT_BK\nINNER JOIN Q_DIM_DATES\nON CASE\nWHEN FCT.QTR = '0' THEN 'N/A'\nWHEN FCT.QTR IS NULL THEN 'N/A'\nELSE FCT.QTR\nEND=Q_DIM_DATES.REP_DATES_BK",
+								"sqlReaderQuery": "WITH\nQ_DIM_COMPANY\nAS\n(SELECT COMPANY_SK,COMPANY_BK\nFROM KNE_INT.DIM_COMPANY),\n\nQ_DIM_DATES\nAS\n(SELECT REP_DATES_SK,REP_DATES_BK\n FROM KNE_INT.DIM_REPORTING_DATES\n WHERE REP_DATES_ACTIVE_IND='Y'),\n\nQ_DIM_PARTNER\nAS\n(SELECT PARTNER_SK,PARTNER_BK\n FROM KNE_INT.DIM_PARTNER),\n\nQ_DIM_PROJECT\nAS\n(SELECT PROJECT_SK,PROJECT_BK\n FROM KNE_INT.DIM_PROJECT)\n\nSELECT \nQ_DIM_COMPANY.COMPANY_SK FACT_KE_PLACE_COMP_SK, \nQ_DIM_DATES.REP_DATES_SK  FACT_KE_PLACE_DATE_SK,\nQ_DIM_PARTNER.PARTNER_SK  FACT_KE_PLACE_PARTNER_SK,\nQ_DIM_PROJECT.PROJECT_SK  FACT_KE_PLACE_PROJECT_SK,\nFCT.PROJECT_CODE AS FACT_KE_PLACE_PROJECT,\n\n\nCASE \nWHEN FCT.PROJECT_CODE='EI'\nTHEN 'Enabling Innovation'\nWHEN FCT.PROJECT_CODE='EIC'\nTHEN 'Enterprise and Innovation Centre (DEC)'\nWHEN FCT.PROJECT_CODE='GRADS'\nTHEN 'Grads for D2N2 Small to Medium sized businesses'\nWHEN FCT.PROJECT_CODE='PTI' \nTHEN 'Productivity through Innovation'\nWHEN FCT.PROJECT_CODE='SiE'\nTHEN 'Sustainability in Enterprise'\nWHEN FCT.PROJECT_CODE='UPS'\nTHEN 'Upscaler'\nEND FACT_KE_PLACE_PROJECT_DESC,\n\n\nFCT.Partner AS FACT_KE_PLACE_PARTNER,\nFCT.University AS FACT_KE_PLACE_UNIVERSITY,\nFCT.INTERVENTION AS FACT_KE_PLACE_INTERVENTION,\nFCT.ROLE AS FACT_KE_PLACE_ROLE,\nFCT.Degree AS FACT_KE_PLACE_DEGREE,\nFCT.Year_Graduated AS FACT_KE_PLACE_GRAD_YEAR,\nCASE\nWHEN LEN(FCT.No_of_Placements)=0\nTHEN '0.00'\nELSE CAST(FCT.No_of_Placements AS DECIMAL(6)) \nEND FACT_KE_PLACE_NO_OF_PLACE,\n\nCASE\nWHEN LEN(FCT.Length_Weeks)=0\nTHEN '0.00'\nELSE CAST(FCT.Length_Weeks AS DECIMAL(6)) \nEND FACT_KE_PLACE_NO_OF_WEEKS,\n\nCASE\nWHEN LEN(FCT.\"GRANT\")=0\nTHEN '0.00'\nELSE CAST(FCT.\"GRANT\" AS NUMERIC(10,2)) \nEND FACT_KE_PLACE_GRANT,\n\n\nCASE\nWHEN LEN(FCT.Salary)=0\nTHEN '0.00'\nELSE CAST(FCT.Salary AS NUMERIC(10,2))\nEND FACT_KE_PLACE_SALARY,\n\nCAST(\nCASE\nWHEN LEN(\"Match\")=0\nTHEN '0.00'\nELSE\nFCT.\"Match\" \nEND\nAS NUMERIC(10,2))  AS FACT_KE_PLACE_MATCH\nFROM KNE_STG.PLACEMENTS FCT\nINNER JOIN Q_DIM_COMPANY\nON CONCAT(FCT.Project_Code,'|',FCT.BUSINESS_NUMBER)=Q_DIM_COMPANY.COMPANY_BK\nINNER JOIN Q_DIM_PARTNER\nON FCT.Partner=Q_DIM_PARTNER.PARTNER_BK\nINNER JOIN Q_DIM_PROJECT\nON \nCASE \nWHEN LEN(FCT.Project_Code)= 0\nTHEN 'N/A'\nELSE FCT.Project_Code\nEND =Q_DIM_PROJECT.PROJECT_BK\nINNER JOIN Q_DIM_DATES\nON CASE\nWHEN FCT.QTR = '0' THEN 'N/A'\nWHEN FCT.QTR IS NULL THEN 'N/A'\nELSE FCT.QTR\nEND=Q_DIM_DATES.REP_DATES_BK\n\n\n",
 								"queryTimeout": "02:00:00",
 								"partitionOption": "None"
 							},
@@ -3781,6 +3746,34 @@
 											"name": "COMPANY_NUMBER",
 											"type": "String",
 											"physicalType": "varchar"
+										}
+									},
+									{
+										"source": {
+											"name": "COMPANY_STATE_AID",
+											"type": "Decimal",
+											"physicalType": "decimal",
+											"scale": 2,
+											"precision": 10
+										},
+										"sink": {
+											"name": "COMPANY_STATE_AID",
+											"type": "Decimal",
+											"physicalType": "decimal",
+											"scale": 2,
+											"precision": 10
+										}
+									},
+									{
+										"source": {
+											"name": "COMPANY_STATE_AID_DATE",
+											"type": "DateTime",
+											"physicalType": "datetime"
+										},
+										"sink": {
+											"name": "COMPANY_STATE_AID_DATE",
+											"type": "DateTime",
+											"physicalType": "datetime"
 										}
 									}
 								],
@@ -7054,20 +7047,6 @@
 											"name": "Year",
 											"type": "String",
 											"physicalType": "varchar"
-										}
-									},
-									{
-										"source": {
-											"name": "Occurrence",
-											"type": "String",
-											"physicalType": "String"
-										},
-										"sink": {
-											"name": "Occurrence",
-											"type": "Decimal",
-											"physicalType": "decimal",
-											"scale": 0,
-											"precision": 5
 										}
 									}
 								],
@@ -13106,6 +13085,18 @@
 									},
 									{
 										"source": {
+											"name": "Hours",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "Intervention_Hours",
+											"type": "String",
+											"physicalType": "varchar"
+										}
+									},
+									{
+										"source": {
 											"name": "School/Dept",
 											"type": "String",
 											"physicalType": "String"
@@ -13124,10 +13115,8 @@
 										},
 										"sink": {
 											"name": "Intervention_tCO2e",
-											"type": "Decimal",
-											"physicalType": "decimal",
-											"scale": 4,
-											"precision": 10
+											"type": "String",
+											"physicalType": "varchar"
 										}
 									},
 									{
@@ -13140,20 +13129,6 @@
 											"name": "Intervention_Type",
 											"type": "String",
 											"physicalType": "varchar"
-										}
-									},
-									{
-										"source": {
-											"name": "Hours",
-											"type": "String",
-											"physicalType": "String"
-										},
-										"sink": {
-											"name": "Intervention_Hours",
-											"type": "Decimal",
-											"physicalType": "decimal",
-											"scale": 2,
-											"precision": 7
 										}
 									}
 								],
@@ -14307,67 +14282,6 @@
 						]
 					},
 					{
-						"name": "PostCodeWards",
-						"type": "Copy",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "0.12:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"source": {
-								"type": "DelimitedTextSource",
-								"storeSettings": {
-									"type": "FileServerReadSettings",
-									"recursive": true,
-									"enablePartitionDiscovery": false,
-									"fileFilter": "POSTCODEWARD.csv"
-								},
-								"formatSettings": {
-									"type": "DelimitedTextReadSettings"
-								}
-							},
-							"sink": {
-								"type": "AzureSqlSink",
-								"preCopyScript": "TRUNCATE TABLE KNE_STG.POSTCODE_WARDS",
-								"writeBehavior": "insert",
-								"sqlWriterUseTableLock": false,
-								"tableOption": "autoCreate",
-								"disableMetricsCollection": false
-							},
-							"enableStaging": false,
-							"translator": {
-								"type": "TabularTranslator",
-								"typeConversion": true,
-								"typeConversionSettings": {
-									"allowDataTruncation": true,
-									"treatBooleanAsNumber": false
-								}
-							}
-						},
-						"inputs": [
-							{
-								"referenceName": "DS_KNE_POSTCODES",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						],
-						"outputs": [
-							{
-								"referenceName": "DS_Azure_Destination",
-								"type": "DatasetReference",
-								"parameters": {
-									"TableName": "POSTCODE_WARDS",
-									"SchemaName": "KNE_STG"
-								}
-							}
-						]
-					},
-					{
 						"name": "PostCodeRegions",
 						"type": "Copy",
 						"dependsOn": [],
@@ -14926,13 +14840,13 @@
 								]
 							},
 							{
-								"activity": "PostCodeWardsLondon",
+								"activity": "PostCodeMetroCounties",
 								"dependencyConditions": [
 									"Succeeded"
 								]
 							},
 							{
-								"activity": "PostCodeMetroCounties",
+								"activity": "PostCodeWardsComplete",
 								"dependencyConditions": [
 									"Succeeded"
 								]
@@ -14949,7 +14863,7 @@
 						"typeProperties": {
 							"source": {
 								"type": "AzureSqlSource",
-								"sqlReaderQuery": "\n\n WITH\nQ_INT_HEALTH_BOARD\nAS\n( Select DISTINCT SICBL23CD,ICB23NM NHS_INTEGRATED_CARE_BOARD,NHSER23NM NHS_REGION\n from KNE_STG.POSTCODE_INTEGRATED_HEALTH_BOARD),\n\n\nQ_PARL_CONT\nAS\n(  SELECT DISTINCT PC.PCD POSTCODE,\n COALESCE(CONDESC24.PCON24NM,CONDESC.PCON10NM) ACTIVE_CONSTITUENCY\n FROM KNE_STG.POSTCODES PC\n LEFT OUTER JOIN KNE_STG.POSTCODE_CONSTITUENCIES CONDESC\n ON PC.PCON=CONDESC.PCON10CD\n LEFT OUTER JOIN KNE_STG.POSTCODE_PARL_CONSTIT_2024 CON24\n ON REPLACE(PC.pcd,' ','')=REPLACE(CON24.POSTCODE,' ','')\n LEFT OUTER JOIN KNE_STG.POSTCODE_CONSTITUENCIES CONDESC24\n ON CON24.PCON24=CONDESC24.PCON24CD\n AND PC.PCON=CONDESC24.PCON10CD\n )\n\n\n\n\n\nSELECT  DISTINCT \nPC.PCD AS POSTCODE,\nWD.WD21NM AS WARDNAME,\nLA.LAD22NM AS LOCAL_AUTHORITY,\nCS.ACTIVE_CONSTITUENCY AS PARL_CONSTIT,\nCTY.CTY15NM AS COUNTY,\nRG.RGN14NM AS REGION,\nCOUNTRY.CTRY15NM COUNTRY,\nHB.NHS_INTEGRATED_CARE_BOARD,\nHB.NHS_REGION,\nCCG.CCG18NM NHS_CLINICAL_COMM_GROUP,\nCOALESCE(NP.NPARK16NM, 'Not a National Park') AS NATIONAL_PARK,\nPO.PFA15NM POLICE_AUTHORITY,\nTTW.\"Employment rate\" AS EMPLOYMENT_RATE,\nTTW.\"Male Employment Rate\" AS MALE_EMPLOYMENT_RATE,\nTTW.\"Female Employment Rate\" AS FEMALE_EMPLOYMENT_RATE,\nTTW.\"Self Employment Rate\" AS SELF_EMPLOYMENT_RATE,\nTTW.\"Economically inactive\" AS ECON_INACTIVE_RATE,\nTTW.\"Economically inactive males\" AS MALE_ECON_INACTIVE_RATE,\nTTW.\"Economically inactive females\" AS FEMALE_ECON_INACTIVE_RATE,\nTTW.\"NVQ Level 4 qualifications\" AS NVQ_LVL4_QUALS,\nTTW.\"NVQ no qualifications\" AS NVQ_NO_QUALS,\nPC.LAT   AS LATITUDE,\nPC.LONG AS LONGDITUDE\n\n \n FROM KNE_STG.Postcodes PC\n LEFT OUTER JOIN KNE_STG.POSTCODE_COUNTRY COUNTRY\n ON PC.CTRY=COUNTRY.CTRY15CD\nLEFT OUTER JOIN KNE_STG.POSTCODE_LOCAL_AUTHORITY LA\n ON PC.LAUA=LA.LAD22CD\n LEFT OUTER JOIN KNE_STG.POSTCODE_WARDS WD\n ON PC.WARD=WD.WD21CD\n LEFT OUTER JOIN KNE_STG.POSTCODE_REGIONS RG\n  ON PC.RGN=RG.RGN14CD \n LEFT OUTER JOIN KNE_STG.POSTCODE_COUNTIES CTY\n ON PC.CTY=CTY.CTY15CD\n LEFT OUTER JOIN Q_PARL_CONT CS\n ON PC.PCD=CS.POSTCODE\n LEFT OUTER JOIN KNE_STG.POSTCODE_NATIONAL_PARK NP\n ON PC.NPARK=NP.NPARK16CD\n LEFT OUTER JOIN KNE_STG.POSTCODE_POLICE PO\n ON PC.PFA=PO.PFA15CD\n LEFT OUTER JOIN KNE_STG.POSTCODE_TRAVEL_TO_WORK TTW\n ON PC.TTWA=TTW.TTWA11CDN\n LEFT OUTER JOIN Q_INT_HEALTH_BOARD HB\n ON PC.SICBL=HB.SICBL23CD\n LEFT OUTER JOIN KNE_STG.POSTCODE_NHS_CCG CCG\n ON PC.LSOA21=CCG.LSOA11CD",
+								"sqlReaderQuery": "\nWITH\nQ_INT_HEALTH_BOARD\nAS\n( Select DISTINCT SICBL23CD,ICB23NM NHS_INTEGRATED_CARE_BOARD,NHSER23NM NHS_REGION\n from KNE_STG.POSTCODE_INTEGRATED_HEALTH_BOARD),\n\n\nQ_PARL_CONT\nAS\n(  SELECT DISTINCT PC.PCD POSTCODE,\n COALESCE(CONDESC24.PCON24NM,CONDESC.PCON10NM) ACTIVE_CONSTITUENCY\n FROM KNE_STG.POSTCODES PC\n LEFT OUTER JOIN KNE_STG.POSTCODE_CONSTITUENCIES CONDESC\n ON PC.PCON=CONDESC.PCON10CD\n LEFT OUTER JOIN KNE_STG.POSTCODE_PARL_CONSTIT_2024 CON24\n ON REPLACE(PC.pcd,' ','')=REPLACE(CON24.POSTCODE,' ','')\n LEFT OUTER JOIN KNE_STG.POSTCODE_CONSTITUENCIES CONDESC24\n ON CON24.PCON24=CONDESC24.PCON24CD\n AND PC.PCON=CONDESC24.PCON10CD ),\n\n Q_TTW\n AS\n (SELECT \n TTWA11CDN,\n CONVERT(FLOAT,[EMPLOYMENT RATE]) AS EMPLOYMENT_RATE,\n        CONVERT(FLOAT,[MALE EMPLOYMENT RATE]) AS MALE_EMPLOYMENT_RATE,\n\t\tCONVERT(FLOAT,[FEMALE EMPLOYMENT RATE]) AS FEMALE_EMPLOYMENT_RATE,\n\t\tCONVERT(FLOAT,[SELF EMPLOYMENT RATE])  AS SELF_EMPLOYMENT_RATE,\n\t\tCONVERT(FLOAT,[ECONOMICALLY INACTIVE])AS ECONOMICALLY_INACTIVE,\n\t\tCONVERT(FLOAT,[ECONOMICALLY INACTIVE MALES]) AS ECONOMICALLY_INACTIVE_MALES,\n\t\tCONVERT(FLOAT,[ECONOMICALLY INACTIVE FEMALES]) AS ECONOMICALLY_INACTIVE_FEMALES,\n\t\tCONVERT(FLOAT,[NVQ LEVEL 4 QUALIFICATIONS])  AS NVQ_LEVEL_4_QUALIFICATIONS,\n\t\tCONVERT(FLOAT,[NVQ No qualifications])  AS NVQ_No_qualifications\n FROM KNE_STG.POSTCODE_TRAVEL_TO_WORK)\n\n\n\n\n\nSELECT  DISTINCT \nPC.PCD AS POSTCODE,\nWD.WD21NM AS WARDNAME,\nLA.LAD22NM AS LOCAL_AUTHORITY,\nCS.ACTIVE_CONSTITUENCY AS PARL_CONSTIT,\nCTY.CTY15NM AS COUNTY,\nRG.RGN14NM AS REGION,\nCOUNTRY.CTRY15NM COUNTRY,\nHB.NHS_INTEGRATED_CARE_BOARD,\nHB.NHS_REGION,\nCCG.CCG18NM NHS_CLINICAL_COMM_GROUP,\nCOALESCE(NP.NPARK16NM, 'Not a National Park') AS NATIONAL_PARK,\nPO.PFA15NM POLICE_AUTHORITY,\nEMPLOYMENT_RATE,\nMALE_EMPLOYMENT_RATE,\nFEMALE_EMPLOYMENT_RATE,\nSELF_EMPLOYMENT_RATE,\nECONOMICALLY_INACTIVE,\nECONOMICALLY_INACTIVE_MALES,\nECONOMICALLY_INACTIVE_FEMALES,\nNVQ_LEVEL_4_QUALIFICATIONS,\nNVQ_No_qualifications,\nPC.LAT   AS LATITUDE,\nPC.LONG AS LONGDITUDE\n\n \n FROM KNE_STG.Postcodes PC\n LEFT OUTER JOIN KNE_STG.POSTCODE_COUNTRY COUNTRY\n ON PC.CTRY=COUNTRY.CTRY15CD\nLEFT OUTER JOIN KNE_STG.POSTCODE_LOCAL_AUTHORITY LA\n ON PC.LAUA=LA.LAD22CD\n LEFT OUTER JOIN KNE_STG.POSTCODE_WARDS WD\n ON PC.WARD=WD.WD21CD\n LEFT OUTER JOIN KNE_STG.POSTCODE_REGIONS RG\n  ON PC.RGN=RG.RGN14CD \n LEFT OUTER JOIN KNE_STG.POSTCODE_COUNTIES CTY\n ON PC.CTY=CTY.CTY15CD\n LEFT OUTER JOIN Q_PARL_CONT CS\n ON PC.PCD=CS.POSTCODE\n LEFT OUTER JOIN KNE_STG.POSTCODE_NATIONAL_PARK NP\n ON PC.NPARK=NP.NPARK16CD\n LEFT OUTER JOIN KNE_STG.POSTCODE_POLICE PO\n ON PC.PFA=PO.PFA15CD\n LEFT OUTER JOIN Q_TTW TTW\n ON PC.TTWA=TTW.TTWA11CDN\n LEFT OUTER JOIN Q_INT_HEALTH_BOARD HB\n ON PC.SICBL=HB.SICBL23CD\n LEFT OUTER JOIN KNE_STG.POSTCODE_NHS_CCG CCG\n ON PC.LSOA21=CCG.LSOA11CD\n\n\n\n SELECT CONVERT(FLOAT,[EMPLOYMENT RATE]) AS EMPLOYMENT_RATE,\n        CONVERT(FLOAT,[MALE EMPLOYMENT RATE]) AS MALE_EMPLOYMENT_RATE,\n\t\tCONVERT(FLOAT,[FEMALE EMPLOYMENT RATE]) AS FEMALE_EMPLOYMENT_RATE,\n\t\tCONVERT(FLOAT,[SELF EMPLOYMENT RATE])  AS SELF_EMPLOYMENT_RATE,\n\t\tCONVERT(FLOAT,[ECONOMICALLY INACTIVE])AS ECONOMICALLY_INACTIVE,\n\t\tCONVERT(FLOAT,[ECONOMICALLY INACTIVE MALES]) AS ECONOMICALLY_INACTIVE_MALES,\n\t\tCONVERT(FLOAT,[ECONOMICALLY INACTIVE FEMALES]) AS ECONOMICALLY_INACTIVE_FEMALES,\n\t\tCONVERT(FLOAT,[NVQ LEVEL 4 QUALIFICATIONS])  AS NVQ_LEVEL_4_QUALIFICATIONS,\n\t\tCONVERT(FLOAT,[NVQ No qualifications])  AS NVQ_No_qualifications\n FROM KNE_STG.POSTCODE_TRAVEL_TO_WORK A",
 								"queryTimeout": "02:00:00",
 								"partitionOption": "None"
 							},
@@ -14974,7 +14888,7 @@
 										"sink": {
 											"name": "POSTCODE",
 											"type": "String",
-											"physicalType": "nvarchar"
+											"physicalType": "varchar"
 										}
 									},
 									{
@@ -14986,7 +14900,7 @@
 										"sink": {
 											"name": "WARDNAME",
 											"type": "String",
-											"physicalType": "nvarchar"
+											"physicalType": "varchar"
 										}
 									},
 									{
@@ -14998,7 +14912,7 @@
 										"sink": {
 											"name": "LOCAL_AUTHORITY",
 											"type": "String",
-											"physicalType": "nvarchar"
+											"physicalType": "varchar"
 										}
 									},
 									{
@@ -15010,7 +14924,7 @@
 										"sink": {
 											"name": "PARL_CONSTIT",
 											"type": "String",
-											"physicalType": "nvarchar"
+											"physicalType": "varchar"
 										}
 									},
 									{
@@ -15022,7 +14936,7 @@
 										"sink": {
 											"name": "COUNTY",
 											"type": "String",
-											"physicalType": "nvarchar"
+											"physicalType": "varchar"
 										}
 									},
 									{
@@ -15034,7 +14948,7 @@
 										"sink": {
 											"name": "REGION",
 											"type": "String",
-											"physicalType": "nvarchar"
+											"physicalType": "varchar"
 										}
 									},
 									{
@@ -15046,7 +14960,7 @@
 										"sink": {
 											"name": "COUNTRY",
 											"type": "String",
-											"physicalType": "nvarchar"
+											"physicalType": "varchar"
 										}
 									},
 									{
@@ -15058,7 +14972,7 @@
 										"sink": {
 											"name": "NHS_INTEGRATED_CARE_BOARD",
 											"type": "String",
-											"physicalType": "nvarchar"
+											"physicalType": "varchar"
 										}
 									},
 									{
@@ -15070,7 +14984,7 @@
 										"sink": {
 											"name": "NHS_REGION",
 											"type": "String",
-											"physicalType": "nvarchar"
+											"physicalType": "varchar"
 										}
 									},
 									{
@@ -15082,7 +14996,7 @@
 										"sink": {
 											"name": "NHS_CLINICAL_COMM_GROUP",
 											"type": "String",
-											"physicalType": "nvarchar"
+											"physicalType": "varchar"
 										}
 									},
 									{
@@ -15094,7 +15008,7 @@
 										"sink": {
 											"name": "NATIONAL_PARK",
 											"type": "String",
-											"physicalType": "nvarchar"
+											"physicalType": "varchar"
 										}
 									},
 									{
@@ -15106,115 +15020,133 @@
 										"sink": {
 											"name": "POLICE_AUTHORITY",
 											"type": "String",
-											"physicalType": "nvarchar"
+											"physicalType": "varchar"
 										}
 									},
 									{
 										"source": {
 											"name": "EMPLOYMENT_RATE",
-											"type": "String",
-											"physicalType": "nvarchar"
+											"type": "Double",
+											"physicalType": "float"
 										},
 										"sink": {
 											"name": "EMPLOYMENT_RATE",
-											"type": "String",
-											"physicalType": "nvarchar"
+											"type": "Decimal",
+											"physicalType": "decimal",
+											"scale": 1,
+											"precision": 4
 										}
 									},
 									{
 										"source": {
 											"name": "MALE_EMPLOYMENT_RATE",
-											"type": "String",
-											"physicalType": "nvarchar"
+											"type": "Double",
+											"physicalType": "float"
 										},
 										"sink": {
 											"name": "MALE_EMPLOYMENT_RATE",
-											"type": "String",
-											"physicalType": "nvarchar"
+											"type": "Decimal",
+											"physicalType": "decimal",
+											"scale": 1,
+											"precision": 4
 										}
 									},
 									{
 										"source": {
 											"name": "FEMALE_EMPLOYMENT_RATE",
-											"type": "String",
-											"physicalType": "nvarchar"
+											"type": "Double",
+											"physicalType": "float"
 										},
 										"sink": {
 											"name": "FEMALE_EMPLOYMENT_RATE",
-											"type": "String",
-											"physicalType": "nvarchar"
+											"type": "Decimal",
+											"physicalType": "decimal",
+											"scale": 1,
+											"precision": 4
 										}
 									},
 									{
 										"source": {
 											"name": "SELF_EMPLOYMENT_RATE",
-											"type": "String",
-											"physicalType": "nvarchar"
+											"type": "Double",
+											"physicalType": "float"
 										},
 										"sink": {
 											"name": "SELF_EMPLOYMENT_RATE",
-											"type": "String",
-											"physicalType": "nvarchar"
+											"type": "Decimal",
+											"physicalType": "decimal",
+											"scale": 1,
+											"precision": 4
 										}
 									},
 									{
 										"source": {
-											"name": "ECON_INACTIVE_RATE",
-											"type": "String",
-											"physicalType": "nvarchar"
+											"name": "ECONOMICALLY_INACTIVE",
+											"type": "Double",
+											"physicalType": "float"
 										},
 										"sink": {
 											"name": "ECON_INACTIVE_RATE",
-											"type": "String",
-											"physicalType": "nvarchar"
+											"type": "Decimal",
+											"physicalType": "decimal",
+											"scale": 1,
+											"precision": 4
 										}
 									},
 									{
 										"source": {
-											"name": "MALE_ECON_INACTIVE_RATE",
-											"type": "String",
-											"physicalType": "nvarchar"
+											"name": "ECONOMICALLY_INACTIVE_MALES",
+											"type": "Double",
+											"physicalType": "float"
 										},
 										"sink": {
 											"name": "MALE_ECON_INACTIVE_RATE",
-											"type": "String",
-											"physicalType": "nvarchar"
+											"type": "Decimal",
+											"physicalType": "decimal",
+											"scale": 1,
+											"precision": 4
 										}
 									},
 									{
 										"source": {
-											"name": "FEMALE_ECON_INACTIVE_RATE",
-											"type": "String",
-											"physicalType": "nvarchar"
+											"name": "ECONOMICALLY_INACTIVE_FEMALES",
+											"type": "Double",
+											"physicalType": "float"
 										},
 										"sink": {
 											"name": "FEMALE_ECON_INACTIVE_RATE",
-											"type": "String",
-											"physicalType": "nvarchar"
+											"type": "Decimal",
+											"physicalType": "decimal",
+											"scale": 1,
+											"precision": 4
 										}
 									},
 									{
 										"source": {
-											"name": "NVQ_LVL4_QUALS",
-											"type": "String",
-											"physicalType": "nvarchar"
+											"name": "NVQ_LEVEL_4_QUALIFICATIONS",
+											"type": "Double",
+											"physicalType": "float"
 										},
 										"sink": {
 											"name": "NVQ_LVL4_QUALS",
-											"type": "String",
-											"physicalType": "nvarchar"
+											"type": "Decimal",
+											"physicalType": "decimal",
+											"scale": 1,
+											"precision": 4
 										}
 									},
 									{
 										"source": {
-											"name": "NVQ_NO_QUALS",
-											"type": "String",
-											"physicalType": "nvarchar"
+											"name": "NVQ_No_qualifications",
+											"type": "Double",
+											"physicalType": "float"
 										},
 										"sink": {
 											"name": "NVQ_NO_QUALS",
-											"type": "String",
-											"physicalType": "nvarchar"
+											"type": "Decimal",
+											"physicalType": "decimal",
+											"scale": 1,
+											"precision": 4
 										}
 									},
 									{
@@ -15225,8 +15157,10 @@
 										},
 										"sink": {
 											"name": "LATITUDE",
-											"type": "String",
-											"physicalType": "nvarchar"
+											"type": "Decimal",
+											"physicalType": "decimal",
+											"scale": 6,
+											"precision": 9
 										}
 									},
 									{
@@ -15237,8 +15171,10 @@
 										},
 										"sink": {
 											"name": "LONGDITUDE",
-											"type": "String",
-											"physicalType": "nvarchar"
+											"type": "Decimal",
+											"physicalType": "decimal",
+											"scale": 6,
+											"precision": 9
 										}
 									}
 								],
@@ -15411,6 +15347,7 @@
 						"typeProperties": {
 							"source": {
 								"type": "AzureSqlSource",
+								"sqlReaderQuery": "SELECT DISTINCT \n       [POSTCODE]\n      ,[WARDNAME]\n      ,[LOCAL_AUTHORITY]\n      ,[PARL_CONSTIT]\n      ,[COUNTY]\n      ,[REGION]\n      ,[COUNTRY]\n      ,[NHS_INTEGRATED_CARE_BOARD]\n      ,[NHS_REGION]\n      ,[NHS_CLINICAL_COMM_GROUP]\n      ,[NATIONAL_PARK]\n      ,[POLICE_AUTHORITY]\n      ,[EMPLOYMENT_RATE]\n      ,[MALE_EMPLOYMENT_RATE]\n      ,[FEMALE_EMPLOYMENT_RATE]\n      ,[SELF_EMPLOYMENT_RATE]\n      ,[ECON_INACTIVE_RATE]\n      ,[MALE_ECON_INACTIVE_RATE]\n      ,[FEMALE_ECON_INACTIVE_RATE]\n      ,[NVQ_LVL4_QUALS]\n      ,[NVQ_NO_QUALS]\n      ,[LATITUDE]\n      ,[LONGDITUDE]\n  FROM [KNE_STG].[POSTCODE_DETAILS]",
 								"queryTimeout": "02:00:00",
 								"partitionOption": "None"
 							},
@@ -15955,6 +15892,67 @@
 						]
 					},
 					{
+						"name": "PostCodeWards",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "DelimitedTextSource",
+								"storeSettings": {
+									"type": "FileServerReadSettings",
+									"recursive": true,
+									"enablePartitionDiscovery": false,
+									"fileFilter": "POSTCODEWARD.csv"
+								},
+								"formatSettings": {
+									"type": "DelimitedTextReadSettings"
+								}
+							},
+							"sink": {
+								"type": "AzureSqlSink",
+								"preCopyScript": "TRUNCATE TABLE KNE_STG.POSTCODE_WARDS_NOT_LONDON",
+								"writeBehavior": "insert",
+								"sqlWriterUseTableLock": false,
+								"tableOption": "autoCreate",
+								"disableMetricsCollection": false
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"typeConversion": true,
+								"typeConversionSettings": {
+									"allowDataTruncation": true,
+									"treatBooleanAsNumber": false
+								}
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "DS_KNE_POSTCODES",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "DS_Azure_Destination",
+								"type": "DatasetReference",
+								"parameters": {
+									"TableName": "POSTCODE_WARDS_NOT_LONDON",
+									"SchemaName": "KNE_STG"
+								}
+							}
+						]
+					},
+					{
 						"name": "PostCodeWardsLondon",
 						"type": "Copy",
 						"dependsOn": [
@@ -15988,6 +15986,7 @@
 							},
 							"sink": {
 								"type": "AzureSqlSink",
+								"preCopyScript": "TRUNCATE TABLE KNE_STG.POSTCODE_WARDS_LONDON",
 								"writeBehavior": "insert",
 								"sqlWriterUseTableLock": false,
 								"tableOption": "autoCreate",
@@ -16034,6 +16033,96 @@
 								"referenceName": "DS_KNE_POSTCODES",
 								"type": "DatasetReference",
 								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "DS_Azure_Destination",
+								"type": "DatasetReference",
+								"parameters": {
+									"TableName": "POSTCODE_WARDS_LONDON",
+									"SchemaName": "KNE_STG"
+								}
+							}
+						]
+					},
+					{
+						"name": "PostCodeWardsComplete",
+						"type": "Copy",
+						"dependsOn": [
+							{
+								"activity": "PostCodeWardsLondon",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "AzureSqlSource",
+								"sqlReaderQuery": "\n  Select NL.WD21CD,NL.WD21NM\n  FROM KNE_STG.POSTCODE_WARDS_NOT_LONDON NL\n  WHERE NL.WD21CD NOT IN \n  (Select L.WD21CD\n  FROM KNE_STG.POSTCODE_WARDS_LONDON L)\n  UNION\n  Select L.WD21CD,L.WD21NM\n  FROM KNE_STG.POSTCODE_WARDS_LONDON L\n  WHERE L.WD21CD NOT IN \n  (Select NL.WD21CD\n  FROM KNE_STG.POSTCODE_WARDS_NOT_LONDON NL)",
+								"queryTimeout": "02:00:00",
+								"partitionOption": "None"
+							},
+							"sink": {
+								"type": "AzureSqlSink",
+								"preCopyScript": "TRUNCATE TABLE KNE_STG.POSTCODE_WARDS",
+								"writeBehavior": "insert",
+								"sqlWriterUseTableLock": false,
+								"disableMetricsCollection": false
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"mappings": [
+									{
+										"source": {
+											"name": "WD21CD",
+											"type": "String",
+											"physicalType": "nvarchar"
+										},
+										"sink": {
+											"name": "WD21CD",
+											"type": "String",
+											"physicalType": "nvarchar"
+										}
+									},
+									{
+										"source": {
+											"name": "WD21NM",
+											"type": "String",
+											"physicalType": "nvarchar"
+										},
+										"sink": {
+											"name": "WD21NM",
+											"type": "String",
+											"physicalType": "nvarchar"
+										}
+									}
+								],
+								"typeConversion": true,
+								"typeConversionSettings": {
+									"allowDataTruncation": true,
+									"treatBooleanAsNumber": false
+								}
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "DS_Azure_Destination",
+								"type": "DatasetReference",
+								"parameters": {
+									"TableName": "POSTCODE_WARDS_LONDON",
+									"SchemaName": "KNE_STG"
+								}
 							}
 						],
 						"outputs": [
