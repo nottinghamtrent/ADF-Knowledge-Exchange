@@ -446,18 +446,6 @@
 									"type": "DateTime",
 									"physicalType": "datetime"
 								}
-							},
-							{
-								"source": {
-									"name": "COMPANY_NUMBER",
-									"type": "String",
-									"physicalType": "varchar"
-								},
-								"sink": {
-									"name": "COMPANY_NUMBER",
-									"type": "String",
-									"physicalType": "varchar"
-								}
 							}
 						],
 						"typeConversion": true,
